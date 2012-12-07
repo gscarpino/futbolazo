@@ -160,7 +160,7 @@
 		<ul>
 			<li><a href="#tabs-1">Goleadores</a></li>		
 		</ul>
-		<div id="tabs-1">
+		<div id="tabs-1" align="center">
 			<?php
 				require 'fun.php';
 				
@@ -171,11 +171,23 @@
 				
 				if ($res = $mydb->query("SELECT * FROM goleadores WHERE Categoria = '$cat'")){
 				    /* obtener el array de objetos */
-				    while ($fila = $res->fetch_row()){
-				        echo $fila[1] . ": " . $fila[2];
-				  		echo "<br />";
+					echo '<div id="divContainer">';
+					echo '<table class="formatHTML5">';
+					$encabezados = array("Nombre","Cantidad");
+					genEncabezado($encabezados);
+					echo '<tbody>';
+					while ($fila = $res->fetch_row()){
+						echo '<tr>';
+				        echo '<td>' . $fila[1] . '</td>';
+				        echo '<td>' . $fila[2] . '</td>';
+				  		echo '</tr>';
 				    }
-				
+				    echo '</tbody>';
+				    echo '<tfoot>';
+				    echo '<tr><td colspan="3">Los datos pueden llegar a ser incorrectos</td></tr>';
+				    echo '</tfoot>';
+					echo '</table>';
+					echo '</div>';
 				    /* liberar el conjunto de resultados */
 				    $res->close();
 				}

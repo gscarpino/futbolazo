@@ -12,4 +12,15 @@ function conectar(){
 	
 }
 
+function genEncabezado($nombres){
+	echo '<thead>';
+    echo '<tr>';
+	foreach ($nombres as $n){
+		echo '<th>' . $n . '</th>';
+	}
+	echo '</tr>';
+	echo '</thead>';
+	
+}
+
 ?>
