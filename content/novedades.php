@@ -16,9 +16,8 @@
 
 		$("#tabs").tabs();
 		
-		$("#menu").menu();
-		
-		
+		$("#menu").menu({ position: { my: "left top", at:"right-25 top-20" } });
+			
 
 		function menuAdmin(){
 			$( "#menuAdm" ).show("bounce");
@@ -93,20 +92,9 @@
 	
 	
 	
+	
 </script>
-<style>
-	.ui-menu{
-		width: 175px;
-		position: absolute;
-		display: block;
-		z-index: 1;
-	}
-	#tabs{
-	width: 810px;
-	margin-left:190px;
-	z-index: 0;
-	}
-</style>
+
 </head>
 
 <body>
@@ -127,8 +115,8 @@
 	
 	<ul id="menu">
 		<li><a href="index.html"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>
-		<li><a href="novedades.html"><span class="ui-icon ui-icon-info"></span>Novedades</a></li>
-		<li><a href="fixture.html"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
+		<li><a href="novedades.php"><span class="ui-icon ui-icon-info"></span>Novedades</a></li>
+		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
 			<ul>
 				<li><a href="#">Categoría A</a>
@@ -161,19 +149,19 @@
 					</ul></li>
 			</ul>
 		</li>
-		<li><a href="contacto.html"><span class="ui-icon ui-icon-mail-closed"></span>Contacto</a></li>
+		<li><a href="tribunal.php"><span class="ui-icon ui-icon-notice"></span>Tribunal de Disciplina</a></li>
+		<li><a href="fotos.php"><span class="ui-icon ui-icon-image"></span>Fotos</a></li>
+		<li><a href="historia.php"><span class="ui-icon ui-icon-script"></span>Historia</a></li>
+		<li><a href="anteriores.php"><span class="ui-icon ui-icon-folder-open"></span>Torneos anteriores</a></li>
+		<li><a href="contacto.php"><span class="ui-icon ui-icon-mail-closed"></span>Contacto</a></li>
 	</ul>
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Novedades</a></li>		
+			<li><a href="#tabs-1">Inicio</a></li>		
 		</ul>
 		<div id="tabs-1">
-			12/09/2012: Se actualizó el fixture!
-			<br>
-			22/10/2012: Se actualizó el fixture!
-			<br>
-			05/11/2012: Se actualizó el fixture!
+			Bienvenidos al futbolazo!
 		</div>
 	</div>
 
