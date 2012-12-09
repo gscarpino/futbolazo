@@ -37,10 +37,11 @@ h1.titulo{
 #menuAdm{
 	border-style: solid;
 	border-color: black;
+	font-size: small;
 }
 
 #btnAdmin{
-	left:90%;
+	left:80%;
 	font-size: x-small;
 }
 
@@ -80,7 +81,7 @@ h1 {color:#FFE47A; font-size:1.5em;}
 table.formatHTML5 {
     width: 100%;
     border-collapse:collapse;
-    text-align:left;
+    text-align:center;
     color: #000000;
 }
 
@@ -157,6 +158,8 @@ table.formatHTML5 tfoot{
     color:#303030;
     text-shadow: 0 1px 1px rgba(255,255,255,0.3);
 }
+
+/*** FIN TABLAS ***/
 
 
 #central{

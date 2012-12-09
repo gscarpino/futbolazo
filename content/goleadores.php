@@ -101,6 +101,7 @@
 	<div id="admins">
 	<button id="btnAdmin">admins</button>
 	</div>
+	<div id="central">
 	<div id="menuAdm">
 				<form id="formulario" action="loguear.php" method="post">
 				<fieldset>
@@ -171,23 +172,13 @@
 				
 				if ($res = $mydb->query("SELECT * FROM goleadores WHERE Categoria = '$cat'")){
 				    /* obtener el array de objetos */
-					echo '<div id="divContainer">';
-					echo '<table class="formatHTML5">';
-					$encabezados = array("Nombre","Cantidad");
+					empezarTabla();
+					$encabezados = array("Categoría","Nombre","Cantidad");
 					genEncabezado($encabezados);
-					echo '<tbody>';
 					while ($fila = $res->fetch_row()){
-						echo '<tr>';
-				        echo '<td>' . $fila[1] . '</td>';
-				        echo '<td>' . $fila[2] . '</td>';
-				  		echo '</tr>';
+						genFila($fila);
 				    }
-				    echo '</tbody>';
-				    echo '<tfoot>';
-				    echo '<tr><td colspan="3">Los datos pueden llegar a ser incorrectos</td></tr>';
-				    echo '</tfoot>';
-					echo '</table>';
-					echo '</div>';
+				    finalizarTabla();
 				    /* liberar el conjunto de resultados */
 				    $res->close();
 				}
@@ -197,6 +188,7 @@
 
 			?>
 		</div>
+	</div>
 	</div>
 
 </body>
