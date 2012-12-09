@@ -12,6 +12,20 @@ function conectar(){
 	
 }
 
+function empezarTabla(){
+	echo '<div id="divContainer">';
+	echo '<table class="formatHTML5">';
+}
+
+function finalizarTabla(){
+	echo '</tbody>';
+	echo '<tfoot>';
+	echo '<tr><td colspan="3">Los datos pueden llegar a ser incorrectos</td></tr>';
+	echo '</tfoot>';
+	echo '</table>';
+	echo '</div>';
+}
+
 function genEncabezado($nombres){
 	echo '<thead>';
     echo '<tr>';
@@ -20,7 +34,17 @@ function genEncabezado($nombres){
 	}
 	echo '</tr>';
 	echo '</thead>';
+	echo '<tbody>';
 	
+}
+
+
+function genFila($fila){
+	echo '<tr>';
+	foreach ($fila as $f){
+		echo '<td>' . $f . '</td>';
+	}
+	echo '</tr>';
 }
 
 ?>
