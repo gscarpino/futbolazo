@@ -1,5 +1,7 @@
 <?php
-require 'fun.php';
+	session_start();
+	require 'fun.php';
+
 
 	$nombre = htmlspecialchars($_POST['name']);
 	$pass = htmlspecialchars($_POST['password']);
@@ -13,11 +15,18 @@ require 'fun.php';
 	if ($res = $mydb->query("SELECT * FROM usuarios WHERE Nombre = '$nombre' and Password='$pass'")){
 		if($res->num_rows == 1){
 			$_SESSION['nombre'] = $nombre;
-			$_SESSION['pass'] = $pass;
-			header("location:panel.php");
+			$_SESSION['logged'] = true;
+			$st = session_status();
+			header('location:index.php');
 		}
 		else{
-			header("location:index.html");
+			$st = session_status();
+			if($st == 2){
+				header('location:desloguear.php');
+			}
+			else{
+				header('location:index.php?');
+			}
 		}
 	}
 	

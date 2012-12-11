@@ -1,3 +1,7 @@
+<?php 
+	session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +30,12 @@
 			.click(function() {
 				$( "#menuAdm" ).dialog( "open" );
 			});
+
+		$( "#btnLogOut" )
+		.button();
+
+			
+		
 		
 		var name = $( "#name" )
         password = $( "#password" ),
@@ -104,26 +114,13 @@
 </head>
 
 <body>
-	<div id="admins">
-	<button id="btnAdmin">admins</button>
-	</div>
-	<div id="central">
-	<div id="menuAdm">
-		<p class="validateTips">All form fields are required.</p>
-		<form id="formulario" action="loguear.php" method="post">
-		<fieldset>
-			<label for="name">Usuario</label><br>
-			<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"/><br>
-			<label for="password">Contraseña</label><br>
-			<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
-		</fieldset>
-		<br>
-		</form>
-	</div>
+	<?php 
+		include 'login.php';
+	?>
 	<h1 class="titulo"><b>El Futbolazo</b></h1>
 	
 	<ul id="menu">
-		<li><a href="index.html"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>
+		<li><a href="index.php"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>
 		<li><a href="novedades.php"><span class="ui-icon ui-icon-info"></span>Novedades</a></li>
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
