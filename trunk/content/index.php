@@ -37,7 +37,7 @@
 			
 		
 		
-		var name = $( "#name" )
+		var name = $( "#name" ),
         password = $( "#password" ),
         allFields = $( [] ).add( name ).add( password ),
         tips = $( ".validateTips" );

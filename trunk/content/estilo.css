@@ -24,7 +24,7 @@ span.user{
 
 #tabs{
 	width: 800px;
-	height: 500px;
+	height: auto;
 	margin-left:auto;
 	z-index: 0;
 }
