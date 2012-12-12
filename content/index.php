@@ -120,6 +120,11 @@
 	<h1 class="titulo"><b>El Futbolazo</b></h1>
 	
 	<ul id="menu">
+		<?php 
+			if(isset($_SESSION['logged'])){
+				echo '<li><a href="panel.php"><span class="ui-icon ui-icon-gear"></span>Panel</a></li>';
+			}
+		?>
 		<li><a href="index.php"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>
 		<li><a href="novedades.php"><span class="ui-icon ui-icon-info"></span>Novedades</a></li>
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
