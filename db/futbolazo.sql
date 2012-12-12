@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 06-12-2012 a las 23:57:07
+-- Tiempo de generación: 12-12-2012 a las 04:35:54
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -19,6 +19,49 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `futbolazo`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categorias`
+--
+
+CREATE TABLE IF NOT EXISTS `categorias` (
+  `Categoria` char(1) NOT NULL,
+  `Equipos` text NOT NULL,
+  `Fixture` text NOT NULL,
+  UNIQUE KEY `Categoria` (`Categoria`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`Categoria`, `Equipos`, `Fixture`) VALUES
+('A', '', ''),
+('B', '', ''),
+('C', '', ''),
+('D', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `equipo`
+--
+
+CREATE TABLE IF NOT EXISTS `equipo` (
+  `Nombre` varchar(60) NOT NULL,
+  `Categoria` char(1) NOT NULL,
+  `Mail` text NOT NULL,
+  `Jugadores` text NOT NULL,
+  `Partidos Ganados` int(11) NOT NULL DEFAULT '0',
+  `Partidos Perdidos` int(11) NOT NULL DEFAULT '0',
+  `Empates` int(11) NOT NULL DEFAULT '0',
+  `Goles Metidos` int(11) NOT NULL DEFAULT '0',
+  `Goles Recibidos` int(11) NOT NULL DEFAULT '0',
+  `Faltas` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `Nombre` (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -39,7 +82,25 @@ CREATE TABLE IF NOT EXISTS `goleadores` (
 INSERT INTO `goleadores` (`Categoria`, `Nombre`, `Cantidad`) VALUES
 ('A', 'Ezequiel Castellano', 3),
 ('A', 'Gino Scarpino', 7),
+('C', 'Bruno Renzo', 3),
+('A', 'Ezequiel Castellano', 3),
+('A', 'Gino Scarpino', 7),
 ('C', 'Bruno Renzo', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jugadores`
+--
+
+CREATE TABLE IF NOT EXISTS `jugadores` (
+  `Nombre` text NOT NULL,
+  `DNI` int(11) NOT NULL,
+  `Equipo` varchar(60) NOT NULL,
+  `Goles` int(11) NOT NULL DEFAULT '0',
+  `Faltas` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `DNI` (`DNI`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -61,6 +122,38 @@ CREATE TABLE IF NOT EXISTS `noticias` (
 INSERT INTO `noticias` (`Fecha`, `Texto`, `Autor`) VALUES
 ('2012-12-06', 'se actualizo el fixture', 'eze'),
 ('2012-12-02', 'Velez campeon!', 'gino');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `partido`
+--
+
+CREATE TABLE IF NOT EXISTS `partido` (
+  `Numero` int(11) NOT NULL,
+  `Equipo1` text NOT NULL,
+  `Equipo2` text NOT NULL,
+  `GolesEq1` int(11) NOT NULL,
+  `GolesEq2` int(11) NOT NULL,
+  `Goleadores` int(11) NOT NULL,
+  `Amonestados` int(11) NOT NULL,
+  `Fecha` date NOT NULL,
+  UNIQUE KEY `Fecha` (`Fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `torneo`
+--
+
+CREATE TABLE IF NOT EXISTS `torneo` (
+  `Fecha` date NOT NULL,
+  `Estado` text NOT NULL,
+  `Categorias` text NOT NULL,
+  `Ganadores` text NOT NULL,
+  UNIQUE KEY `Fecha` (`Fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
