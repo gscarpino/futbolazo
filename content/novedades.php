@@ -164,6 +164,11 @@
 			Bienvenidos al futbolazo!
 		</div>
 	</div>
+	
+	<br>
+	<?php 
+		phpinfo();
+	?>
 
 </body>
 </html>

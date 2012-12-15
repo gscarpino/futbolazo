@@ -1,6 +1,9 @@
 <?php
 
 function conectar(){
+// Test online
+// 	$mysql = new mysqli("localhost","tw000534_gin0","pelle44TT","tw000534_futbolazo");
+// Test offline
 	$mysql = new mysqli("localhost","admin","123456","futbolazo");
 	
 	if ($mysql->connect_error) {
