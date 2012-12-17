@@ -1,9 +1,8 @@
-<?php
+<?php 
 	session_start();
 	require 'fun.php';
 	logueado();
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -172,13 +171,51 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Panel</a></li>		
+			<li><a href="#tabs-1">Agregar Equipo</a></li>		
 		</ul>
 		<div id="tabs-1">
-			<a href="agEquipo.php">Agregar Equipo</a>
-			<br>
-			<br>
-			<a href="agJugador.php">Agregar Jugador</a>
+			<div class="errorMsg">
+				<p>Error agregando equipo</p>
+			</div>
+			<form action="agEquipo.php?sent=1" method="post">
+				<label class="flabel">Nombre</label>
+				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+				<label class="flabel">Categoría</label>
+				<select name="categoria" class="text ui-widget-content ui-corner-all">
+					<option value="A" selected>A</option>
+					<option value="B">B</option>
+					<option value="C">C</option>
+					<option value="D">D</option>
+				</select>
+				<label class="flabel">Mail</label>
+				<input type="text" name="mail" class="text ui-widget-content ui-corner-all">
+				<br>
+				<br>
+				<input class="fsubmit" type="submit">
+			</form>
+			<?php 
+				if(isset($_GET['sent'])){
+					if($_GET['sent'] == 1){
+						$eNombre = $_POST['nombre'];
+						$eCategoria = $_POST['categoria'];
+						$eMail = $_POST['mail'];
+						if(agregarEquipo($eNombre,$eCategoria,$eMail)){
+						
+						}
+						else{
+							$_GET = array();
+							header('location:agEquipo.php?error=1');
+						}
+					}
+				}
+				
+				if(isset($_GET['error'])){
+					if($_GET['error'] == 1){
+						echo '<h1>Error agregando equipo.</h1>';
+					}
+				}
+				
+			?>
 		</div>
 	</div>
 	</div>
