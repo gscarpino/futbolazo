@@ -178,3 +178,20 @@ table.formatHTML5 tfoot{
 	margin-right: auto;
 	margin-left: auto;
 }
+
+.flabel{
+	display:block;
+    margin-top:25px;
+    letter-spacing:1px;
+}
+
+input[type="text"]{
+	width: 100%;
+}
+
+input[type="submit"]{
+	display:block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 20%;
+}

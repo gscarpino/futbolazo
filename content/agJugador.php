@@ -1,9 +1,8 @@
-<?php
+<?php 
 	session_start();
 	require 'fun.php';
 	logueado();
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -172,13 +171,37 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Panel</a></li>		
+			<li><a href="#tabs-1">Agregar Jugador</a></li>		
 		</ul>
 		<div id="tabs-1">
-			<a href="agEquipo.php">Agregar Equipo</a>
-			<br>
-			<br>
-			<a href="agJugador.php">Agregar Jugador</a>
+			<form action="agJugador.php?sent=1" method="post">
+				<label class="flabel">Nombre</label>
+				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+				<label class="flabel">DNI/LU</label>
+				<input type="text" name="dni" class="text ui-widget-content ui-corner-all">
+				<label class="flabel">Equipo</label>
+				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
+				<datalist id="equipos">
+				  <option value="Bola de fuego empantanada">
+				  <option value="Cabesaurio">
+				  <option value="Tu Mama">
+				  <option value="Paleoequipo">
+				  <option value="Piedrazo al Angulo">
+				  <option value="Chinga tu Madre">
+				  <option value="Las Cortaduras de BB King">
+				  <option value="Viejo Tomba">
+				</datalist>
+				<br>
+				<br>
+				<input class="fsubmit" type="submit">
+			</form>
+			<?php 
+				if(isset($_GET['sent'])){
+					if($_GET['sent'] == 1){
+						echo '<br> <br> <h3>Jugador ' . $_POST['nombre'] . ' con dni/lu ' . $_POST['dni'] . ' del equipo ' . $_POST['equipo'] . ' creado exitosamente.</h3>';
+					}
+				}
+			?>
 		</div>
 	</div>
 	</div>

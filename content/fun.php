@@ -50,4 +50,14 @@ function genFila($fila){
 	echo '</tr>';
 }
 
+function logueado(){
+	if(!isset($_SESSION['logged'])){
+		header('location:index.php');
+	}
+}
+
+function agregarEquipo($nombre,$cat,$mail){
+	return false;
+}
+
 ?>
