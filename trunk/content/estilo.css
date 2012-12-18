@@ -23,7 +23,7 @@ span.user{
 }
 
 #tabs{
-	width: 800px;
+	width: 1000px;
 	height: auto;
 	margin-left:auto;
 	z-index: 0;
@@ -63,7 +63,7 @@ span.user{
 /*** central column on page ***/
 div#divContainer
 {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
     font-family: Calibri;
     padding: 0.5em 1em 1em 1em;
@@ -100,7 +100,7 @@ table.formatHTML5 thead tr td  {
     background-color: White;
     vertical-align:middle;
     padding: 0.6em;
-    font-size:0.8em;
+    font-size:0.6em;
 }
 
 /*** table's thead section, coulmns header style ***/
@@ -174,7 +174,7 @@ table.formatHTML5 tfoot{
 
 #central{
 	display: block;
-	width:1000px;
+	width:1200px;
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -195,3 +195,26 @@ input[type="submit"]{
 	margin-right: auto;
 	width: 20%;
 }
+
+.errorMsg{
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+	text-align: center;
+}
+
+
+.perrorMsg{
+	color: black;
+	text-align: center;
+}
+
+.pgreenMsg{
+	color: black;
+	text-align: center;
+}
+
+/*** Mensaje Verde ***/
+.ui-state-green, .ui-widget-content .ui-state-green, .ui-widget-header .ui-state-green {border: 1px solid #0acd0a; background: #eaffea url(images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x; color: #0acd0a; }
+.ui-state-green a, .ui-widget-content .ui-state-green a, .ui-widget-header .ui-state-green a { color: #0acd0a; }
+.ui-state-green-text, .ui-widget-content .ui-state-green-text, .ui-widget-header .ui-state-green-text { color: #0acd0a; }

@@ -198,9 +198,25 @@
 			<?php 
 				if(isset($_GET['sent'])){
 					if($_GET['sent'] == 1){
-						echo '<br> <br> <h3>Jugador ' . $_POST['nombre'] . ' con dni/lu ' . $_POST['dni'] . ' del equipo ' . $_POST['equipo'] . ' creado exitosamente.</h3>';
+						$jNombre = $_POST['nombre'];
+						$jDni = $_POST['dni'];
+						$jEquip = $_POST['equipo'];
+						if(agregarJugador($jNombre,$jDni,$jEquip)){
+							displayGreen("","Se agregó correctamente el jugador");
+						}
+						else{
+							$_GET = array();
+							header('location:agJugador.php?error=1');
+						}
 					}
 				}
+				
+				if(isset($_GET['error'])){
+					if($_GET['error'] == 1){
+						displayError("Error","No se pudo agregar el jugador.");
+					}
+				}
+				
 			?>
 		</div>
 	</div>

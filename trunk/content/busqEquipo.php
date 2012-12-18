@@ -1,9 +1,8 @@
-<?php
+<?php 
 	session_start();
 	require 'fun.php';
 	logueado();
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -172,16 +171,60 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Panel</a></li>		
+			<li><a href="#tabs-1">Buscar Equipo</a></li>		
 		</ul>
 		<div id="tabs-1">
-			<a href="agEquipo.php">Agregar Equipo</a>
+		
+		
+			<form action="busqEquipo.php?busq=1" method="post">
+				<label class="flabel">Equipo</label>
+				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
+				<datalist id="equipos">
+				  <option value="Bola de fuego empantanada">
+				  <option value="Cabesaurio">
+				  <option value="Tu Mama">
+				  <option value="Paleoequipo">
+				  <option value="Piedrazo al Angulo">
+				  <option value="Chinga tu Madre">
+				  <option value="Las Cortaduras de BB King">
+				  <option value="Viejo Tomba">
+				</datalist>
+				<br>
+				<br>
+				<input class="fsubmit" type="submit" value="Buscar">
+			</form>
 			<br>
 			<br>
-			<a href="busqEquipo.php">Buscar Equipo</a>
-			<br>
-			<br>
-			<a href="agJugador.php">Agregar Jugador</a>
+			<?php 
+				if(isset($_GET['busq'])){
+					if($_GET['busq'] == 1){
+						$nombre = $_POST['equipo'];
+						$mydb = conectar();
+						if ($res = $mydb->query("SELECT * FROM equipo WHERE Nombre = '$nombre'")){
+							empezarTabla();
+							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
+							genEncabezado($encabezados);
+							while ($fila = $res->fetch_row()){
+								genFila($fila);
+						    }
+						    finalizarTabla();
+						    /* liberar el conjunto de resultados */
+						    $res->close();
+						}
+						else{
+							$_GET = array();
+							header('location:agEquipo.php?error=1');
+						}
+					}
+				}
+				
+				if(isset($_GET['error'])){
+					if($_GET['error'] == 1){
+						displayError("Error","No se pudo encontrar el equipo.");
+					}
+				}
+				
+			?>
 		</div>
 	</div>
 	</div>
