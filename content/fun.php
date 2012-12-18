@@ -57,7 +57,47 @@ function logueado(){
 }
 
 function agregarEquipo($nombre,$cat,$mail){
-	return false;
+	$mydb = conectar();
+	$res = $mydb->query("SELECT * FROM equipo WHERE Nombre = '$nombre'");
+
+	if($res->num_rows == 1){
+		return false;
+	}
+	else{
+		$res = $mydb->query("INSERT INTO equipo VALUES ('$nombre','$cat','$mail',0,0,0,0,0,0)");
+		
+	}
+	return $res;
+}
+
+function agregarJugador($nombre,$dni,$equipo){
+	$mydb = conectar();
+	$res = $mydb->query("SELECT * FROM jugadores WHERE Nombre = '$nombre'");
+
+	if($res->num_rows == 1){
+		return false;
+	}
+	else{
+		$res = $mydb->query("INSERT INTO jugadores VALUES ('$nombre','$dni','$equipo',0,0)");
+	}
+	return $res;
+}
+
+
+function displayError($titulo, $texto){
+	echo '<div class="errorMsg"><br>';
+	echo '<div class="ui-state-error ui-corner-all"><br><strong>' . $titulo . '</strong>';
+	echo '<p class="perrorMsg"><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>' . $texto . '</p><br>';
+	echo '</div>';
+	echo '</div>';
+}
+
+function displayGreen($titulo, $texto){
+	echo '<div class="errorMsg"><br>';
+	echo '<div class="ui-state-green ui-corner-all"><br><strong>' . $titulo . '</strong>';
+	echo '<p class="pgreenMsg"><span class="ui-icon ui-icon-check" style="float: left; margin-right: .3em;"></span>' . $texto . '</p><br>';
+	echo '</div>';
+	echo '</div>';
 }
 
 ?>

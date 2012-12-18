@@ -174,9 +174,6 @@
 			<li><a href="#tabs-1">Agregar Equipo</a></li>		
 		</ul>
 		<div id="tabs-1">
-			<div class="errorMsg">
-				<p>Error agregando equipo</p>
-			</div>
 			<form action="agEquipo.php?sent=1" method="post">
 				<label class="flabel">Nombre</label>
 				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
@@ -200,7 +197,7 @@
 						$eCategoria = $_POST['categoria'];
 						$eMail = $_POST['mail'];
 						if(agregarEquipo($eNombre,$eCategoria,$eMail)){
-						
+							displayGreen("","Se agregó correctamente el equipo");
 						}
 						else{
 							$_GET = array();
@@ -211,7 +208,7 @@
 				
 				if(isset($_GET['error'])){
 					if($_GET['error'] == 1){
-						echo '<h1>Error agregando equipo.</h1>';
+						displayError("Error","No se pudo agregar el equipo.");
 					}
 				}
 				
