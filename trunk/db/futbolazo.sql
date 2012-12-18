@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 12-12-2012 a las 04:35:54
+-- Tiempo de generación: 18-12-2012 a las 00:13:53
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -28,20 +28,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `categorias` (
   `Categoria` char(1) NOT NULL,
-  `Equipos` text NOT NULL,
   `Fixture` text NOT NULL,
-  UNIQUE KEY `Categoria` (`Categoria`)
+  UNIQUE KEY `Categoria` (`Categoria`),
+  UNIQUE KEY `Categoria_2` (`Categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `categorias`
 --
 
-INSERT INTO `categorias` (`Categoria`, `Equipos`, `Fixture`) VALUES
-('A', '', ''),
-('B', '', ''),
-('C', '', ''),
-('D', '', '');
+INSERT INTO `categorias` (`Categoria`, `Fixture`) VALUES
+('A', ''),
+('B', ''),
+('C', ''),
+('D', '');
 
 -- --------------------------------------------------------
 
@@ -53,14 +53,15 @@ CREATE TABLE IF NOT EXISTS `equipo` (
   `Nombre` varchar(60) NOT NULL,
   `Categoria` char(1) NOT NULL,
   `Mail` text NOT NULL,
-  `Jugadores` text NOT NULL,
   `Partidos Ganados` int(11) NOT NULL DEFAULT '0',
   `Partidos Perdidos` int(11) NOT NULL DEFAULT '0',
   `Empates` int(11) NOT NULL DEFAULT '0',
   `Goles Metidos` int(11) NOT NULL DEFAULT '0',
   `Goles Recibidos` int(11) NOT NULL DEFAULT '0',
   `Faltas` int(11) NOT NULL DEFAULT '0',
-  UNIQUE KEY `Nombre` (`Nombre`)
+  UNIQUE KEY `Nombre` (`Nombre`),
+  UNIQUE KEY `Nombre_2` (`Nombre`),
+  KEY `Categoria` (`Categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -85,6 +86,9 @@ INSERT INTO `goleadores` (`Categoria`, `Nombre`, `Cantidad`) VALUES
 ('C', 'Bruno Renzo', 3),
 ('A', 'Ezequiel Castellano', 3),
 ('A', 'Gino Scarpino', 7),
+('C', 'Bruno Renzo', 3),
+('A', 'Ezequiel Castellano', 3),
+('A', 'Gino Scarpino', 7),
 ('C', 'Bruno Renzo', 3);
 
 -- --------------------------------------------------------
@@ -99,7 +103,9 @@ CREATE TABLE IF NOT EXISTS `jugadores` (
   `Equipo` varchar(60) NOT NULL,
   `Goles` int(11) NOT NULL DEFAULT '0',
   `Faltas` int(11) NOT NULL DEFAULT '0',
-  UNIQUE KEY `DNI` (`DNI`)
+  UNIQUE KEY `DNI` (`DNI`),
+  KEY `Equipo` (`Equipo`),
+  KEY `Equipo_2` (`Equipo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -120,6 +126,8 @@ CREATE TABLE IF NOT EXISTS `noticias` (
 --
 
 INSERT INTO `noticias` (`Fecha`, `Texto`, `Autor`) VALUES
+('2012-12-06', 'se actualizo el fixture', 'eze'),
+('2012-12-02', 'Velez campeon!', 'gino'),
 ('2012-12-06', 'se actualizo el fixture', 'eze'),
 ('2012-12-02', 'Velez campeon!', 'gino');
 
@@ -179,6 +187,18 @@ INSERT INTO `usuarios` (`Nombre`, `Password`) VALUES
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `equipo`
+--
+ALTER TABLE `equipo`
+  ADD CONSTRAINT `equipo_ibfk_1` FOREIGN KEY (`Categoria`) REFERENCES `categorias` (`Categoria`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `jugadores`
+--
+ALTER TABLE `jugadores`
+  ADD CONSTRAINT `jugadores_ibfk_1` FOREIGN KEY (`Equipo`) REFERENCES `equipo` (`Nombre`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `noticias`
