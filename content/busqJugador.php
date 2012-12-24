@@ -193,17 +193,26 @@
 			</form>
 			<br>
 			<br>
-			<?php 
-			//Corregir para que sea de jugador(es)
+			<?php
 				if(isset($_GET['busq'])){
 					if($_GET['busq'] == 1){
-						$nombre = $_POST['equipo'];
+						$nombre = $_POST['nombre'];
+						$dni = $_POST['dni'];
+						$criterio = $_POST['criterio'];
 						$mydb = conectar();
-						if ($res = $mydb->query("SELECT * FROM equipo WHERE Nombre = '$nombre'")){
+						
+						if($criterio == "Y"){
+							$q = "SELECT * FROM jugadores WHERE Nombre = '$nombre' and DNI = '$dni'";
+						}
+						else{
+							$q = "SELECT * FROM jugadores WHERE Nombre = '$nombre' or DNI = '$dni'";
+						}
+
+						if ($res = $mydb->query($q)){
 							empezarTabla();
-							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
+							$encabezados = array("Nombre","DNI/LU","Equipo","Goles","Faltas");
 							genEncabezado($encabezados);
-							if($res->num_rows == 1){
+							if($res->num_rows > 0){
 								$fila = $res->fetch_row();
 								genFila($fila);
 							}
@@ -212,14 +221,14 @@
 						}
 						else{
 							$_GET = array();
-							header('location:agEquipo.php?error=1');
+							header('location:busqJugador.php?error=1');
 						}
 					}
 					if($_GET['busq'] == 2){
 						$mydb = conectar();
-						if ($res = $mydb->query("SELECT * FROM equipo")){
+						if ($res = $mydb->query("SELECT * FROM jugadores")){
 							empezarTabla();
-							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
+							$encabezados = array("Nombre","DNI/LU","Equipo","Goles","Faltas");
 							genEncabezado($encabezados);
 							while ($fila = $res->fetch_row()){
 								genFila($fila);
@@ -229,14 +238,14 @@
 						}
 						else{
 							$_GET = array();
-							header('location:agEquipo.php?error=1');
+							header('location:agJugador.php?error=1');
 						}
 					}
 				}
 				
 				if(isset($_GET['error'])){
 					if($_GET['error'] == 1){
-						displayError("Error","No se pudo encontrar el equipo.");
+						displayError("Error","No se pudo encontrar el jugador.");
 					}
 				}
 				

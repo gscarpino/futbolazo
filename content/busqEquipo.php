@@ -210,7 +210,7 @@
 						}
 						else{
 							$_GET = array();
-							header('location:agEquipo.php?error=1');
+							header('location:busqEquipo.php?error=1');
 						}
 					}
 					if($_GET['busq'] == 2){
@@ -227,7 +227,7 @@
 						}
 						else{
 							$_GET = array();
-							header('location:agEquipo.php?error=1');
+							header('location:busqEquipo.php?error=1');
 						}
 					}
 				}
