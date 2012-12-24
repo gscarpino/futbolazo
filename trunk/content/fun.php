@@ -45,7 +45,12 @@ function genEncabezado($nombres){
 function genFila($fila){
 	echo '<tr>';
 	foreach ($fila as $f){
-		echo '<td>' . $f . '</td>';
+		if(substr_count($f,"@")==1){
+			echo '<td><a href="mailto:' . $f . '">Mail</a></td>';
+		}
+		else{
+			echo '<td>' . $f . '</td>';
+		}
 	}
 	echo '</tr>';
 }
