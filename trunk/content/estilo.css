@@ -63,7 +63,7 @@ span.user{
 /*** central column on page ***/
 div#divContainer
 {
-    max-width: 1000px;
+    max-width: 790px;
     margin: 0 auto;
     font-family: Calibri;
     padding: 0.5em 1em 1em 1em;
@@ -76,7 +76,7 @@ div#divContainer
 
     /* add gradient */
     background-color: #F0F0F0;
-    background: -webkit-gradient(linear, left top, left bottom, from(rgb(100,160,200)), to(rgb(140,180,220)));
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(100,160,200)), to(rgb(165,200,220)));
     background: -moz-linear-gradient(top, rgb(100,160,200), rgb(140,180,220));
 
     /* add box shadows */
@@ -176,7 +176,7 @@ table.formatHTML5 tfoot{
 
 #central{
 	display: block;
-	width:1024px;
+	width:995px;
 	margin-right: auto;
 	margin-left: auto;
 	font-size: 80%;

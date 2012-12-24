@@ -171,28 +171,30 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Buscar Equipo</a></li>		
+			<li><a href="#tabs-1">Buscar Jugador</a></li>		
 		</ul>
 		<div id="tabs-1">
 		
 		
-			<form action="busqEquipo.php?busq=1" method="post">
-				<label class="flabel">Equipo</label>
-				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
-				<datalist id="equipos">
-				  <?php 
-				  	listaEquipos();
-				  ?>
-				</datalist>
+			<form action="busqJugador.php?busq=1" method="post">
+				<label class="flabel">Nombre</label>
+				<input list="equipos" name="nombre" type="text" class="text ui-widget-content ui-corner-all">
+				<br>
+				<br>
+				<input type="radio" value="Y" name="criterio" checked> Y <input type="radio" value="O" name="criterio"> O
+				
+				<label class="flabel">DNI/LU</label>
+				<input list="equipos" name="dni" type="text" class="text ui-widget-content ui-corner-all">
 				<br>
 				<br>
 				
-				<a id="btnLogOut" href="busqEquipo.php?busq=2">Todos</a>
+				<a id="btnLogOut" href="busqJugador.php?busq=2">Todos</a>
 				<input class="fsubmit" type="submit" value="Buscar">
 			</form>
 			<br>
 			<br>
 			<?php 
+			//Corregir para que sea de jugador(es)
 				if(isset($_GET['busq'])){
 					if($_GET['busq'] == 1){
 						$nombre = $_POST['equipo'];
