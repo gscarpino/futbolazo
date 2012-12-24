@@ -182,6 +182,9 @@
 			<br>
 			<br>
 			<a href="agJugador.php">Agregar Jugador</a>
+			<br>
+			<br>
+			<a href="busqJugador.php">Buscar Jugador</a>
 		</div>
 	</div>
 	</div>

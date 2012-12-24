@@ -105,4 +105,22 @@ function displayGreen($titulo, $texto){
 	echo '</div>';
 }
 
+function listaEquipos(){
+	$equipos = obtenerEquipos();
+	
+	foreach ($equipos as $e){
+		echo '<option value="' . $e . '">';
+	}
+}
+
+function obtenerEquipos(){
+	$mydb = conectar();
+	$res = $mydb->query("SELECT * FROM equipo");
+	$equip = new SplQueue();
+	while ($fila = $res->fetch_row()){
+		$equip[] = $fila[0];
+	}
+	return $equip;
+}
+
 ?>

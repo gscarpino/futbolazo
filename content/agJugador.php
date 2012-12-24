@@ -182,14 +182,9 @@
 				<label class="flabel">Equipo</label>
 				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
 				<datalist id="equipos">
-				  <option value="Bola de fuego empantanada">
-				  <option value="Cabesaurio">
-				  <option value="Tu Mama">
-				  <option value="Paleoequipo">
-				  <option value="Piedrazo al Angulo">
-				  <option value="Chinga tu Madre">
-				  <option value="Las Cortaduras de BB King">
-				  <option value="Viejo Tomba">
+				<?php 
+					listaEquipos();
+				?>
 				</datalist>
 				<br>
 				<br>
