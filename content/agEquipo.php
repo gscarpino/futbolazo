@@ -200,8 +200,7 @@
 							displayGreen("","Se agregó correctamente el equipo");
 						}
 						else{
-							$_GET = array();
-							header('location:agEquipo.php?error=1');
+							displayError("Error","El equipo ya existe.");
 						}
 					}
 				}

@@ -191,6 +191,8 @@
 				</datalist>
 				<br>
 				<br>
+				
+				<a id="btnLogOut" href="busqEquipo.php?busq=2">Todos</a>
 				<input class="fsubmit" type="submit" value="Buscar">
 			</form>
 			<br>
@@ -204,12 +206,29 @@
 							empezarTabla();
 							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
 							genEncabezado($encabezados);
+							if($res->num_rows == 1){
+								$fila = $res->fetch_row();
+								genFila($fila);
+							}
+						    finalizarTabla();
+						    $res->close();
+						}
+						else{
+							$_GET = array();
+							header('location:agEquipo.php?error=1');
+						}
+					}
+					if($_GET['busq'] == 2){
+						$mydb = conectar();
+						if ($res = $mydb->query("SELECT * FROM equipo")){
+							empezarTabla();
+							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
+							genEncabezado($encabezados);
 							while ($fila = $res->fetch_row()){
 								genFila($fila);
-						    }
-						    finalizarTabla();
-						    /* liberar el conjunto de resultados */
-						    $res->close();
+							}
+							finalizarTabla();
+							$res->close();
 						}
 						else{
 							$_GET = array();
