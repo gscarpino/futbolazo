@@ -231,4 +231,11 @@ footer{
 	text-align: center;
 	position:absolute;
 	bottom: 0;
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 60%;
+}
+
+
+div.ui-dialog-buttonpane {
+	font-size: 80%;
 }

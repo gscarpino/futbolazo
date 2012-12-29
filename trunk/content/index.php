@@ -77,10 +77,11 @@
 		
 		$( "#menuAdm" ).dialog({
 			autoOpen: false,
+			title: "Admins",
 			height: 325,
 			width: 275,
 			modal: true,
-
+			
 			buttons: {
 				"Ingresar": function(){
 					var bValid = true;
