@@ -8,6 +8,14 @@ h1.titulo{
 	font-size: xx-large;
 }
 
+h2.titulo{
+	text-align:center;
+	border-color: #4297d7;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	color:#5F9FFF;
+	font-size: large;
+}
+
 span.user{
 	border-color: #4297d7;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -238,4 +246,26 @@ footer{
 
 div.ui-dialog-buttonpane {
 	font-size: 80%;
+}
+
+#TablePanel{
+	width:90%;
+	margin-left:auto;
+	margin-right: auto;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#TablePanel tr{
+	min-height: 25px;
+}
+
+.btnPanel{
+	width:45%;	
+	padding:1em;
+}
+
+.hEquipo{	
+	font-family: Verdana,Arial,sans-serif;
+	color:#E17009;
 }

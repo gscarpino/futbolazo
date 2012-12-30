@@ -209,7 +209,7 @@
 						}
 
 						if ($res = $mydb->query($q)){
-							empezarTabla();
+							empezarTablaTam();
 							$encabezados = array("Nombre","DNI/LU","Equipo","Goles","Faltas");
 							genEncabezado($encabezados);
 							if($res->num_rows > 0){
@@ -255,4 +255,7 @@
 	</div>
 
 </body>
+<?php 
+	include 'footer.php';
+?>
 </html>

@@ -20,6 +20,11 @@ function empezarTabla(){
 	echo '<table class="formatHTML5">';
 }
 
+function empezarTablaTam($tam){
+	echo '<div id="divContainer" style="width:' . $tam .'%;">';
+	echo '<table class="formatHTML5">';
+}
+
 function finalizarTabla(){
 	echo '</tbody>';
 	echo '<tfoot>';
