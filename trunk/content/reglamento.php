@@ -171,10 +171,78 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Inicio</a></li>		
+			<li><a href="#tabs-1">Reglamento</a></li>		
 		</ul>
 		<div id="tabs-1">
-			Bienvenidos al futbolazo!
+			<h2 class="hEquipo">Indice</h2>
+			<ul class="indice">
+				<a href="#req"><li>Requisitos</li></a>
+				<a href="#san"><li>Sanciones</li></a>
+				<a href="#sisJ"><li>Sistema de Juego</li></a>
+				<a href="#sisD"><li>Sistema de Desempate</li></a>
+			</ul>
+		
+			<br>
+			<br>
+			
+			<h2 class="hEquipo" id="req">Requisitos</h2>
+			<ol>
+				<li><span>Ser alumno, docente, graduado o no docente de la Facultad de Ciencias Exactas y Naturales.</span></li>
+				<li><span>No se pueden inscribir mas de 10 jugadores por equipo.</span></li>
+				<li><span>Un mismo jugador no podrá jugar en 2 o más equipos por torneo, independientemente de la categoría del equipo.</span></li>
+			</ol>
+			
+			<br>
+			<br>
+			
+			<h2 class="hEquipo" id="san">Sanciones</h2>
+			
+			Los castigos, acorde a interpretación del arbitro, durante el partido seran:
+			<br>
+			<ol>
+				<li><span>Amarilla.</span></li>
+				<li><span>5 minutos fuera del campo de juego.</span></li>
+				<li><span>Expulsión del partido fuera del campo de juego.El equipo del jugador sancionado no puede reemplazarlo, por ende, jugará con 4 o 3 jugadores acorde a la cantidad de jugadores presentes en el campo al momento de la sanción. Si hubiera 3 jugadores y se efectuará una sanción de 5´ o de todo el partido, el equipo sancionado perdería el partido.</span></li>
+			</ol>
+			
+			<br>
+			Las sanciones del tribunal son las siguientes:
+			Una acumulación de 3 amarillas, sanción de un partido.
+			Doble acumulación de 5 minutos, sanción de un partido.
+			Expulsión del partido, sanción de un partido.
+			
+			
+			<br>
+			<br>
+			<br>
+			
+			<h2 class="hEquipo" id="sisJ">Sistema de Juego</h2>
+			<ol>
+				<li><span>Se juegan dos tiempos de 20 minutos cada uno, con un descanso de 5 minutos entre ellos.
+				El tiempo de tolerancia para el comienzo de los partidos es de 15 minutos, pasado ese tiempo, queda a disposición del arbitro la suspensión del partido.</span></li>
+				<li><span>El arquero no pueda agarrar la pelota con sus manos tras pase de un compañero. Esta regla es independiente del lugar de la cancha en donde se realice el pase. Tampoco el arquero puede jugar la pelota con sus manos tras saque de lateral de un compañero. Como el arquero no puede jugar la pelota con sus manos, tras saque de lateral de un compañero, se puede jugar la pelota al area propia. Sigue siendo infracción jugar la pelota al area contraria tras saque lateral.</span></li>
+				<li><span>El gol se considerará valido si la pelota es impactada por última vez en la zona delimitada por la linea de puntos y la linea de fondo rival. Gol en contra o de cabeza vale desde cualquier lugar de la cancha.</span></li>
+			</ol>
+			
+			<br>
+			<br>
+			
+			<h2 class="hEquipo" id="sisD">Sistema de Desempate</h2>
+			<ol>
+				<li><span>Resultados de los partidos jugados entre ellos.</span></li>
+				<li><span>Diferencia de gol de los partidos jugados entre ellos.</span></li>
+				<li><span>Mayor cantidad de goles a favor de los partidos jugados entre ellos.</span></li>
+				<li><span>Menor cantidad de goles en contra de los partidos jugados entre ellos.</span></li>
+				<li><span>Diferencia de gol general (de todos los partidos jugados).</span></li>
+				<li><span>Mayor cantidad de goles a favor general (de todos los partidos jugados).</span></li>
+				<li><span>Menor cantidad de goles en contra general (de todos los partidos jugados).</span></li>
+				<li><span>Sorteo.</li>
+			</ol>
+			
+			<br>
+			
+			<strong style="color:red;">Aclaración:</strong> Si un equipo no se presenta a jugar algún partido, no podrá ser favorecido por el sistema de desempate!!!
+			Si un equipo no se presenta a jugar dos partidos, desciende de categoría.
 		</div>
 	</div>
 	</div>

@@ -1,6 +1,7 @@
 <?php 
 	session_start();
 	require 'fun.php';
+	logueado();
 ?>
 
 <!DOCTYPE html>
@@ -173,7 +174,7 @@
 		<ul>
 			<li><a href="#tabs-1">Registrar Partido</a></li>		
 		</ul>
-		<div id="tabs-1" style="margin-left:auto;margin-right:auto;text-align:center;">
+		<div id="tabs-1" style="margin-left:auto;margin-right:auto;">
 			<?php 
 				if(!isset($_GET['etapa'])){
 					displayError("Ingreso incorrecto!","Regrese al panel.");
@@ -181,12 +182,25 @@
 				else{
 					$etapa = $_GET['etapa'];
 					if($etapa == 0){
-						echo '<form action="regPartido.php?etapa=1" method="post">
+						echo '<h1 class="titulo">Datos generales</h1><form action="regPartido.php?etapa=1" method="post">
 						<label class="flabel">Equipo 1</label>
 						<input type="text" list="equipos" name="equip1" class="text ui-widget-content ui-corner-all">
+						
 						<label class="flabel">Equipo 2</label>
-						<input type="text" list="equipos" name="equip2" class="text ui-widget-content ui-corner-all" on>
-						<datalist id="equipos">';
+						<input type="text" list="equipos" name="equip2" class="text ui-widget-content ui-corner-all">
+
+						<label class="flabel">Fecha</label>
+						<input type="date" name="fecha" class="text ui-widget-content ui-corner-all">
+						
+						<label class="flabel">Número de Partido</label>
+						<input type="number" name="numero" class="text ui-widget-content ui-corner-all">
+						
+						<label class="flabel">Comentario</label>
+						<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;"></textarea>
+										
+						
+						';
+						echo '<datalist id="equipos">';
 						listaEquipos();
 						echo '</datalist><br><br><input class="fsubmit" type="submit"></form>';
 					}
@@ -194,53 +208,60 @@
 						if(isset($_POST['equip1']) && isset($_POST['equip2'])){
 							$equip1 = $_POST['equip1'];
 							$equip2 = $_POST['equip2'];
-							echo '<h2 class="titulo">Goles y faltas</h2>';
-							echo '<form action="regPartido.php?etapa=2" method="post">';
-							echo '<table>';
-							$encabezados = array('<h2 class="hEquipo">' . $equip1 . '</h2>','<h2 class="hEquipo">' . $equip2 . '</h2>');
-							genEncabezado($encabezados);
-							echo '<tr><td style="vertical-align:top;padding-right:3%;">';
+							$fecha = $_POST['fecha'];
+							$numero = $_POST['numero'];
+							$comentario = $_POST['comentario'];
+							echo '<h1 class="titulo">Goles y faltas</h1><br>';
+							echo '<form action="regPartido.php?etapa=2&equip1=' . $equip1 . '&equip2=' . $equip2 . '&fecha=' . $fecha . '&numero=' . $numero . '" method="post">';
+							echo '<h2 class="hEquipo">' . $equip1 . '</h2>';
 							$mydb = conectar();
 							if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip1'")){
 								empezarTabla();
-								$encabezados = array("Nombre","DNI","Goles");
+								$encabezados = array("Nombre","DNI","Goles","Amarilla","Expulsion 5'","Expulsion");
 								genEncabezado($encabezados);
 								while($fila = $res->fetch_row()){
-									$fila[] = '<input type="number" name="'. $fila[1] .'">';
+									$fila[] = '<input type="number" min="0" value="0" name="'. $fila[1] .'_Goles" style="width:40px;">';
+									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Amarilla">';
+									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion1">';
+									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
 									genFila($fila);
 								}
 								finalizarTabla();
 								$res->close();
 							}
-							echo '</td><td style="vertical-align:top;">';
+							echo '<br><h2 class="hEquipo">' . $equip2 . '</h2>';
 							if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip2'")){
 								empezarTabla();
-								$encabezados = array("Nombre","DNI","Goles");
+								$encabezados = array("Nombre","DNI","Goles","Amarilla","Expulsion 5'","Expulsion");
 								genEncabezado($encabezados);
 								while($fila = $res->fetch_row()){
-									$fila[] = '<input type="number" name="'. $fila[1] .'">';
+									$fila[] = '<input type="number" min="0" value="0" name="'. $fila[1] .'_Goles" style="width:40px;">';
+									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Amarilla">';
+									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion1">';
+									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
 									genFila($fila);
 								}
 								finalizarTabla();
 								$res->close();
 							}
-							echo '</td></tr></table>';
+							echo '<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;visibility:hidden;">' . $comentario . '</textarea>';
 							echo '<br><br><input class="fsubmit" type="submit"></form>';
 						}
 						else{
-							//ACTUALIZAR GOLES Y REDIRIGIR PARA CARGAR MAS DATOS Y GUARDAR
 							header("location:regPartido.php");
 						}
 					}
 					else if($etapa == 2){
-						echo 'Fin. Estapa == 2';
+						echo 'POST:<br>';
+						var_dump($_POST);
+						echo '<br>GET:';
+						var_dump($_GET);
 					}
 					else{
 						echo 'error';
 					}
 				}
 			?>
-
 			
 		</div>
 	</div>

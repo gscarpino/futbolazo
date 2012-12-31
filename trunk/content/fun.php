@@ -88,7 +88,7 @@ function agregarJugador($nombre,$dni,$equipo){
 		return false;
 	}
 	else{
-		$res = $mydb->query("INSERT INTO jugadores VALUES ('$nombre','$dni','$equipo',0,0)");
+		$res = $mydb->query("INSERT INTO jugadores VALUES ('$nombre','$dni','$equipo',0,0,0,0)");
 	}
 	return $res;
 }
