@@ -25,10 +25,10 @@ function empezarTablaTam($tam){
 	echo '<table class="formatHTML5">';
 }
 
-function finalizarTabla(){
+function finalizarTabla($colspan){
 	echo '</tbody>';
 	echo '<tfoot>';
-	echo '<tr><td colspan="3">Los datos pueden llegar a ser incorrectos</td></tr>';
+	echo '<tr><td colspan="' . $colspan . '">Los datos pueden llegar a ser incorrectos</td></tr>';
 	echo '</tfoot>';
 	echo '</table>';
 	echo '</div>';
@@ -126,6 +126,15 @@ function obtenerEquipos(){
 		$equip[] = $fila[0];
 	}
 	return $equip;
+}
+
+
+function agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$posts){
+	
+}
+
+function agregarUsuario($nombre,$pass,$mail){
+	return false;
 }
 
 ?>

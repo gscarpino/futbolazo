@@ -1,4 +1,6 @@
 <footer>
+<br>
+<br>
 Resolución mín. recomendada<br>
 1024 x 768<br> 
 Diseñado para los navegadores<br>
