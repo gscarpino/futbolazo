@@ -186,16 +186,22 @@
 						<label class="flabel">Equipo 1</label>
 						<input type="text" list="equipos" name="equip1" class="text ui-widget-content ui-corner-all">
 						
+						<label class="flabel">Goles Equipo 1</label>
+						<input type="number" name="goles1" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
+						
 						<label class="flabel">Equipo 2</label>
 						<input type="text" list="equipos" name="equip2" class="text ui-widget-content ui-corner-all">
 
+						<label class="flabel">Goles Equipo 2</label>
+						<input type="number" name="goles2" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
+						
 						<label class="flabel">Fecha</label>
 						<input type="date" name="fecha" class="text ui-widget-content ui-corner-all">
 						
-						<label class="flabel">Número de Partido</label>
+						<label class="flabel">Número de Partido (Opcional)</label>
 						<input type="number" name="numero" class="text ui-widget-content ui-corner-all">
 						
-						<label class="flabel">Comentario</label>
+						<label class="flabel">Comentario (Opcional)</label>
 						<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;"></textarea>
 										
 						
@@ -210,9 +216,11 @@
 							$equip2 = $_POST['equip2'];
 							$fecha = $_POST['fecha'];
 							$numero = $_POST['numero'];
+							$goles1 = $_POST['goles1'];
+							$goles2 = $_POST['goles2'];
 							$comentario = $_POST['comentario'];
 							echo '<h1 class="titulo">Goles y faltas</h1><br>';
-							echo '<form action="regPartido.php?etapa=2&equip1=' . $equip1 . '&equip2=' . $equip2 . '&fecha=' . $fecha . '&numero=' . $numero . '" method="post">';
+							echo '<form action="regPartido.php?etapa=2&equip1=' . $equip1 . '&equip2=' . $equip2 . '&fecha=' . $fecha . '&numero=' . $numero . '&goles1=' . $goles1 . '&goles2=' . $goles2 . '" method="post">';
 							echo '<h2 class="hEquipo">' . $equip1 . '</h2>';
 							$mydb = conectar();
 							if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip1'")){
@@ -241,7 +249,7 @@
 									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
 									genFila($fila);
 								}
-								finalizarTabla();
+								finalizarTabla("3");
 								$res->close();
 							}
 							echo '<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;visibility:hidden;">' . $comentario . '</textarea>';
@@ -256,6 +264,21 @@
 						var_dump($_POST);
 						echo '<br>GET:';
 						var_dump($_GET);
+						
+						$equip1 = $_GET['equip1'];
+						$equip2 = $_GET['equip2'];
+						$fecha = $_GET['fecha'];
+						$numero = $_GET['numero'];
+						$goles1 = $_GET['goles1'];
+						$goles2 = $_GET['goles2'];
+						
+						if(agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$_POST)){
+							displayError("", "Partido registrado correctamente!");
+						}
+						else{
+							displayError("Error!", "No se pudo registrar el partido");
+						}
+						
 					}
 					else{
 						echo 'error';

@@ -1,8 +1,9 @@
-<?php 
+<?php
 	session_start();
 	require 'fun.php';
 	logueado();
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -36,6 +37,9 @@
 		$( "#btnLogOut" )
 		.button();
 
+
+		$( ".btnPanel" )
+		.button();
 			
 		
 		
@@ -171,74 +175,69 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Buscar Equipo</a></li>		
+			<li><a href="#tabs-1">Admins</a></li>		
 		</ul>
 		<div id="tabs-1">
 		
+		<h2 class="hEquipo">Actuales</h2>
+		<br>
+		<?php 
+			$mydb = conectar();
+			if ($res = $mydb->query("SELECT Nombre,Mail FROM usuarios")){
+				empezarTabla();
+				$encabezados = array("Nombre","Acción");
+				genEncabezado($encabezados);
+				while($fila = $res->fetch_row()){
+					$acciones = '<a href="mailto:' . $fila[1] . '"><img src="imgs/mail.png"></a> | <a href="usuarios.php?accion=mod&who=' . $fila[0] . '"><img src="imgs/lapiz.png"></a> | <a href="usuarios.php?accion=del&who=' . $fila[0] . '"><img src="imgs/basura.png"></a>';
+					$fila[] = $acciones;
+					echo '<tr><td>' . $fila[0] . '</td><td>' . $fila[2] . '</td></tr>';
+				}
+			    finalizarTabla("2");
+			    $res->close();
+			}
+		?>
+		<br>
+		<br>
+
+		<h2 class="hEquipo">Agregar nuevo</h2>
+		<form action="usuarios.php?accion=ag" method="post">
+			<label class="flabel">Nombre</label>
+			<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+			<label class="flabel">Password</label>
+			<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+			<label class="flabel">Mail</label>
+			<input type="email" name="email" class="text ui-widget-content ui-corner-all" style="width:100%">
+			<br>
+			<br>
+			<input class="fsubmit" type="submit">
+		</form>
 		
-			<form action="busqEquipo.php?busq=1" method="post">
-				<label class="flabel">Equipo</label>
-				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
-				<datalist id="equipos">
-				  <?php 
-				  	listaEquipos();
-				  ?>
-				</datalist>
-				<br>
-				<br>
-				
-				<a id="btnLogOut" href="busqEquipo.php?busq=2">Todos</a>
-				<input class="fsubmit" type="submit" value="Buscar">
-			</form>
-			<br>
-			<br>
-			<?php 
-				if(isset($_GET['busq'])){
-					if($_GET['busq'] == 1){
-						$nombre = $_POST['equipo'];
-						$mydb = conectar();
-						if ($res = $mydb->query("SELECT * FROM equipo WHERE Nombre = '$nombre'")){
-							empezarTabla();
-							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
-							genEncabezado($encabezados);
-							if($res->num_rows == 1){
-								$fila = $res->fetch_row();
-								genFila($fila);
-							}
-						    finalizarTabla("3");
-						    $res->close();
-						}
-						else{
-							$_GET = array();
-							header('location:busqEquipo.php?error=1');
-						}
+		<?php 
+			if(isset($_GET['accion'])){
+				$accion = $_GET['accion'];
+				if($accion == "ag"){
+					$nombre = $_POST['nombre'];
+					$pass = $_POST['pass'];
+					$mail = $_POST['email'];
+					if(agregarUsuario($nombre,$pass,$mail)){
+						displayGreen("","Se agregó correctamente el usuario");
 					}
-					if($_GET['busq'] == 2){
-						$mydb = conectar();
-						if ($res = $mydb->query("SELECT * FROM equipo")){
-							empezarTabla();
-							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
-							genEncabezado($encabezados);
-							while ($fila = $res->fetch_row()){
-								genFila($fila);
-							}
-							finalizarTabla("3");
-							$res->close();
-						}
-						else{
-							$_GET = array();
-							header('location:busqEquipo.php?error=1');
-						}
+					else{
+						displayError("Error","No se pudo agregar el usuario. Compruebe que no existe antes de agregarlo.");
 					}
 				}
-				
-				if(isset($_GET['error'])){
-					if($_GET['error'] == 1){
-						displayError("Error","No se pudo encontrar el equipo.");
-					}
+				else if($accion == "mod"){
+					
 				}
-				
-			?>
+				else if($accion == "del"){
+					
+				}
+				else{
+					displayError("Error","Acción no reconocida.");
+				}
+			}
+		?>
+		
 		</div>
 	</div>
 	</div>

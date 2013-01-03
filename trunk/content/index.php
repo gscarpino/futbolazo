@@ -171,7 +171,7 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Inicio</a></li>		
+			<li><a href="#tabs-1">Inicio</a></li>
 		</ul>
 		<div id="tabs-1">
 			Bienvenidos al futbolazo!

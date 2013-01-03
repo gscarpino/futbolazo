@@ -192,6 +192,9 @@
 			<td><br><a class="btnPanel" href="regPartido.php?etapa=0">Registrar Partido</a></td>
 			<td><br><a class="btnPanel" href="busqPartido.php">Buscar Partido</a></td>
 		</tr>
+		<tr>
+			<td><br><a class="btnPanel" href="usuarios.php">Admins</a></td>
+		</tr>
 		</table>
 		</div>
 	</div>

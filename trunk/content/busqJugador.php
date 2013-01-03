@@ -209,14 +209,14 @@
 						}
 
 						if ($res = $mydb->query($q)){
-							empezarTablaTam();
+							empezarTabla();
 							$encabezados = array("Nombre","DNI/LU","Equipo","Goles","Faltas");
 							genEncabezado($encabezados);
 							if($res->num_rows > 0){
 								$fila = $res->fetch_row();
 								genFila($fila);
 							}
-						    finalizarTabla();
+						    finalizarTabla("3");
 						    $res->close();
 						}
 						else{
@@ -233,7 +233,7 @@
 							while ($fila = $res->fetch_row()){
 								genFila($fila);
 							}
-							finalizarTabla();
+							finalizarTabla("3");
 							$res->close();
 						}
 						else{
