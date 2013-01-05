@@ -129,8 +129,84 @@ function obtenerEquipos(){
 }
 
 
-function agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$posts){
+function agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$datos){
+	$mydb = conectar();
+	$claves = array_keys($datos);
 	
+	$amarillas[] = array();
+	unset($amarillas[0]);
+	$expulsados1[] = array();
+	unset($expulsados1[0]);
+	$expulsados2[] = array();
+	unset($expulsados2[0]);
+	$goleadores[] = array();
+	unset($goleadores[0]);
+	
+	foreach($claves as $c){
+		if(substr_count($c,"Amarilla") > 0){
+			if($datos[$c] == "on"){
+				$pos = strpos($c,"_");
+				$dni = substr($c,0,$pos);
+				$res = $mydb->query("SELECT Amarillas FROM jugadores WHERE DNI = $dni");
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query("UPDATE jugadores SET Amarillas = $valor WHERE DNI = $dni");
+				$amarillas[] = "$dni";
+			}
+		}
+		if(substr_count($c,"Expulsion1") > 0){
+			if($datos[$c] == "on"){
+				$pos = strpos($c,"_");
+				$dni = substr($c,0,$pos);
+				$res = $mydb->query("SELECT Expulsiones1 FROM jugadores WHERE DNI = $dni");
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query("UPDATE jugadores SET Expulsiones1 = $valor WHERE DNI = $dni");
+				$expulsados1[] = "$dni";
+			}
+		}
+		if(substr_count($c,"Expulsion2") > 0){
+			if($datos[$c] == "on"){
+				$pos = strpos($c,"_");
+				$dni = substr($c,0,$pos);
+				$res = $mydb->query("SELECT Expulsiones2 FROM jugadores WHERE DNI = $dni");
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query("UPDATE jugadores SET Expulsiones2 = $valor WHERE DNI = $dni");
+				$expulsados2[] = "$dni";
+			}
+		}
+		if(substr_count($c,"Goles") > 0){
+			if(((int)$datos[$c]) > 0){
+				$pos = strpos($c,"_");
+				$dni = substr($c,0,$pos);
+				$res = $mydb->query("SELECT Goles FROM jugadores WHERE DNI = $dni");
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor = $valor + ((int)$datos[$c]);
+				$res = $mydb->query("UPDATE jugadores SET Goles = $valor WHERE DNI = $dni");
+				$goleadores[] = $dni . '(' .((int)$datos[$c]) .')';
+			}
+		}
+	}
+	
+	$comentario = $datos['comentario'];
+	$gols = implode(",",$goleadores);
+	$amas = implode(",",$amarillas);
+	$exp1 = implode(",",$expulsados1);
+	$exp2 = implode(",",$expulsados2);
+	
+	echo '<br>' . $gols;
+	echo '<br>' . $amas;
+	echo '<br>' . $exp1;
+	echo '<br>' . $exp2;
+	
+	//Error, buscar
+	$res = $mydb->query("INSERT INTO partido VALUES($numero,$equip1,$equip2,$goles1,$goles2,$gols,$amas,$exp1,$exp2,$fecha,$comentario)");
+	return true;
 }
 
 function agregarUsuario($nombre,$pass,$mail){

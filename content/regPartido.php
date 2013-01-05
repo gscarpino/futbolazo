@@ -234,7 +234,7 @@
 									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
 									genFila($fila);
 								}
-								finalizarTabla();
+								finalizarTabla("3");
 								$res->close();
 							}
 							echo '<br><h2 class="hEquipo">' . $equip2 . '</h2>';
@@ -262,18 +262,18 @@
 					else if($etapa == 2){
 						echo 'POST:<br>';
 						var_dump($_POST);
-						echo '<br>GET:';
-						var_dump($_GET);
+// 						echo '<br>GET:';
+// 						var_dump($_GET);
 						
 						$equip1 = $_GET['equip1'];
 						$equip2 = $_GET['equip2'];
 						$fecha = $_GET['fecha'];
 						$numero = $_GET['numero'];
 						$goles1 = $_GET['goles1'];
-						$goles2 = $_GET['goles2'];
+						$goles2 = $_GET['goles2'];	
 						
 						if(agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$_POST)){
-							displayError("", "Partido registrado correctamente!");
+							displayGreen("", "Partido registrado correctamente!");
 						}
 						else{
 							displayError("Error!", "No se pudo registrar el partido");
