@@ -134,7 +134,46 @@ function agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$posts){
 }
 
 function agregarUsuario($nombre,$pass,$mail){
-	return false;
+	if($nombre == "" || $pass == ""){
+		return false;
+	}
+	$mydb = conectar();
+	$res = $mydb->query("SELECT * FROM usuarios WHERE Nombre = '$nombre'");
+	
+	if($res->num_rows == 1){
+		return false;
+	}
+	else{
+		$pass = crypt($pass,'$6$rounds=5000$a1b2c3d4e5f6g7h8$');
+		$res = $mydb->query("INSERT INTO usuarios VALUES ('$nombre','$pass','$mail')");
+		return true;
+	}	
+}
+
+function modificarrUsuario($nombre,$passOld,$passNew,$mail){
+	$mydb = conectar();
+	$res = $mydb->query("SELECT * FROM usuarios WHERE Nombre = '$nombre'");
+	
+	if($res->num_rows < 1){
+		return false;
+	}
+	else{
+		$fila = $res->fetch_row();
+		$passTmp = $fila[1];
+		if($passOld != $passTmp){
+			return false;
+		}
+		else{
+			if($passNew != ""){
+				$passNew = crypt($passNew,'$6$rounds=5000$a1b2c3d4e5f6g7h8$');
+				$res = $mydb->query("UPDATE usuarios SET Password = '$passNew' WHERE Nombre='$nombre'");
+			}
+			if($mail != ""){
+				$res = $mydb->query("UPDATE usuarios SET Mail = '$mail' WHERE Nombre='$nombre'");
+			}
+			return true;
+		}
+	}
 }
 
 ?>
