@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 18-12-2012 a las 00:13:53
+-- Tiempo de generación: 04-01-2013 a las 22:26:34
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -64,6 +64,17 @@ CREATE TABLE IF NOT EXISTS `equipo` (
   KEY `Categoria` (`Categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `equipo`
+--
+
+INSERT INTO `equipo` (`Nombre`, `Categoria`, `Mail`, `Partidos Ganados`, `Partidos Perdidos`, `Empates`, `Goles Metidos`, `Goles Recibidos`, `Faltas`) VALUES
+('Agachate y reseteala', 'C', 'aga@a.com', 0, 0, 0, 0, 0, 0),
+('Bola de fuego empantanada', 'D', 'gino.scarpino@gmail.com', 0, 0, 0, 0, 0, 0),
+('Chinga tu madre', 'A', 'cdsadas@lalal.com', 0, 0, 0, 0, 0, 0),
+('Kurepí', 'A', 'k@a.com.ar', 0, 0, 0, 0, 0, 0),
+('Paleoequipo', 'D', 'pala@pala.com.ar', 0, 0, 0, 0, 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -102,11 +113,22 @@ CREATE TABLE IF NOT EXISTS `jugadores` (
   `DNI` int(11) NOT NULL,
   `Equipo` varchar(60) NOT NULL,
   `Goles` int(11) NOT NULL DEFAULT '0',
-  `Faltas` int(11) NOT NULL DEFAULT '0',
+  `Amarillas` int(11) NOT NULL DEFAULT '0',
+  `Expulsiones1` int(11) NOT NULL DEFAULT '0',
+  `Expulsiones2` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `DNI` (`DNI`),
   KEY `Equipo` (`Equipo`),
   KEY `Equipo_2` (`Equipo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `jugadores`
+--
+
+INSERT INTO `jugadores` (`Nombre`, `DNI`, `Equipo`, `Goles`, `Amarillas`, `Expulsiones1`, `Expulsiones2`) VALUES
+('Gino Scarpino', 34229571, 'Bola de fuego empantanada', 0, 0, 0, 0),
+('Matias Barbeito', 34229572, 'Bola de fuego empantanada', 0, 0, 0, 0),
+('Bruno Scarpino', 38888888, 'Chinga tu madre', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -143,9 +165,12 @@ CREATE TABLE IF NOT EXISTS `partido` (
   `Equipo2` text NOT NULL,
   `GolesEq1` int(11) NOT NULL,
   `GolesEq2` int(11) NOT NULL,
-  `Goleadores` int(11) NOT NULL,
-  `Amonestados` int(11) NOT NULL,
+  `Goleadores` text NOT NULL,
+  `Amarillas` text NOT NULL,
+  `Expulsiones1` text NOT NULL,
+  `Expulsiones2` text NOT NULL,
   `Fecha` date NOT NULL,
+  `Comentario` text NOT NULL,
   UNIQUE KEY `Fecha` (`Fecha`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -172,6 +197,7 @@ CREATE TABLE IF NOT EXISTS `torneo` (
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `Nombre` varchar(60) NOT NULL,
   `Password` text NOT NULL,
+  `Mail` text NOT NULL,
   UNIQUE KEY `Nombre` (`Nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -179,10 +205,10 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`Nombre`, `Password`) VALUES
-('eze', 'lala'),
-('gino', 'ciudad'),
-('negro', 'imperial');
+INSERT INTO `usuarios` (`Nombre`, `Password`, `Mail`) VALUES
+('eze', 'lala', 'ezequiel.castellano@gmail.com'),
+('gino', '$6$rounds=5000$a1b2c3d4e5f6g7h8$CS0P4eusedVP6.JZXMHmZ15tbgwwxc4yu2ZqJyNjI.fbkZPtoNm95KpJac5/UrqB4rdjZVAtOhCsOxUK.N56v1', 'gino.scarpino@gmail.com'),
+('negro', 'imperial', 'elfutbolazo@yahoo.com.ar');
 
 --
 -- Restricciones para tablas volcadas

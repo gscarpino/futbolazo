@@ -25,7 +25,21 @@
 
 		
 		$("#menu").menu({ position: { my: "left top", at:"right-25 top-20" } });
-			
+
+		$( document ).tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                using: function( position, feedback ) {
+                    $( this ).css( position );
+                    $( "<div>" )
+                        .addClass( "arrow" )
+                        .addClass( feedback.vertical )
+                        .addClass( feedback.horizontal )
+                        .appendTo( this );
+                }
+            }
+        });
 		
 		// set effect from select menu value
 		$( "#btnAdmin" )
@@ -188,7 +202,7 @@
 				$encabezados = array("Nombre","Acción");
 				genEncabezado($encabezados);
 				while($fila = $res->fetch_row()){
-					$acciones = '<a href="mailto:' . $fila[1] . '"><img src="imgs/mail.png"></a> | <a href="usuarios.php?accion=mod&who=' . $fila[0] . '"><img src="imgs/lapiz.png"></a> | <a href="usuarios.php?accion=del&who=' . $fila[0] . '"><img src="imgs/basura.png"></a>';
+					$acciones = '<a href="mailto:' . $fila[1] . '"><img src="imgs/mail.png" title="Enviar e-mail"></a> | <a href="usuarios.php?accion=mod&who=' . $fila[0] . '#Mod"><img src="imgs/lapiz.png" title="Modificar usuario"></a> | <a href="usuarios.php?accion=del&who=' . $fila[0] . '"><img src="imgs/basura.png" title="Borrar usuario"></a>';
 					$fila[] = $acciones;
 					echo '<tr><td>' . $fila[0] . '</td><td>' . $fila[2] . '</td></tr>';
 				}
@@ -209,7 +223,7 @@
 			<input type="email" name="email" class="text ui-widget-content ui-corner-all" style="width:100%">
 			<br>
 			<br>
-			<input class="fsubmit" type="submit">
+			<input class="btnPanel" type="submit">
 		</form>
 		
 		<?php 
@@ -227,7 +241,36 @@
 					}
 				}
 				else if($accion == "mod"){
-					
+					if(isset($_GET['who'])){
+						$nombre = $_GET['who'];
+						echo '<br>
+						<br>
+						
+						<h2 class="hEquipo" id="Mod">Modificar usuario:  ' . $nombre . '</h2>
+						<form action="usuarios.php?accion=mod2&nombre=' . $nombre . '" method="post">
+						<label class="flabel">Anterior password</label>
+						<input type="password" name="passOld" class="text ui-widget-content ui-corner-all" style="width:100%">
+						<label class="flabel">Nueva password</label>
+						<input type="password" name="passNew" class="text ui-widget-content ui-corner-all" style="width:100%" title="Dejar vacío para no modificar">
+						<label class="flabel">Mail</label>
+						<input type="email" name="email" class="text ui-widget-content ui-corner-all" style="width:100%" title="Dejar vacío para no modificar">
+						<br>
+						<br>
+						<input class="btnPanel" type="submit">
+						</form>';
+					}
+				}
+				else if($accion == "mod2"){
+					$nombre = $_GET['nombre'];
+					$passOld = $_POST['passOld'];
+					$passNew = $_POST['passNew'];
+					$mail = $_POST['email'];
+					if(modificarrUsuario($nombre,$passOld,$passNew,$mail)){
+						displayGreen("","Se modificó correctamente el usuario");
+					}
+					else{
+						displayError("Error","No se pudo modificar el usuario.<br> Contraseña errónea.");
+					}
 				}
 				else if($accion == "del"){
 					
