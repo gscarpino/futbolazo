@@ -122,8 +122,6 @@
 				}
 			});
 		
-
-		
 	});
 	
 	
@@ -199,12 +197,13 @@
 			$mydb = conectar();
 			if ($res = $mydb->query("SELECT Nombre,Mail FROM usuarios")){
 				empezarTabla();
-				$encabezados = array("Nombre","Acción");
+				$encabezados = array("Nombre"," "," "," ");
 				genEncabezado($encabezados);
 				while($fila = $res->fetch_row()){
-					$acciones = '<a href="mailto:' . $fila[1] . '"><img src="imgs/mail.png" title="Enviar e-mail"></a> | <a href="usuarios.php?accion=mod&who=' . $fila[0] . '#Mod"><img src="imgs/lapiz.png" title="Modificar usuario"></a> | <a href="usuarios.php?accion=del&who=' . $fila[0] . '"><img src="imgs/basura.png" title="Borrar usuario"></a>';
-					$fila[] = $acciones;
-					echo '<tr><td>' . $fila[0] . '</td><td>' . $fila[2] . '</td></tr>';
+					$fila[] = '<a href="mailto:' . $fila[1] . '"><img src="imgs/mail.png" title="Enviar e-mail"></a>';
+					$fila[] = '<a href="usuarios.php?accion=mod&who=' . $fila[0] . '#Mod"><img src="imgs/lapiz.png" title="Modificar usuario"></a>';
+					$fila[] = '<a href="usuarios.php?accion=del&who=' . $fila[0] . '#Del"><img src="imgs/basura.png" title="Borrar usuario"></a>';
+					echo '<tr><td>' . $fila[0] . '</td><td>' . $fila[2] . '</td><td>' . $fila[3] . '</td><td>' . $fila[4] . '</td></tr>';
 				}
 			    finalizarTabla("2");
 			    $res->close();
@@ -235,6 +234,9 @@
 					$mail = $_POST['email'];
 					if(agregarUsuario($nombre,$pass,$mail)){
 						displayGreen("","Se agregó correctamente el usuario");
+						$tiempo = 4; # segundos
+						$pagina = "usuarios.php"; #URL;
+						echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
 					}
 					else{
 						displayError("Error","No se pudo agregar el usuario. Compruebe que no existe antes de agregarlo.");
@@ -259,21 +261,65 @@
 						<input class="btnPanel" type="submit">
 						</form>';
 					}
+					else{
+						displayError("Error","Acción incompleta");
+					}
 				}
 				else if($accion == "mod2"){
 					$nombre = $_GET['nombre'];
 					$passOld = $_POST['passOld'];
 					$passNew = $_POST['passNew'];
 					$mail = $_POST['email'];
-					if(modificarrUsuario($nombre,$passOld,$passNew,$mail)){
+					if(modificarUsuario($nombre,$passOld,$passNew,$mail)){
 						displayGreen("","Se modificó correctamente el usuario");
+						$tiempo = 4; # segundos
+						$pagina = "usuarios.php"; #URL;
+						echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
 					}
 					else{
 						displayError("Error","No se pudo modificar el usuario.<br> Contraseña errónea.");
 					}
 				}
 				else if($accion == "del"){
-					
+					if(isset($_GET['who'])){
+						$nombre = $_GET['who'];
+						echo '<br>
+						<br>
+
+						<h2 class="hEquipo" id="Del">¿Está seguro de borrar a  <strong style="color:red;">' . $nombre . '</strong> ?</h2>
+						<form action="usuarios.php?accion=del2&nombre=' . $nombre . '" method="post">
+						<input type="radio" name="rta" value="si"> Sí
+						<input type="radio" name="rta" value="no" checked> No
+						<br>
+						<br>
+						<label class="flabel">Password (Falta implementar distintos grados para administradores)</label>
+						<input type="text" name="passNew" class="text ui-widget-content ui-corner-all" style="width:100%" disabled value="No completar, falta implementar">
+						<br>
+						<br>
+						<input class="btnPanel" type="submit">
+						</form>';
+					}
+					else{
+						displayError("Error","Acción incompleta");
+					}
+				}
+				else if($accion == "del2"){
+					$rta = $_POST['rta'];
+					if($rta == "si"){
+						$nombre = $_GET['nombre'];
+						if(borrarUsuario($nombre)){
+							displayGreen("","Se borró el usuario $nombre");
+							$tiempo = 2; # segundos
+							$pagina = "usuarios.php"; #URL;
+							echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
+						}
+						else{
+							displayError("Error","No se pudo borrar el usuario.");
+						}
+					}
+					else if($rta == "no"){
+						header("location:usuarios.php");
+					}
 				}
 				else{
 					displayError("Error","Acción no reconocida.");

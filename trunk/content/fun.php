@@ -160,6 +160,7 @@ function modificarrUsuario($nombre,$passOld,$passNew,$mail){
 	else{
 		$fila = $res->fetch_row();
 		$passTmp = $fila[1];
+		$passOld = crypt($passOld,'$6$rounds=5000$a1b2c3d4e5f6g7h8$');
 		if($passOld != $passTmp){
 			return false;
 		}
@@ -173,6 +174,18 @@ function modificarrUsuario($nombre,$passOld,$passNew,$mail){
 			}
 			return true;
 		}
+	}
+}
+
+function  borrarUsuario($nombre){
+	$mydb = conectar();
+	$res = $mydb->query("SELECT * FROM usuarios WHERE Nombre = '$nombre'");
+	if($res->num_rows < 1){
+		return false;
+	}
+	else{
+		$res = $mydb->query("DELETE FROM usuarios WHERE Nombre = '$nombre'");
+		return true;
 	}
 }
 

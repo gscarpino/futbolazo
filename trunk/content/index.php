@@ -76,6 +76,7 @@
 		
 		
 		$( "#menuAdm" ).dialog({
+			resizable: false,
 			autoOpen: false,
 			title: "Admins",
 			height: 325,
