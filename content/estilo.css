@@ -194,6 +194,10 @@ table.formatHTML5 tfoot{
 	min-height: 400px;
 }
 
+#tabs-1{
+	min-height: 350px;
+}
+
 .flabel{
 	display:block;
     margin-top:25px;
@@ -291,6 +295,7 @@ ol li span {
 .ui-tooltip, .arrow:after {
     background: rgb(140,180,255);
     border: 2px solid #E17009;
+
 }
 .ui-tooltip {
     padding: 10px 20px;
@@ -299,6 +304,7 @@ ol li span {
     font: bold 14px "Helvetica Neue", Sans-Serif;
     text-transform: uppercase;
     box-shadow: 0 0 7px black;
+    font-size: 80%;
 }
 .arrow {
     width: 70px;

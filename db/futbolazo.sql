@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-01-2013 a las 22:26:34
+-- Tiempo de generación: 05-01-2013 a las 06:50:20
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -206,9 +206,9 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 --
 
 INSERT INTO `usuarios` (`Nombre`, `Password`, `Mail`) VALUES
-('eze', 'lala', 'ezequiel.castellano@gmail.com'),
+('eze', '$6$rounds=5000$a1b2c3d4e5f6g7h8$bU3Nd6PUS3yoYnXtI.3dT1rrCO1yPcqT.zCm24xG7cmW53.9NetxC2lTw7DyT35xEyTn265Qen7MBTe4ufSsq0', 'ezequiel.castellano@gmail.com'),
 ('gino', '$6$rounds=5000$a1b2c3d4e5f6g7h8$CS0P4eusedVP6.JZXMHmZ15tbgwwxc4yu2ZqJyNjI.fbkZPtoNm95KpJac5/UrqB4rdjZVAtOhCsOxUK.N56v1', 'gino.scarpino@gmail.com'),
-('negro', 'imperial', 'elfutbolazo@yahoo.com.ar');
+('negro', '$6$rounds=5000$a1b2c3d4e5f6g7h8$7mnwE7fpct9BVfDbkhZscZ1CDdSWcHQQ.JpCmeCxYCemBORo4wNShb3E0ghUnK7QTW6ZRrB9s0c48oH5Mpky9.', 'elfutbolazo@yahoo.com.ar');
 
 --
 -- Restricciones para tablas volcadas
