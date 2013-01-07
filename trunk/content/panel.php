@@ -167,6 +167,7 @@
 			</ul>
 		</li>
 		<li><a href="tribunal.php"><span class="ui-icon ui-icon-notice"></span>Tribunal de Disciplina</a></li>
+		<li><a href="reglamento.php"><span class="ui-icon ui-icon-note"></span>Reglamento</a></li>
 		<li><a href="fotos.php"><span class="ui-icon ui-icon-image"></span>Fotos</a></li>
 		<li><a href="historia.php"><span class="ui-icon ui-icon-script"></span>Historia</a></li>
 		<li><a href="anteriores.php"><span class="ui-icon ui-icon-folder-open"></span>Torneos anteriores</a></li>

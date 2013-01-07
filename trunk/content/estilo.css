@@ -342,3 +342,9 @@ ol li span {
 }
 
 /*** Fin Tooltips ***/
+
+.resaltado{
+	color:red;
+	font-weight: bolder;
+	font-size: 120%;
+}

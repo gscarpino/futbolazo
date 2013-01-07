@@ -179,6 +179,7 @@
 			</ul>
 		</li>
 		<li><a href="tribunal.php"><span class="ui-icon ui-icon-notice"></span>Tribunal de Disciplina</a></li>
+		<li><a href="reglamento.php"><span class="ui-icon ui-icon-note"></span>Reglamento</a></li>
 		<li><a href="fotos.php"><span class="ui-icon ui-icon-image"></span>Fotos</a></li>
 		<li><a href="historia.php"><span class="ui-icon ui-icon-script"></span>Historia</a></li>
 		<li><a href="anteriores.php"><span class="ui-icon ui-icon-folder-open"></span>Torneos anteriores</a></li>
@@ -201,8 +202,8 @@
 				genEncabezado($encabezados);
 				while($fila = $res->fetch_row()){
 					$fila[] = '<a href="mailto:' . $fila[1] . '"><img src="imgs/mail.png" title="Enviar e-mail"></a>';
-					$fila[] = '<a href="usuarios.php?accion=mod&who=' . $fila[0] . '#Mod"><img src="imgs/lapiz.png" title="Modificar usuario"></a>';
-					$fila[] = '<a href="usuarios.php?accion=del&who=' . $fila[0] . '#Del"><img src="imgs/basura.png" title="Borrar usuario"></a>';
+					$fila[] = '<a href="usuarios.php?accion=mod&who=' . $fila[0] . '#Mod"><img src="imgs/lapiz.png" title="Modificar admin"></a>';
+					$fila[] = '<a href="usuarios.php?accion=del&who=' . $fila[0] . '#Del"><img src="imgs/basura.png" title="Borrar admin"></a>';
 					echo '<tr><td>' . $fila[0] . '</td><td>' . $fila[2] . '</td><td>' . $fila[3] . '</td><td>' . $fila[4] . '</td></tr>';
 				}
 			    finalizarTabla("2");
@@ -286,7 +287,7 @@
 						echo '<br>
 						<br>
 
-						<h2 class="hEquipo" id="Del">¿Está seguro de borrar a  <strong style="color:red;">' . $nombre . '</strong> ?</h2>
+						<h2 class="hEquipo" id="Del">¿Está seguro de borrar a  <strong class="resaltado">' . $nombre . '</strong> ?</h2>
 						<form action="usuarios.php?accion=del2&nombre=' . $nombre . '" method="post">
 						<input type="radio" name="rta" value="si"> Sí
 						<input type="radio" name="rta" value="no" checked> No
