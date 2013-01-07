@@ -241,7 +241,7 @@
 			
 			<br>
 			
-			<strong style="color:red;">Aclaración:</strong> Si un equipo no se presenta a jugar algún partido, no podrá ser favorecido por el sistema de desempate!!!
+			<strong class="resaltado">Aclaración:</strong> Si un equipo no se presenta a jugar algún partido, no podrá ser favorecido por el sistema de desempate!!!
 			Si un equipo no se presenta a jugar dos partidos, desciende de categoría.
 		</div>
 	</div>

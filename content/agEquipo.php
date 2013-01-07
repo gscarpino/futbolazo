@@ -36,7 +36,23 @@
 		$( "#btnLogOut" )
 		.button();
 
-			
+		$( ".btnPanel" )
+		.button();
+
+		$( document ).tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                using: function( position, feedback ) {
+                    $( this ).css( position );
+                    $( "<div>" )
+                        .addClass( "arrow" )
+                        .addClass( feedback.vertical )
+                        .addClass( feedback.horizontal )
+                        .appendTo( this );
+                }
+            }
+        });
 		
 		
 		var name = $( "#name" ),
@@ -107,6 +123,50 @@
 
 		
 	});
+
+	num=1;
+	function agregarCampos(obj) {
+	  num++;
+	  fi = document.getElementById('fiel');
+
+	  contenedor = document.createElement('div');
+	  contenedor.id = 'div'+num; 
+	  contenedor.innerHTML = '<br>';
+	  fi.appendChild(contenedor);
+
+	  ele = document.createElement('strong');
+	  ele.className = 'resaltado';
+	  ele.innerHTML = 'Jugador '+ num +'<span style="padding-left: 30px;"><img name="div' + num +'" onclick="BorrarCampos(this.name)" src="imgs/minus.png" title="Haga click para eliminar el jugador"></span>';
+	  contenedor.appendChild(ele);
+	  
+	  ele = document.createElement('label');
+	  ele.className = 'flabel';
+	  ele.innerHTML = 'Nombre';
+	  contenedor.appendChild(ele);
+
+	  ele = document.createElement('input');
+	  ele.type = 'text';
+	  ele.name = 'nombre'+num;
+	  ele.className = 'text ui-widget-content ui-corner-all';
+	  contenedor.appendChild(ele);
+
+	  ele = document.createElement('label');
+	  ele.className = 'flabel';
+	  ele.innerHTML = 'DNI/LU';
+	  contenedor.appendChild(ele);
+
+	  ele = document.createElement('input');
+	  ele.type = 'text';
+	  ele.name = 'dni'+num;
+	  ele.className = 'text ui-widget-content ui-corner-all';
+	  contenedor.appendChild(ele);
+
+	}
+	
+	function BorrarCampos(obj) {
+	  fi = document.getElementById('fiel');
+	  fi.removeChild(document.getElementById(obj));
+	}
 	
 	
 	
@@ -163,6 +223,7 @@
 			</ul>
 		</li>
 		<li><a href="tribunal.php"><span class="ui-icon ui-icon-notice"></span>Tribunal de Disciplina</a></li>
+		<li><a href="reglamento.php"><span class="ui-icon ui-icon-note"></span>Reglamento</a></li>
 		<li><a href="fotos.php"><span class="ui-icon ui-icon-image"></span>Fotos</a></li>
 		<li><a href="historia.php"><span class="ui-icon ui-icon-script"></span>Historia</a></li>
 		<li><a href="anteriores.php"><span class="ui-icon ui-icon-folder-open"></span>Torneos anteriores</a></li>
@@ -174,23 +235,8 @@
 			<li><a href="#tabs-1">Agregar Equipo</a></li>		
 		</ul>
 		<div id="tabs-1">
-			<form action="agEquipo.php?sent=1" method="post">
-				<label class="flabel">Nombre</label>
-				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
-				<label class="flabel">Categoría</label>
-				<select name="categoria" class="text ui-widget-content ui-corner-all">
-					<option value="A" selected>A</option>
-					<option value="B">B</option>
-					<option value="C">C</option>
-					<option value="D">D</option>
-				</select>
-				<label class="flabel">Mail</label>
-				<input type="text" name="mail" class="text ui-widget-content ui-corner-all">
-				<br>
-				<br>
-				<input class="fsubmit" type="submit">
-			</form>
-			<?php 
+		
+		<?php 
 				if(isset($_GET['sent'])){
 					if($_GET['sent'] == 1){
 						$eNombre = $_POST['nombre'];
@@ -212,6 +258,39 @@
 				}
 				
 			?>
+		
+			<form action="agEquipo.php?sent=1" method="post">
+				<label class="flabel">Nombre</label>
+				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+				<label class="flabel">Categoría</label>
+				<select name="categoria" class="text ui-widget-content ui-corner-all">
+					<option value="A" selected>A</option>
+					<option value="B">B</option>
+					<option value="C">C</option>
+					<option value="D">D</option>
+				</select>
+				<label class="flabel">Mail</label>
+				<input type="text" name="mail" class="text ui-widget-content ui-corner-all">
+				<br>
+				<br>		
+				<br>
+				<div id="fiel">
+					<h2 class="hEquipo">Agregar jugadores al equipo  <span style="padding-left: 30px;" onclick="agregarCampos(this)" ><img src="imgs/plus.png" title="Haga click para agregar un jugador más"></span></h2>
+					<br>
+					<br>
+					<div id="div1">
+						<strong class="resaltado">Jugador 1<span style="padding-left: 30px;"><img name="div1" onclick="BorrarCampos(this.name)" src="imgs/minus.png" title="Haga click para eliminar el jugador"></span></strong>
+						<label class="flabel">Nombre</label>
+						<input type="text" name="nombre1" class="text ui-widget-content ui-corner-all">
+						<label class="flabel">DNI/LU</label>
+						<input type="text" name="dni1" class="text ui-widget-content ui-corner-all">
+					</div>
+				</div>
+				<br>
+				<br>
+				<input class="btnPanel" type="submit">
+			</form>
+		
 		</div>
 	</div>
 	</div>
