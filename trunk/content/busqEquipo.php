@@ -36,7 +36,9 @@
 		$( "#btnLogOut" )
 		.button();
 
-			
+
+		$( ".btnPanel" )
+		.button();
 		
 		
 		var name = $( "#name" ),
@@ -191,7 +193,7 @@
 				<br>
 				
 				<a id="btnLogOut" href="busqEquipo.php?busq=2">Todos</a>
-				<input class="fsubmit" type="submit" value="Buscar">
+				<input class="btnPanel" type="submit" value="Buscar">
 			</form>
 			<br>
 			<br>
@@ -202,7 +204,7 @@
 						$mydb = conectar();
 						if ($res = $mydb->query("SELECT * FROM equipo WHERE Nombre = '$nombre'")){
 							empezarTabla();
-							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
+							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Amarillas","Expulsiones 5'","Expulsiones");
 							genEncabezado($encabezados);
 							if($res->num_rows == 1){
 								$fila = $res->fetch_row();
@@ -220,7 +222,7 @@
 						$mydb = conectar();
 						if ($res = $mydb->query("SELECT * FROM equipo")){
 							empezarTabla();
-							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Faltas");
+							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Amarillas","Expulsiones 5'","Expulsiones");
 							genEncabezado($encabezados);
 							while ($fila = $res->fetch_row()){
 								genFila($fila);

@@ -58,7 +58,8 @@ span.user{
 }
 
 #tabs{
-	width: 790px;
+	min-width: 790px;
+	max-width: 2000px;
 	height: auto;
 	margin-left:190px;
 	z-index: 0;
@@ -99,7 +100,8 @@ span.user{
 /*** central column on page ***/
 div#divContainer
 {
-    max-width: 790px;
+	min-width:790px;
+    max-width: 2000px;
     margin: 0 auto;
     font-family: Calibri;
     padding: 0.5em 1em 1em 1em;
@@ -129,7 +131,8 @@ table.formatHTML5 {
 	width:100%;
     border-collapse:collapse;
     text-align:center;
-    color: #000000;
+	color:#2E6E9E;
+	font-weight: bold;
 }
 
 /*** table's thead section, head row style ***/
@@ -214,7 +217,8 @@ table.formatHTML5 tfoot{
 
 #central{
 	display: block;
-	width:995px;
+	min-width:995px;
+	max-width:2000px;
 	margin-right: auto;
 	margin-left: auto;
 	font-size: 80%;

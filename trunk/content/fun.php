@@ -51,7 +51,7 @@ function genFila($fila){
 	echo '<tr>';
 	foreach ($fila as $f){
 		if(substr_count($f,"@")==1){
-			echo '<td><a href="mailto:' . $f . '">Mail</a></td>';
+			echo '<td><a href="mailto:' . $f . '"><img src="imgs/mail.png"></a></td>';
 		}
 		else{
 			echo '<td>' . $f . '</td>';
