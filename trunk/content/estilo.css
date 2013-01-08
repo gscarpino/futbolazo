@@ -1,12 +1,38 @@
 @CHARSET "ISO-8859-1";
 
-h1.titulo{
+html{
+	color:#2E6E9E;
+}
+
+a:LINK{
+	color:#2E6E9E;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:VISITED{
+	color:#2E6E9E;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:HOVER{
+	color:#FFE47A;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:FOCUS{
+		color:#FFE47A;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+
+
+.titulo{
+	margin-left:auto;
+	margin-right:auto;
 	text-align:center;
-	border-color: #4297d7;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	color:#5c9ccc;
-	font-size: xx-large;
-	font-weight: bolder;
 }
 
 h2.titulo{
@@ -46,13 +72,14 @@ span.user{
 	width: auto;
 	padding-left: 2.5%;
 	padding-left: 7.5%;	
-	padding-right: auto;
+	padding-right: auto;	
 }
 
 #menuAdm{
 	border-style: solid;
 	border-color: black;
 	font-size: small;
+	color:#2E6E9E;
 }
 
 #btnAdmin{
@@ -196,6 +223,7 @@ table.formatHTML5 tfoot{
 
 #tabs-1{
 	min-height: 350px;
+	color:#2E6E9E;
 }
 
 .flabel{
@@ -276,6 +304,7 @@ div.ui-dialog-buttonpane {
 
 ol li{
 	font-weight: bold;
+	padding-bottom: 10px;
 }
 
 ol li span {
@@ -347,4 +376,8 @@ ol li span {
 	color:red;
 	font-weight: bolder;
 	font-size: 120%;
+}
+
+.ui-button{
+	font-size: 50%;
 }

@@ -135,7 +135,9 @@
 	<?php 
 		include 'login.php';
 	?>
-	<h1 class="titulo"><b>El Futbolazo</b></h1>
+	<div class="titulo">
+		<img src="imgs/titulo.png"><br>
+	</div>
 	
 	<ul id="menu">
 		<?php 
