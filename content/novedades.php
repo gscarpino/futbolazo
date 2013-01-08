@@ -111,7 +111,9 @@
 				</fieldset>
 				</form>
 	</div>
-	<h1 class="titulo"><b>El Futbolazo</b></h1>
+	<div class="titulo">
+		<img src="imgs/titulo.png"><br>
+	</div>
 	
 	<ul id="menu">
 		<li><a href="index.html"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>

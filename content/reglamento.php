@@ -118,7 +118,9 @@
 	<?php 
 		include 'login.php';
 	?>
-	<h1 class="titulo"><b>El Futbolazo</b></h1>
+	<div class="titulo">
+		<img src="imgs/titulo.png"><br>
+	</div>
 	
 	<ul id="menu">
 		<?php 
@@ -175,13 +177,12 @@
 		</ul>
 		<div id="tabs-1">
 			<h2 class="hEquipo">Indice</h2>
-			<ul class="indice">
-				<a href="#req"><li>Requisitos</li></a>
-				<a href="#san"><li>Sanciones</li></a>
-				<a href="#sisJ"><li>Sistema de Juego</li></a>
-				<a href="#sisD"><li>Sistema de Desempate</li></a>
-			</ul>
-		
+			<div style="width:100%;padding-left:30px;">
+				<a href="#req" style="padding-bottom: 10px;">Requisitos</a><br>
+				<a href="#san" style="padding-bottom: 10px;">Sanciones</a><br>
+				<a href="#sisJ" style="padding-bottom: 10px;">Sistema de Juego</a><br>
+				<a href="#sisD" style="padding-bottom: 10px;">Sistema de Desempate</a>
+			</div>
 			<br>
 			<br>
 			
@@ -189,7 +190,7 @@
 			<ol>
 				<li><span>Ser alumno, docente, graduado o no docente de la Facultad de Ciencias Exactas y Naturales.</span></li>
 				<li><span>No se pueden inscribir mas de 10 jugadores por equipo.</span></li>
-				<li><span>Un mismo jugador no podrá jugar en 2 o más equipos por torneo, independientemente de la categoría del equipo.</span></li>
+				<li><span>Un mismo jugador no podrá jugar en 2 o más equipos por torneo, independientemente de la categoría del equipo.</span>
 			</ol>
 			
 			<br>
