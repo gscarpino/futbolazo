@@ -51,7 +51,7 @@ function genFila($fila){
 	echo '<tr>';
 	foreach ($fila as $f){
 		if(substr_count($f,"@")==1){
-			echo '<td><a href="mailto:' . $f . '"><img src="imgs/mail.png"></a></td>';
+			echo '<td><a href="mailto:' . $f . '"><img src="imgs/mail_small.png"></a></td>';
 		}
 		else{
 			echo '<td>' . $f . '</td>';
@@ -60,6 +60,18 @@ function genFila($fila){
 	echo '</tr>';
 }
 
+function genFilaLink($fila,$link){
+	echo '<tr>';
+	foreach($fila as $f){
+		if((substr_count($f,"@")==1) && (substr_count($f,".com")==1)){
+			echo '<td><a href="mailto:' . $f . '"><img src="imgs/mail_small.png"></a></td>';
+		}
+		else{
+			echo '<td><a href="' . $link . '">' . $f . '</a></td>';
+		}
+	}
+	echo '</tr>';
+}
 function logueado(){
 	if(!isset($_SESSION['logged'])){
 		header('location:index.php');
@@ -74,10 +86,10 @@ function agregarEquipo($nombre,$cat,$mail){
 		return false;
 	}
 	else{
-		$res = $mydb->query("INSERT INTO equipo VALUES ('$nombre','$cat','$mail',0,0,0,0,0,0)");
+		$res = $mydb->query("INSERT INTO equipo VALUES ('$nombre','$cat','$mail',0,0,0,0,0,0,0,0)");
+	return true;
 		
 	}
-	return $res;
 }
 
 function agregarJugador($nombre,$dni,$equipo){

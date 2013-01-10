@@ -120,7 +120,7 @@
 		include 'login.php';
 	?>
 	<div class="titulo">
-		<img src="imgs/titulo.png"><br>
+		<img src="imgs/titulo.png">
 	</div>
 	<ul id="menu">
 		<?php 
