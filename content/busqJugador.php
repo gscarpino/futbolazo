@@ -36,6 +36,9 @@
 		$( "#btnLogOut" )
 		.button();
 
+		$( ".btnPanel" )
+		.button();
+
 			
 		
 		
@@ -179,7 +182,7 @@
 		<div id="tabs-1">
 		
 		
-			<form action="busqJugador.php?busq=1" method="post">
+			<form action="busqJugador.php" method="get">
 				<label class="flabel">Nombre</label>
 				<input list="equipos" name="nombre" type="text" class="text ui-widget-content ui-corner-all">
 				<br>
@@ -191,17 +194,19 @@
 				<br>
 				<br>
 				
-				<a id="btnLogOut" href="busqJugador.php?busq=2">Todos</a>
-				<input class="fsubmit" type="submit" value="Buscar">
+				<input type="text" name="busq" value="1" hidden>
+				
+				<input class="btnPanel" type="submit" value="Buscar">
+				<a id="btnPanel" href="busqJugador.php?busq=2">Todos</a>
 			</form>
 			<br>
 			<br>
 			<?php
 				if(isset($_GET['busq'])){
 					if($_GET['busq'] == 1){
-						$nombre = $_POST['nombre'];
-						$dni = $_POST['dni'];
-						$criterio = $_POST['criterio'];
+						$nombre = $_GET['nombre'];
+						$dni = $_GET['dni'];
+						$criterio = $_GET['criterio'];
 						$mydb = conectar();
 						
 						if($criterio == "Y"){

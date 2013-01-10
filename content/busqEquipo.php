@@ -39,6 +39,23 @@
 
 		$( ".btnPanel" )
 		.button();
+		$( ".btnNormal" )
+		.button();
+
+		$( document ).tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                using: function( position, feedback ) {
+                    $( this ).css( position );
+                    $( "<div>" )
+                        .addClass( "arrow" )
+                        .addClass( feedback.vertical )
+                        .addClass( feedback.horizontal )
+                        .appendTo( this );
+                }
+            }
+        });
 		
 		
 		var name = $( "#name" ),
@@ -180,8 +197,7 @@
 		</ul>
 		<div id="tabs-1">
 		
-		
-			<form action="busqEquipo.php?busq=1" method="post">
+			<form action="busqEquipo.php?busq=1" method="get">
 				<label class="flabel">Equipo</label>
 				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
 				<datalist id="equipos">
@@ -191,49 +207,42 @@
 				</datalist>
 				<br>
 				<br>
+					<input class="btnPanel" type="submit" value="Buscar">
+
+				<input type="text" name="busq" value="1" hidden>
 				
-				<a id="btnLogOut" href="busqEquipo.php?busq=2">Todos</a>
-				<input class="btnPanel" type="submit" value="Buscar">
 			</form>
 			<br>
+			
+				<div style="margin-left: auto;margin-right: auto;text-align: center;display:block;">
+					<a class="btnPanel" href="busqEquipo.php?busq=2">Todos</a>
+				</div>
 			<br>
 			<?php 
 				if(isset($_GET['busq'])){
+					$mydb = conectar();
+
 					if($_GET['busq'] == 1){
-						$nombre = $_POST['equipo'];
-						$mydb = conectar();
-						if ($res = $mydb->query("SELECT * FROM equipo WHERE Nombre = '$nombre'")){
-							empezarTabla();
-							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Amarillas","Expulsiones 5'","Expulsiones");
-							genEncabezado($encabezados);
-							if($res->num_rows == 1){
-								$fila = $res->fetch_row();
-								genFila($fila);
-							}
-						    finalizarTabla("3");
-						    $res->close();
-						}
-						else{
-							$_GET = array();
-							header('location:busqEquipo.php?error=1');
-						}
+						$nombre = $_GET['equipo'];
+						$q = "SELECT Nombre,Categoria,Mail FROM equipo WHERE Nombre = '$nombre'";
 					}
-					if($_GET['busq'] == 2){
-						$mydb = conectar();
-						if ($res = $mydb->query("SELECT * FROM equipo")){
-							empezarTabla();
-							$encabezados = array("Nombre","Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Amarillas","Expulsiones 5'","Expulsiones");
-							genEncabezado($encabezados);
-							while ($fila = $res->fetch_row()){
-								genFila($fila);
-							}
-							finalizarTabla("3");
-							$res->close();
+					else{
+						$q = "SELECT Nombre,Categoria,Mail FROM equipo";
+					}
+					if($res = $mydb->query($q)){
+						empezarTabla();
+						$encabezados = array("Nombre","Categoría","Mail");
+						genEncabezado($encabezados);
+						
+						while ($fila = $res->fetch_row()){
+							genFilaLink($fila,"busqEquipo.php?nombreEquipo=$fila[0]#vista");
 						}
-						else{
-							$_GET = array();
-							header('location:busqEquipo.php?error=1');
-						}
+					    finalizarTabla("3");
+					    $res->close();
+					}
+					else{
+						$_GET = array();
+						header('location:busqEquipo.php?error=1');
 					}
 				}
 				
@@ -242,6 +251,43 @@
 						displayError("Error","No se pudo encontrar el equipo.");
 					}
 				}
+				
+				if(isset($_GET['nombreEquipo'])){
+					$nombre = $_GET['nombreEquipo'];
+					echo '<br><h2 class="hEquipo" id="vista">Datos de <strong class="resaltado">' . $nombre  . '</strong></h2>';
+					$mydb = conectar();
+					$q = "SELECT * FROM equipo WHERE Nombre = '$nombre'";
+					if($res = $mydb->query($q)){
+						empezarTabla();
+						$encabezados = array("Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Amarillas","Expulsiones 5'","Expulsiones","","");
+						genEncabezado($encabezados);
+						while ($fila = $res->fetch_row()){
+							unset($fila[0]);
+							$fila[] = '<a href="busqEquipo.php?accion=delEquipo#Mod"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
+							$fila[] = '<a href="busqEquipo.php?accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
+							genFila($fila);
+						}
+						finalizarTabla("3");
+						$res->close();
+					}
+						
+				
+					echo '<br><h2 class="hEquipo">Jugadores de <strong class="resaltado">' . $nombre  . '</strong></h2>';
+					$mydb = conectar();
+					$q = "SELECT * FROM jugadores WHERE Equipo = '$nombre' ORDER BY Nombre ASC";
+					if($res = $mydb->query($q)){
+						empezarTabla();
+						$encabezados = array("Nombre","DNI/LU","Goles","Amarillas","Expulsiones 5'","Expulsiones");
+						genEncabezado($encabezados);
+						while ($fila = $res->fetch_row()){
+							unset($fila[2]);
+							genFilaLink($fila,"busqJugador.php?busq=1&nombre=$fila[0]&criterio=Y&dni=$fila[1]");
+						}
+						finalizarTabla("3");
+						$res->close();
+					}
+				}
+				
 				
 			?>
 		</div>
