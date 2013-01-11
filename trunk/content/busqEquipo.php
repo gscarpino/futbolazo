@@ -224,14 +224,14 @@
 
 					if($_GET['busq'] == 1){
 						$nombre = $_GET['equipo'];
-						$q = "SELECT Nombre,Categoria,Mail FROM equipo WHERE Nombre = '$nombre'";
+						$q = "SELECT * FROM equipo WHERE Nombre = '$nombre'";
 					}
 					else{
-						$q = "SELECT Nombre,Categoria,Mail FROM equipo";
+						$q = "SELECT * FROM equipo";
 					}
 					if($res = $mydb->query($q)){
 						empezarTabla();
-						$encabezados = array("Nombre","Categoría","Mail");
+						$encabezados = array("Nombre","Categoría","Mail","<span title='Partidos Ganados'>PG</span>","<span title='Partidos Perdidos'>PP","<span title='Partidos Empatados'>E","<span title='Goles a favor'>GF","<span title='Goles en contra'>GC","Amarillas","Expulsiones 5'","Expulsiones");
 						genEncabezado($encabezados);
 						
 						while ($fila = $res->fetch_row()){
@@ -259,7 +259,7 @@
 					$q = "SELECT * FROM equipo WHERE Nombre = '$nombre'";
 					if($res = $mydb->query($q)){
 						empezarTabla();
-						$encabezados = array("Categoría","Mail","Partidos Ganados","Partidos Perdidos","Empates","Goles Metidos","Goles Recibidos","Amarillas","Expulsiones 5'","Expulsiones","","");
+						$encabezados = array("Categoría","Mail","<span title='Partidos Ganados'>PG</span>","<span title='Partidos Perdidos'>PP","<span title='Partidos Empatados'>E","<span title='Goles a favor'>GF","<span title='Goles en contra'>GC","Amarillas","Expulsiones 5'","Expulsiones","","");
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							unset($fila[0]);

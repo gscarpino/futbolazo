@@ -79,7 +79,8 @@ span.user{
 
 #tabs-1{
 	position:relative;
-	width:95%;
+	max-width:90%;
+	width:auto;
 	min-height: 350px;
 	color:#2E6E9E;
 }
@@ -119,7 +120,7 @@ span.user{
 /*** central column on page ***/
 div#divContainer
 {
-	width:95%;
+	max-width:800px;
     margin: 0 auto;
     font-family: Calibri;
     padding: 0.5em 1em 1em 1em;
@@ -140,9 +141,6 @@ div#divContainer
     -moz-box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
     -webkit-box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
     box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
-	margin-left:auto;
-	margin-right:auto;
-	text-align:center;
 }
 
 h1 {color:#FFE47A; font-size:1.5em;}
@@ -222,6 +220,8 @@ table.formatHTML5 tbody tr.separator {
 table.formatHTML5 td {
    vertical-align:middle;
    padding: 0.5em;
+    width: 1px;
+    white-space: nowrap;
 }
 
 /*** table's tfoot section ***/
@@ -391,7 +391,8 @@ ol li span {
 /*** Fin Tooltips ***/
 
 .resaltado{
-	color:red;
+	color:#D17020;
 	font-weight: bolder;
+	font-style:italic;
 	font-size: 120%;
 }

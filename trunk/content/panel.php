@@ -40,6 +40,22 @@
 
 		$( ".btnPanel" )
 		.button();
+
+
+		$( document ).tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                using: function( position, feedback ) {
+                    $( this ).css( position );
+                    $( "<div>" )
+                        .addClass( "arrow" )
+                        .addClass( feedback.vertical )
+                        .addClass( feedback.horizontal )
+                        .appendTo( this );
+                }
+            }
+        });
 			
 		
 		
@@ -181,22 +197,23 @@
 			<li><a href="#tabs-1">Panel</a></li>		
 		</ul>
 		<div id="tabs-1">
-		<table id="TablePanel">
+		<br>
+		<br>
+		<table id="TablePanel" style="text-align: center;vertical-align: middle;">
 		<tr>
-			<td><a class="btnPanel" href="agEquipo.php"><span>Agregar Equipo</a></td>
-			<td><a class="btnPanel" href="busqEquipo.php">Buscar Equipo</a></td>
+			<td><a href="agEquipo.php"><img src="imgs/equipos.png" title="Equipos"></a></td>
+			<td><a href="busqEquipo.php"><img src="imgs/jugadores.png" title="Jugadores"></a></td>
+			<td><br><a href="usuarios.php"><img src="imgs/admins.png" title="Admins"></a></td>
 		</tr>
 		<tr>
-		
-			<td><br><a class="btnPanel" href="agJugador.php">Agregar Jugador</a></td>
-			<td><br><a class="btnPanel" href="busqJugador.php">Buscar Jugador</a></td>
+			<td><br><a href="busqPartido.php"><img src="imgs/fixture.png" title="Fixture"></a></td>
+			<td><br><a href="regPartido.php?etapa=0"><img src="imgs/partidos.png" title="Partidos"></a></td>
+			<td><br><a href="busqPartido.php"><img src="imgs/torneos.png" title="Torneos"></a></td>
 		</tr>
 		<tr>
-			<td><br><a class="btnPanel" href="regPartido.php?etapa=0">Registrar Partido</a></td>
-			<td><br><a class="btnPanel" href="busqPartido.php">Buscar Partido</a></td>
-		</tr>
-		<tr>
-			<td><br><a class="btnPanel" href="usuarios.php">Admins</a></td>
+			<td><br><a href="noticias.php"><img src="imgs/noticias.png" title="Noticias"></a></td>
+			<td><br><a href="usuarios.php"><img src="imgs/tribunal.png" title="Tribunal de Disciplina"></a></td>
+			<td><br><a href="noticias.php"><img src="imgs/fotos.png" title="Fotos"></a></td>
 		</tr>
 		</table>
 		</div>
