@@ -36,10 +36,7 @@
 		$( "#btnLogOut" )
 		.button();
 
-
 		$( ".btnPanel" )
-		.button();
-		$( ".btnNormal" )
 		.button();
 
 		$( document ).tooltip({
@@ -126,6 +123,50 @@
 
 		
 	});
+
+	num=1;
+	function agregarCampos(obj) {
+	  num++;
+	  fi = document.getElementById('fiel');
+
+	  contenedor = document.createElement('div');
+	  contenedor.id = 'div'+num; 
+	  contenedor.innerHTML = '<br>';
+	  fi.appendChild(contenedor);
+
+	  ele = document.createElement('strong');
+	  ele.className = 'resaltado';
+	  ele.innerHTML = 'Jugador '+ num +'<span style="padding-left: 30px;"><img name="div' + num +'" onclick="BorrarCampos(this.name)" src="imgs/minus.png" title="Haga click para eliminar el jugador"></span>';
+	  contenedor.appendChild(ele);
+	  
+	  ele = document.createElement('label');
+	  ele.className = 'flabel';
+	  ele.innerHTML = 'Nombre';
+	  contenedor.appendChild(ele);
+
+	  ele = document.createElement('input');
+	  ele.type = 'text';
+	  ele.name = 'nombre'+num;
+	  ele.className = 'text ui-widget-content ui-corner-all';
+	  contenedor.appendChild(ele);
+
+	  ele = document.createElement('label');
+	  ele.className = 'flabel';
+	  ele.innerHTML = 'DNI/LU';
+	  contenedor.appendChild(ele);
+
+	  ele = document.createElement('input');
+	  ele.type = 'text';
+	  ele.name = 'dni'+num;
+	  ele.className = 'text ui-widget-content ui-corner-all';
+	  contenedor.appendChild(ele);
+
+	}
+	
+	function BorrarCampos(obj) {
+	  fi = document.getElementById('fiel');
+	  fi.removeChild(document.getElementById(obj));
+	}
 	
 	
 	
@@ -141,7 +182,6 @@
 	<div class="titulo">
 		<img src="imgs/titulo.png"><br>
 	</div>
-	
 	<ul id="menu">
 		<?php 
 			if(isset($_SESSION['logged'])){
@@ -193,11 +233,17 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Buscar Equipo</a></li>		
+			<li><a href="#tabs-1">Equipos</a></li>		
 		</ul>
 		<div id="tabs-1">
 		
-			<form action="busqEquipo.php?busq=1" method="get">
+		<br>
+		<br>
+		<fieldset>
+		<h2 class="hEquipo">Buscar equipos</h2>
+		
+		
+		<form action="equipos.php?busq=1" method="get">
 				<label class="flabel">Equipo</label>
 				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
 				<datalist id="equipos">
@@ -215,7 +261,7 @@
 			<br>
 			
 				<div style="margin-left: auto;margin-right: auto;text-align: center;display:block;">
-					<a class="btnPanel" href="busqEquipo.php?busq=2">Todos</a>
+					<a class="btnPanel" href="equipos.php?busq=2">Todos</a>
 				</div>
 			<br>
 			<?php 
@@ -235,14 +281,14 @@
 						genEncabezado($encabezados);
 						
 						while ($fila = $res->fetch_row()){
-							genFilaLink($fila,"busqEquipo.php?nombreEquipo=$fila[0]#vista");
+							genFilaLink($fila,"equipos.php?nombreEquipo=$fila[0]#vista");
 						}
 					    finalizarTabla("3");
 					    $res->close();
 					}
 					else{
 						$_GET = array();
-						header('location:busqEquipo.php?error=1');
+						header('location:equipos.php?error=1');
 					}
 				}
 				
@@ -254,7 +300,7 @@
 				
 				if(isset($_GET['nombreEquipo'])){
 					$nombre = $_GET['nombreEquipo'];
-					echo '<br><h2 class="hEquipo" id="vista">Datos de <strong class="resaltado">' . $nombre  . '</strong></h2>';
+					echo '<br><h2 class="hEquipo" id="vista">Datos de <strong class="resaltado">' . $nombre  . '</strong></h2><br><br>';
 					$mydb = conectar();
 					$q = "SELECT * FROM equipo WHERE Nombre = '$nombre'";
 					if($res = $mydb->query($q)){
@@ -263,8 +309,8 @@
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							unset($fila[0]);
-							$fila[] = '<a href="busqEquipo.php?accion=delEquipo#Mod"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
-							$fila[] = '<a href="busqEquipo.php?accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
+							$fila[] = '<a href="equipos.php?accion=delEquipo#Mod"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
+							$fila[] = '<a href="equipos.php?accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
 							genFila($fila);
 						}
 						finalizarTabla("3");
@@ -272,7 +318,7 @@
 					}
 						
 				
-					echo '<br><h2 class="hEquipo">Jugadores de <strong class="resaltado">' . $nombre  . '</strong></h2>';
+					echo '<br><h2 class="hEquipo">Jugadores de <strong class="resaltado">' . $nombre  . '</strong></h2><br><br>';
 					$mydb = conectar();
 					$q = "SELECT * FROM jugadores WHERE Equipo = '$nombre' ORDER BY Nombre ASC";
 					if($res = $mydb->query($q)){
@@ -281,15 +327,80 @@
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							unset($fila[2]);
-							genFilaLink($fila,"busqJugador.php?busq=1&nombre=$fila[0]&criterio=Y&dni=$fila[1]");
+							$fila[] = '<a href="equipos.php?accion=sacar&who=' . $fila[0] . '#Mod"><img src="imgs/throw_player.png" title="Remover jugador del equipo"></a>';
+							genFilaLink($fila,"jugadores.php?busq=1&nombre=$fila[0]&criterio=Y&dni=$fila[1]");
 						}
 						finalizarTabla("3");
 						$res->close();
 					}
 				}
-				
-				
+								
 			?>
+			<br><br>
+			</fieldset>
+					<br>
+		<br>
+			
+		<fieldset>
+
+		<?php 
+			if(isset($_GET['sent'])){
+				if($_GET['sent'] == 1){
+					$eNombre = $_POST['nombre'];
+					$eCategoria = $_POST['categoria'];
+					$eMail = $_POST['mail'];
+					if(agregarEquipo($eNombre,$eCategoria,$eMail)){
+						displayGreen("","Se agregó correctamente el equipo");
+					}
+					else{
+						displayError("Error","El equipo ya existe.");
+					}
+				}
+			}
+			
+			if(isset($_GET['error'])){
+				if($_GET['error'] == 1){
+					displayError("Error","No se pudo agregar el equipo.");
+				}
+			}
+		?>
+		<h2 class="hEquipo">Agregar equipo</h2>
+
+		
+			<form action="equipos.php?sent=1" method="post">
+				<label class="flabel">Nombre</label>
+				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+				<label class="flabel">Categoría</label>
+				<select name="categoria" class="text ui-widget-content ui-corner-all">
+					<option value="A" selected>A</option>
+					<option value="B">B</option>
+					<option value="C">C</option>
+					<option value="D">D</option>
+				</select>
+				<label class="flabel">Mail</label>
+				<input type="text" name="mail" class="text ui-widget-content ui-corner-all">
+				<br>
+				<br>		
+				<br>
+				<div id="fiel">
+					<h2 class="hEquipo" style="font-size: 120%;">Agregar jugadores al equipo  <span style="padding-left: 10px;" onclick="agregarCampos(this)" ><img src="imgs/plus.png" title="Haga click para agregar un jugador más"></span></h2>
+					<br>
+					<br>
+					<div id="div1">
+						<strong class="resaltado" style="font-size: 100%;">Jugador 1<span style="padding-left: 15px;padding-right: 15px;"><img name="div1" onclick="BorrarCampos(this.name)" src="imgs/minus.png" title="Haga click para eliminar el jugador"></span></strong>
+						<label class="flabel">Nombre</label>
+						<input type="text" name="nombre1" class="text ui-widget-content ui-corner-all">
+						<label class="flabel">DNI/LU</label>
+						<input type="text" name="dni1" class="text ui-widget-content ui-corner-all">
+					</div>
+				</div>
+				<br>
+				<br>
+				<input class="btnPanel" type="submit">
+			</form>
+		</fieldset>
+		
+		
 		</div>
 	</div>
 	</div>

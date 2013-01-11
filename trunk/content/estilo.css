@@ -70,7 +70,7 @@ span.user{
 
 
 #tabs{
-	min-width:700px;
+	min-width:800px;
 	max-width:910x;
 	height: auto;
 	margin-left:190px;
@@ -79,7 +79,7 @@ span.user{
 
 #tabs-1{
 	position:relative;
-	max-width:90%;
+	max-width:98%;
 	width:auto;
 	min-height: 350px;
 	color:#2E6E9E;
@@ -395,4 +395,10 @@ ol li span {
 	font-weight: bolder;
 	font-style:italic;
 	font-size: 120%;
+}
+
+fieldset {
+	border-color: #D17020;
+	border-style: solid;
+	border-width: thin;
 }

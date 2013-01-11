@@ -201,19 +201,19 @@
 		<br>
 		<table id="TablePanel" style="text-align: center;vertical-align: middle;">
 		<tr>
-			<td><a href="agEquipo.php"><img src="imgs/equipos.png" title="Equipos"></a></td>
-			<td><a href="busqEquipo.php"><img src="imgs/jugadores.png" title="Jugadores"></a></td>
+			<td><a href="equipos.php"><img src="imgs/equipos.png" title="Equipos"></a></td>
+			<td><a href="jugadores.php"><img src="imgs/jugadores.png" title="Jugadores"></a></td>
 			<td><br><a href="usuarios.php"><img src="imgs/admins.png" title="Admins"></a></td>
 		</tr>
 		<tr>
-			<td><br><a href="busqPartido.php"><img src="imgs/fixture.png" title="Fixture"></a></td>
-			<td><br><a href="regPartido.php?etapa=0"><img src="imgs/partidos.png" title="Partidos"></a></td>
-			<td><br><a href="busqPartido.php"><img src="imgs/torneos.png" title="Torneos"></a></td>
+			<td><br><a href="fixture.php"><img src="imgs/fixture.png" title="Fixture"></a></td>
+			<td><br><a href="partidos.php"><img src="imgs/partidos.png" title="Partidos"></a></td>
+			<td><br><a href="torneos.php"><img src="imgs/torneos.png" title="Torneos"></a></td>
 		</tr>
 		<tr>
 			<td><br><a href="noticias.php"><img src="imgs/noticias.png" title="Noticias"></a></td>
 			<td><br><a href="usuarios.php"><img src="imgs/tribunal.png" title="Tribunal de Disciplina"></a></td>
-			<td><br><a href="noticias.php"><img src="imgs/fotos.png" title="Fotos"></a></td>
+			<td><br><a href="fotos.php"><img src="imgs/fotos.png" title="Fotos"></a></td>
 		</tr>
 		</table>
 		</div>
