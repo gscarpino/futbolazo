@@ -177,11 +177,12 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Buscar Jugador</a></li>		
+			<li><a href="#tabs-1">Jugadores</a></li>		
 		</ul>
 		<div id="tabs-1">
 		
-		
+		<fieldset>
+			<h2 class="hEquipo">Buscar jugadores</h2>
 			<form action="busqJugador.php" method="get">
 				<label class="flabel">Nombre</label>
 				<input list="equipos" name="nombre" type="text" class="text ui-widget-content ui-corner-all">
@@ -197,9 +198,11 @@
 				<input type="text" name="busq" value="1" hidden>
 				
 				<input class="btnPanel" type="submit" value="Buscar">
-				<a id="btnPanel" href="busqJugador.php?busq=2">Todos</a>
 			</form>
 			<br>
+			<div style="margin-left: auto;margin-right: auto;text-align: center;display:block;">
+				<a class="btnPanel" href="jugadores.php?busq=2">Todos</a>
+			</div>
 			<br>
 			<?php
 				if(isset($_GET['busq'])){
@@ -258,6 +261,56 @@
 				}
 				
 			?>
+			<br>
+			<br>
+			</fieldset>
+				
+			<br>	
+			<fieldset>
+			<h2 class="hEquipo">Agregar jugador</h2>
+			<br>
+			<form action="agJugador.php?sent=1" method="post">
+				<label class="flabel">Nombre</label>
+				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+				<label class="flabel">DNI/LU</label>
+				<input type="text" name="dni" class="text ui-widget-content ui-corner-all">
+				<label class="flabel">Equipo</label>
+				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
+				<datalist id="equipos">
+				<?php 
+					listaEquipos();
+				?>
+				</datalist>
+				<br>
+				<br>
+				<input class="btnPanel" type="submit">
+			</form>
+			<?php 
+				if(isset($_GET['sent'])){
+					if($_GET['sent'] == 1){
+						$jNombre = $_POST['nombre'];
+						$jDni = $_POST['dni'];
+						$jEquip = $_POST['equipo'];
+						if(agregarJugador($jNombre,$jDni,$jEquip)){
+							displayGreen("","Se agregó correctamente el jugador");
+						}
+						else{
+							$_GET = array();
+							header('location:agJugador.php?error=1');
+						}
+					}
+				}
+				
+				if(isset($_GET['error'])){
+					if($_GET['error'] == 1){
+						displayError("Error","No se pudo agregar el jugador.");
+					}
+				}
+				
+			?>
+			
+			<br>
+			</fieldset>
 		</div>
 	</div>
 	</div>

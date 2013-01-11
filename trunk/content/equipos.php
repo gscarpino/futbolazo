@@ -136,7 +136,8 @@
 
 	  ele = document.createElement('strong');
 	  ele.className = 'resaltado';
-	  ele.innerHTML = 'Jugador '+ num +'<span style="padding-left: 30px;"><img name="div' + num +'" onclick="BorrarCampos(this.name)" src="imgs/minus.png" title="Haga click para eliminar el jugador"></span>';
+	  ele.style.fontSize='100%';
+	  ele.innerHTML = 'Jugador '+ num +'<span style="padding-left: 15px;padding-right: 15px;"><img name="div' + num +'" onclick="BorrarCampos(this.name)" src="imgs/minus.png" title="Haga click para eliminar el jugador"></span>';
 	  contenedor.appendChild(ele);
 	  
 	  ele = document.createElement('label');
