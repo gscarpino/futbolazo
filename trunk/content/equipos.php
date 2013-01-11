@@ -241,8 +241,7 @@
 		<br>
 		<br>
 		<fieldset>
-		<h2 class="hEquipo">Buscar equipos</h2>
-		
+		<h2 class="hEquipo">Buscar equipos</h2>	
 		
 		<form action="equipos.php?busq=1" method="get">
 				<label class="flabel">Equipo</label>
@@ -310,7 +309,7 @@
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							unset($fila[0]);
-							$fila[] = '<a href="equipos.php?accion=delEquipo#Mod"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
+							$fila[] = '<a href="equipos.php?accion=delEquipo#Del"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
 							$fila[] = '<a href="equipos.php?accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
 							genFila($fila);
 						}
@@ -328,11 +327,58 @@
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							unset($fila[2]);
-							$fila[] = '<a href="equipos.php?accion=sacar&who=' . $fila[0] . '#Mod"><img src="imgs/throw_player.png" title="Remover jugador del equipo"></a>';
+							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre . '&accion=sacar&who=' . $fila[0] . '#Sacar"><img src="imgs/throw_player.png" title="Remover jugador del equipo"></a>';
 							genFilaLink($fila,"jugadores.php?busq=1&nombre=$fila[0]&criterio=Y&dni=$fila[1]");
 						}
 						finalizarTabla("3");
 						$res->close();
+					}
+				}
+				
+				
+				if(isset($_GET['accion'])){
+					$accion = $_GET['accion'];
+					if($accion == "sacar"){
+						if(isset($_GET['who'])){
+							$who = $_GET['who'];
+							$nombreEquipo = $_GET['nombreEquipo'];
+							echo '<br><h2 class="hEquipo" id="Sacar">¿Está seguro de sacar del equipo a  <strong class="resaltado">' . $who . '</strong> ?</h2>
+							<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=sacar2" method="post">
+							<input type="radio" name="rta" value="si"> Sí
+							<input type="radio" name="rta" value="no" checked> No
+							<br>
+							<br>
+							<label class="flabel">Password</label>
+							<input type="text" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<br>
+							<br>
+							<input type="text" name="who" value="' . $who .'" hidden>
+							<input class="btnPanel" type="submit">
+							</form>';
+						}
+						else{
+							displayError("Error","Acción incompleta");
+						}
+					}
+					if($accion == "sacar2"){
+						$rta = $_POST['rta'];
+						$nombreEquipo = $_GET['nombreEquipo'];
+						if($rta == "si"){
+							$who = $_POST['who'];
+							$pass = $_POST['pass'];
+							if(sacarJugadorDeEquipo($who,$pass)){
+								displayGreen("","Se quito el jugador del equipo");
+								$tiempo = 4; # segundos
+								$pagina = "?nombreEquipo=" . $nombreEquipo . "#vista"; #URL;
+								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
+							}
+							else{
+								displayError("Error","No se pudo quitar al jugador del equipo.<br> Contraseña errónea.");
+							}
+						}
+						else if($rta == "no"){
+							header("location:equipos.php?nombreEquipo=" . $nombreEquipo . "#vista");
+						}
 					}
 				}
 								

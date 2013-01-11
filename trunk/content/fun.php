@@ -277,4 +277,8 @@ function  borrarUsuario($nombre){
 	}
 }
 
+function sacarJugadorDeEquipo($nombre,$pass){
+	return false;
+}
+
 ?>
