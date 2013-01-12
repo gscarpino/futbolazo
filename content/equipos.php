@@ -263,17 +263,17 @@
 				<div style="margin-left: auto;margin-right: auto;text-align: center;display:block;">
 					<a class="btnPanel" href="equipos.php?busq=2">Todos</a>
 				</div>
-			<br>
+			<br><br>
 			<?php 
 				if(isset($_GET['busq'])){
 					$mydb = conectar();
 
 					if($_GET['busq'] == 1){
 						$nombre = $_GET['equipo'];
-						$q = "SELECT * FROM equipo WHERE Nombre = '$nombre'";
+						$q = "SELECT * FROM equipo WHERE Nombre = '$nombre' and Nombre != '[SIN EQUIPO]'";
 					}
 					else{
-						$q = "SELECT * FROM equipo";
+						$q = "SELECT * FROM equipo WHERE Nombre != '[SIN EQUIPO]'";
 					}
 					if($res = $mydb->query($q)){
 						empezarTabla();
@@ -309,7 +309,7 @@
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							unset($fila[0]);
-							$fila[] = '<a href="equipos.php?accion=delEquipo#Del"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
+							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre .'&accion=delEquipo#Del"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
 							$fila[] = '<a href="equipos.php?accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
 							genFila($fila);
 						}
@@ -327,7 +327,7 @@
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							unset($fila[2]);
-							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre . '&accion=sacar&who=' . $fila[0] . '#Sacar"><img src="imgs/throw_player.png" title="Remover jugador del equipo"></a>';
+							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre . '&accion=sacar&nombre=' . $fila[0] . '&who=' . $fila[1] . '#Sacar"><img src="imgs/throw_player.png" title="Remover jugador del equipo"></a>';
 							genFilaLink($fila,"jugadores.php?busq=1&nombre=$fila[0]&criterio=Y&dni=$fila[1]");
 						}
 						finalizarTabla("3");
@@ -341,18 +341,20 @@
 					if($accion == "sacar"){
 						if(isset($_GET['who'])){
 							$who = $_GET['who'];
+							$nombre = $_GET['nombre'];
 							$nombreEquipo = $_GET['nombreEquipo'];
-							echo '<br><h2 class="hEquipo" id="Sacar">¿Está seguro de sacar del equipo a  <strong class="resaltado">' . $who . '</strong> ?</h2>
-							<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=sacar2" method="post">
+							echo '<br><h2 class="hEquipo" id="Sacar">¿Está seguro de sacar del equipo a  <strong class="resaltado">' . $nombre . '</strong> ?</h2>
+							<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=sacar2#vista" method="post">
 							<input type="radio" name="rta" value="si"> Sí
 							<input type="radio" name="rta" value="no" checked> No
 							<br>
 							<br>
 							<label class="flabel">Password</label>
-							<input type="text" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
 							<br>
 							<br>
 							<input type="text" name="who" value="' . $who .'" hidden>
+							<input type="text" name="nombre" value="' . $nombre .'" hidden>
 							<input class="btnPanel" type="submit">
 							</form>';
 						}
@@ -365,15 +367,52 @@
 						$nombreEquipo = $_GET['nombreEquipo'];
 						if($rta == "si"){
 							$who = $_POST['who'];
+							$nombre = $_POST['nombre'];
 							$pass = $_POST['pass'];
 							if(sacarJugadorDeEquipo($who,$pass)){
-								displayGreen("","Se quito el jugador del equipo");
-								$tiempo = 4; # segundos
-								$pagina = "?nombreEquipo=" . $nombreEquipo . "#vista"; #URL;
+								displayGreen("","Se quito el jugador $nombre del equipo");
+								$tiempo = 3; # segundos
+								$pagina = "equipos.php?nombreEquipo=" . $nombreEquipo . "#vista"; #URL;
 								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
 							}
 							else{
 								displayError("Error","No se pudo quitar al jugador del equipo.<br> Contraseña errónea.");
+							}
+						}
+						else if($rta == "no"){
+							header("location:equipos.php?nombreEquipo=" . $nombreEquipo . "#vista");
+						}
+					}
+					if($accion == "delEquipo"){
+						$nombreEquipo = $_GET['nombreEquipo'];
+						echo '<br><h2 class="hEquipo" id="Del"><span class="resaltado">¿Está seguro de borrar permanentemente al equipo?</span></h2>
+						<br><span class="resaltado">Ten en cuenta que los jugadores pertenecientes al equipo no se borrarán pero no pertenecerán a ningún equipo.</span>
+						<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=delEquipo2#vista" method="post">
+						<input type="radio" name="rta" value="si"> Sí
+						<input type="radio" name="rta" value="no" checked> No
+						<br>
+						<br>
+						<label class="flabel">Password</label>
+						<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+						<br>
+						<br>
+						<input class="btnPanel" type="submit">
+						</form>';
+					}
+
+					if($accion == "delEquipo2"){
+						$nombreEquipo = $_GET['nombreEquipo'];
+						$rta = $_POST['rta'];
+						if($rta == "si"){
+							$pass = $_POST['pass'];
+							if(borrarEquipo($nombreEquipo,$pass)){
+								displayGreen("","Se borró permanentemente el equipo $nombreEquipo");
+								$tiempo = 3; # segundos
+								$pagina = "equipos.php"; #URL;
+								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
+							}
+							else{
+								displayError("Error","No se pudo borrar al equipo.<br> Contraseña errónea.");
 							}
 						}
 						else if($rta == "no"){
