@@ -183,7 +183,7 @@
 		
 		<fieldset>
 			<h2 class="hEquipo">Buscar jugadores</h2>
-			<form action="busqJugador.php" method="get">
+			<form action="jugadores.php" method="get">
 				<label class="flabel">Nombre</label>
 				<input list="equipos" name="nombre" type="text" class="text ui-widget-content ui-corner-all">
 				<br>
@@ -232,7 +232,7 @@
 						}
 						else{
 							$_GET = array();
-							header('location:busqJugador.php?error=1');
+							header('location:jugadores.php?error=1');
 						}
 					}
 					if($_GET['busq'] == 2){
@@ -249,7 +249,7 @@
 						}
 						else{
 							$_GET = array();
-							header('location:agJugador.php?error=1');
+							header('location:jugadores.php?error=1');
 						}
 					}
 				}
@@ -269,7 +269,7 @@
 			<fieldset>
 			<h2 class="hEquipo">Agregar jugador</h2>
 			<br>
-			<form action="agJugador.php?sent=1" method="post">
+			<form action="jugadores.php?sent=1" method="post">
 				<label class="flabel">Nombre</label>
 				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
 				<label class="flabel">DNI/LU</label>
@@ -296,7 +296,7 @@
 						}
 						else{
 							$_GET = array();
-							header('location:agJugador.php?error=1');
+							header('location:jugadores.php?error=1');
 						}
 					}
 				}
