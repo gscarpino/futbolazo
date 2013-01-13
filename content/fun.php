@@ -338,4 +338,8 @@ function borrarEquipo($nEquipo,$pass){
 	}
 }
 
+
+function modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$emp,$gf,$gc,$amarillas,$expulsiones1,$expulsiones2){
+	return false;
+}
 ?>

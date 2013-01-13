@@ -310,7 +310,7 @@
 						while ($fila = $res->fetch_row()){
 							unset($fila[0]);
 							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre .'&accion=delEquipo#Del"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
-							$fila[] = '<a href="equipos.php?accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
+							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre .'&accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
 							genFila($fila);
 						}
 						finalizarTabla("3");
@@ -419,6 +419,195 @@
 							header("location:equipos.php?nombreEquipo=" . $nombreEquipo . "#vista");
 						}
 					}
+					if($accion == "modEquipo"){
+						$nombreEquipo = $_GET['nombreEquipo'];
+						$mydb = conectar();
+						$q = "SELECT * FROM equipo WHERE Nombre = '$nombreEquipo'";
+						if($res = $mydb->query($q)){
+							$info = $res->fetch_row();
+							
+							echo '<br><h2 class="hEquipo" id="Mod"> Edición del equipo <span class="resaltado">' . $nombreEquipo . '</span></h2>
+							<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=modEquipo2#vista" method="post">
+							<label class="flabel">Nombre</label>
+							<input type="text" value="' . $info[0] .'" name="nombre" class="text ui-widget-content ui-corner-all" style="width:100%">						
+							<label class="flabel">Categoría</label>
+							<select name="categoria" class="text ui-widget-content ui-corner-all">';
+							if($info[1] == "A"){
+								echo '<option value="A" selected>A</option>';
+							}
+							else{
+								echo '<option value="A">A</option>';
+							}
+							if($info[1] == "B"){
+								echo '<option value="B" selected>B</option>';
+							}
+							else{
+								echo '<option value="B">B</option>';
+							}
+							if($info[1] == "C"){
+								echo '<option value="C" selected>C</option>';
+							}
+							else{
+								echo '<option value="C">C</option>';
+							}
+							if($info[1] == "D"){
+								echo '<option value="D" selected>D</option>';
+							}
+							else{
+								echo '<option value="D">D</option>';
+							}
+							
+							echo '</select><label class="flabel">Mail</label>
+							<input type="email" name="mail" value="' . $info[2] .'" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<table style="width:100%;text-align: center;border-collapse:collapse;">
+							<tr>
+							<td>
+								<label class="flabel">Partidos Ganados</label>
+							</td>
+							<td>
+								<label class="flabel">Partidos Perdidos</label>
+							</td>
+							<td>
+								<label class="flabel">Empates</label>
+							</td>
+							<td>
+							<label class="flabel">Goles a favor</label>
+							</td>
+							<td>
+							<label class="flabel">Goles en contra</label>
+							</td>
+							<td>
+							<label class="flabel">Amarillas</label>
+							</td>
+							<td>
+							<label class="flabel">Expulsiones 5\'</label>
+							</td>
+							<td>
+							<label class="flabel">Expulsiones</label>
+							</td>
+							</tr>
+							
+							<tr>
+							<td>
+							<input type="number" name="pg" value="' . $info[3] .'" min="0" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="pp" min="0" value="' . $info[4] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="emp" min="0" style="width:40px;" value="' . $info[5] .'" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="gf" min="0" value="' . $info[6] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="gc" min="0" value="' . $info[7] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="amarillas" min="0" value="' . $info[8] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="expulsiones1" min="0" value="' . $info[9] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="expulsiones2" min="0" value="' . $info[10] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							</tr>
+							</table>
+							<label class="flabel">Password</label>
+							<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<br>
+							<br>
+							<input class="btnPanel" type="submit">
+							</form>';
+						}
+					}
+					
+					if($accion == "modEquipo2"){
+						$nombreEquipo = $_GET['nombreEquipo'];
+						if(isset($_POST['nombre'])){
+							$nombre = $_POST['nombre'];
+						}
+						else{
+							$nombre = $nombreEquipo;
+						}
+
+						if(isset($_POST['categoria'])){
+							$categoria = $_POST['categoria'];
+						}
+						else{
+							$categoria = "0";
+						}
+						if(isset($_POST['mail'])){
+							$mail = $_POST['mail'];
+						}
+						else{
+							$mail = " ";
+						}
+						if(isset($_POST['pg'])){
+							$pg = $_POST['pg'];
+						}
+						else{
+							$pg = -1;
+						}
+						if(isset($_POST['pp'])){
+							$pp = $_POST['pp'];
+						}
+						else{
+							$pp = -1;
+						}
+						if(isset($_POST['emp'])){
+							$emp = $_POST['emp'];
+						}
+						else{
+							$emp = -1;
+						}
+						if(isset($_POST['gf'])){
+							$gf = $_POST['gf'];
+						}
+						else{
+							$gf = -1;
+						}
+						if(isset($_POST['gc'])){
+							$gc = $_POST['gc'];
+						}
+						else{
+							$gc = -1;
+						}
+						if(isset($_POST['amarillas'])){
+							$amarillas = $_POST['amarillas'];
+						}
+						else{
+							$amarillas = -1;
+						}
+						if(isset($_POST['expulsiones1'])){
+							$expulsiones1 = $_POST['expulsiones1'];
+						}
+						else{
+							$expulsiones1 = -1;
+						}
+						if(isset($_POST['expulsiones2'])){
+							$expulsiones2 = $_POST['expulsiones2'];
+						}
+						else{
+							$expulsiones2 = -1;
+						}
+						if(isset($_POST['pass'])){
+							$pass = $_POST['pass'];
+							if(modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$emp,$gf,$gc,$amarillas,$expulsiones1,$expulsiones2)){
+								displayGreen("","Se modificó correctamente el equipo");
+								$tiempo = 3; # segundos
+								$pagina = "equipos.php?nombreEquipo=" . $nombre . "#vista"; #URL;
+								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
+							}
+							else{
+								displayError("Error","No se pudo modificar al equipo.<br> Contraseña errónea.");
+							}
+						}
+						else{
+							header("location:equipos.php?nombreEquipo=" . $nombreEquipo . "#vista");
+						}
+					}
 				}
 								
 			?>
@@ -464,7 +653,7 @@
 					<option value="D">D</option>
 				</select>
 				<label class="flabel">Mail</label>
-				<input type="text" name="mail" class="text ui-widget-content ui-corner-all">
+				<input type="email" name="mail" class="text ui-widget-content ui-corner-all">
 				<br>
 				<br>		
 				<br>
