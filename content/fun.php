@@ -340,6 +340,118 @@ function borrarEquipo($nEquipo,$pass){
 
 
 function modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$emp,$gf,$gc,$amarillas,$expulsiones1,$expulsiones2){
-	return false;
+	if(!isset($_SESSION['nombre'])){
+		return false;
+	}
+	else{
+		$nombreAdm = $_SESSION['nombre'];
+		$mydb = conectar();
+		$res = $mydb->query("SELECT * FROM usuarios WHERE Nombre = '$nombreAdm'");
+		if($res->num_rows < 1){
+			return false;
+		}
+		else{
+			$fila = $res->fetch_row();
+			$passDB = $fila[1];
+			$pass = crypt($pass,'$6$rounds=5000$a1b2c3d4e5f6g7h8$');
+			if($pass != $passDB){
+				return false;
+			}
+			else{
+				if($res = $mydb->query("SELECT * FROM equipo WHERE Nombre = '$nombreEquipo'")){
+					$fila = $res->fetch_row();
+					$nombre = trim($nombre);
+					$res1 = $res2 = $res3 = $res4 = $res5 = $res6 = $res7 = $res8 = $res9 = $res10 = $res11 = true;
+					if(($nombre != $nombreEquipo) && (strlen($nombre) > 0)){
+						$res1 = $mydb->query('UPDATE equipo SET Nombre="' . $nombre . '" WHERE Nombre = "' . $nombreEquipo . '"');
+						$nombreEquipo = $nombre;
+						if(!$res1){
+							displayError("Nuevo nombre","No se pudo actualizar el nombre del equipo.");	
+						}
+					}
+					
+ 					if($categoria != "0"){
+ 						$res2 = $mydb->query('UPDATE equipo SET Categoria="' . $categoria . '" WHERE Nombre = "' . $nombreEquipo . '"');
+						if(!$res2){
+							displayError("Nueva categoría","No se pudo actualizar la categoría del equipo.");	
+						}
+ 					}
+					
+ 					if($mail != " "){
+						$res3 = $mydb->query('UPDATE equipo SET Mail="' . $mail . '" WHERE Nombre = "' . $nombreEquipo . '"');
+						if(!$res3){
+							displayError("Nuevo mail","No se pudo actualizar el mail del equipo.");	
+						}
+ 					}
+
+					
+					
+					if($pg != "-1"){
+						$res4 = $mydb->query("UPDATE equipo SET PartidosGanados = $pg WHERE Nombre = '$nombreEquipo'");
+						if(!$res4){
+							displayError("Partidos ganados","No se pudo actualizar la cantidad de partidos ganados del equipo.");	
+						}
+					}
+					
+					if($pp != "-1"){
+						$res5 = $mydb->query("UPDATE equipo SET PartidosPerdidos = $pp WHERE Nombre = '$nombreEquipo'");
+						if(!$res5){
+							displayError("Partidos perdidos","No se pudo actualizar la cantidad de partidos perdidos del equipo.");	
+						}
+					}
+					
+					if($emp != "-1"){
+						$res6 = $mydb->query("UPDATE equipo SET Empates = $emp WHERE Nombre = '$nombreEquipo'");
+						if(!$res6){
+							displayError("Partidos empatados","No se pudo actualizar la cantidad de partidos empatados del equipo.");	
+						}
+					}
+					
+					if($gf != "-1"){
+						$res7 = $mydb->query("UPDATE equipo SET GolesConvertidos = $gf WHERE Nombre = '$nombreEquipo'");
+						if(!$res7){
+							displayError("Goles a favor","No se pudo actualizar la cantidad de goles a favor del equipo.");	
+						}
+					}
+					
+					if($gc != "-1"){
+						$res8 = $mydb->query("UPDATE equipo SET GolesRecibidos = $gc WHERE Nombre = '$nombreEquipo'");
+						if(!$res8){
+							displayError("Goles en contra","No se pudo actualizar la cantidad de goles en contra del equipo.");	
+						}
+					}
+					
+					if($amarillas != "-1"){
+						$res9 = $mydb->query("UPDATE equipo SET Amarillas = $amarillas WHERE Nombre = '$nombreEquipo'");
+						if(!$res9){
+							displayError("Tarjetas amarillas","No se pudo actualizar la cantidad de tarjetas amarillas del equipo.");	
+						}
+					}
+					
+					if($expulsiones1 != "-1"){
+						$res10 = $mydb->query("UPDATE equipo SET Expulsiones1 = $expulsiones1 WHERE Nombre = '$nombreEquipo'");
+						if(!$res10){
+							displayError("Expulsiones 5\'","No se pudo actualizar la cantidad de expulsiones de 5 minutos del equipo.");	
+						}
+					}
+					
+					if($expulsiones2 != "-1"){
+						$res11 = $mydb->query("UPDATE equipo SET Expulsiones2 = $expulsiones2 WHERE Nombre = '$nombreEquipo'");
+						if(!$res4){
+							displayError("Expulsiones","No se pudo actualizar la cantidad de expulsiones del equipo.");	
+						}
+					}
+					
+					
+					
+					return $res1 && $res2 && $res3 && $res4 && $res5 && $res6 && $res7 && $res8 && $res9 && $res10 && $res11;
+				}
+				else{
+					return false;
+				}
+			}
+		}
+	}
 }
+
 ?>

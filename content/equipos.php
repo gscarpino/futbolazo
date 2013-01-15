@@ -597,11 +597,18 @@
 							if(modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$emp,$gf,$gc,$amarillas,$expulsiones1,$expulsiones2)){
 								displayGreen("","Se modificó correctamente el equipo");
 								$tiempo = 3; # segundos
-								$pagina = "equipos.php?nombreEquipo=" . $nombre . "#vista"; #URL;
+								$nombre = trim($nombre);
+								if(($nombre != $nombreEquipo) && (strlen($nombre) > 0)){
+									$pagina = "equipos.php?nombreEquipo=" . $nombre . "#vista"; #URL;
+								}
+								else{
+									$pagina = "equipos.php?nombreEquipo=" . $nombreEquipo . "#vista"; #URL;
+								}
 								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
 							}
 							else{
-								displayError("Error","No se pudo modificar al equipo.<br> Contraseña errónea.");
+								displayError("Error","No se pudo modificar al equipo correctamente.<br> Compruebe introducir la contraseña correcta.<br> Pudo haberse producido un error al tratar de actualizar alguno de los campos.
+								<br><br><a href='equipos.php?busq=2'>Volver</a>");
 							}
 						}
 						else{
