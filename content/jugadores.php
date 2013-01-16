@@ -184,19 +184,23 @@
 		<fieldset>
 			<h2 class="hEquipo">Buscar jugadores</h2>
 			<form action="jugadores.php" method="get">
-				<label class="flabel">Nombre</label>
-				<input list="equipos" name="nombre" type="text" class="text ui-widget-content ui-corner-all">
-				<br>
-				<br>
-				<input type="radio" value="Y" name="criterio" checked> Y <input type="radio" value="O" name="criterio"> O
 				
-				<label class="flabel">DNI/LU</label>
-				<input list="equipos" name="dni" type="text" class="text ui-widget-content ui-corner-all">
+				<label class="flabel">Buscar por</label>
+				<select name="campo" class="text ui-widget-content ui-corner-all">
+					<option value="nombre">Nombre</option>
+					<option value="dni">DNI</option>
+					<option value="equipo">Equipo</option>
+				</select>
 				<br>
 				<br>
-				
-				<input type="text" name="busq" value="1" hidden>
-				
+				<div>
+				<label class="flabel" style="display: inline;">Buscar</label>
+				<input type="checkbox" name="exacto" value="false" title="búsqueda exacta" class="text ui-widget-content ui-corner-all">
+				</div>
+				<input type="text" name="palabras"  class="text ui-widget-content ui-corner-all">
+				<br>
+				<br>
+				<input type="text" name="busq" value="1" hidden="true">				
 				<input class="btnPanel" type="submit" value="Buscar">
 			</form>
 			<br>
@@ -204,63 +208,392 @@
 				<a class="btnPanel" href="jugadores.php?busq=2">Todos</a>
 			</div>
 			<br>
+			
 			<?php
 				if(isset($_GET['busq'])){
+					$mydb = conectar();
+
 					if($_GET['busq'] == 1){
-						$nombre = $_GET['nombre'];
-						$dni = $_GET['dni'];
-						$criterio = $_GET['criterio'];
-						$mydb = conectar();
-						
-						if($criterio == "Y"){
-							$q = "SELECT * FROM jugadores WHERE Nombre = '$nombre' and DNI = '$dni'";
-						}
-						else{
-							$q = "SELECT * FROM jugadores WHERE Nombre = '$nombre' or DNI = '$dni'";
+						if (isset($_GET['campo'])){
+							$campo = $_GET['campo'];
 						}
 
-						if ($res = $mydb->query($q)){
-							empezarTabla();
-							$encabezados = array("Nombre","DNI/LU","Equipo","Goles","Faltas");
-							genEncabezado($encabezados);
-							if($res->num_rows > 0){
-								$fila = $res->fetch_row();
-								genFila($fila);
-							}
-						    finalizarTabla("3");
-						    $res->close();
+						if (isset($_GET['palabras'])){
+							$palabras = $_GET['palabras'];
 						}
 						else{
-							$_GET = array();
-							header('location:jugadores.php?error=1');
+							$palabras = "";
+						}
+						
+						if (isset($_GET['exacto'])){
+							$exacto = $_GET['exacto'];
+						}
+						else{
+							$exacto = false;
+						}
+						
+						$palabras = strtoupper($palabras);
+						$palabras = strip_tags($palabras);
+						$palabras = trim ($palabras);
+						
+						if($exacto){
+							$q = "SELECT * FROM jugadores WHERE $campo = '$palabras'";
+						}
+						else{
+							$q = "SELECT * FROM jugadores WHERE $campo LIKE '%$palabras%'";
 						}
 					}
-					if($_GET['busq'] == 2){
-						$mydb = conectar();
-						if ($res = $mydb->query("SELECT * FROM jugadores")){
-							empezarTabla();
-							$encabezados = array("Nombre","DNI/LU","Equipo","Goles","Faltas");
-							genEncabezado($encabezados);
-							while ($fila = $res->fetch_row()){
-								genFila($fila);
-							}
-							finalizarTabla("3");
-							$res->close();
+					else{
+						$q = "SELECT * FROM jugadores";
+					}
+					
+					if ($res = $mydb->query($q)){
+						empezarTabla();
+						$encabezados = array("Nombre","DNI/LU","Equipo","Goles","Faltas");
+						genEncabezado($encabezados);
+						while($fila = $res->fetch_row()){
+							genFila($fila);
 						}
-						else{
-							$_GET = array();
-							header('location:jugadores.php?error=1');
-						}
+					    finalizarTabla("3");
+					    $res->close();
+					}
+					else{
+						$_GET = array();
+						header('location:jugadores.php?error=1');
 					}
 				}
 				
 				if(isset($_GET['error'])){
 					if($_GET['error'] == 1){
-						displayError("Error","No se pudo encontrar el jugador.");
+						displayError("Error","No se pudo encontrar el equipo.");
+					}
+				}
+
+				
+				
+				if(isset($_GET['nombreEquipo'])){
+					$nombre = $_GET['nombreEquipo'];
+					echo '<br><h2 class="hEquipo" id="vista">Datos de <strong class="resaltado">' . $nombre  . '</strong></h2><br><br>';
+					$mydb = conectar();
+					$q = "SELECT * FROM equipo WHERE Nombre = '$nombre'";
+					if($res = $mydb->query($q)){
+						empezarTabla();
+						$encabezados = array("Categoría","Mail","<span title='Partidos Ganados'>PG</span>","<span title='Partidos Perdidos'>PP","<span title='Partidos Empatados'>E","<span title='Goles a favor'>GF","<span title='Goles en contra'>GC","Amarillas","Expulsiones 5'","Expulsiones","","");
+						genEncabezado($encabezados);
+						while ($fila = $res->fetch_row()){
+							unset($fila[0]);
+							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre .'&accion=delEquipo#Del"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
+							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre .'&accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
+							genFila($fila);
+						}
+						finalizarTabla("3");
+						$res->close();
+					}
+						
+				
+					echo '<br><h2 class="hEquipo">Jugadores de <strong class="resaltado">' . $nombre  . '</strong></h2><br><br>';
+					$mydb = conectar();
+					$q = "SELECT * FROM jugadores WHERE Equipo = '$nombre' ORDER BY Nombre ASC";
+					if($res = $mydb->query($q)){
+						empezarTabla();
+						$encabezados = array("Nombre","DNI/LU","Goles","Amarillas","Expulsiones 5'","Expulsiones");
+						genEncabezado($encabezados);
+						while ($fila = $res->fetch_row()){
+							unset($fila[2]);
+							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre . '&accion=sacar&nombre=' . $fila[0] . '&who=' . $fila[1] . '#Sacar"><img src="imgs/throw_player.png" title="Remover jugador del equipo"></a>';
+							genFilaLink($fila,"jugadores.php?busq=1&nombre=$fila[0]&criterio=Y&dni=$fila[1]");
+						}
+						finalizarTabla("3");
+						$res->close();
 					}
 				}
 				
+				
+				if(isset($_GET['accion'])){
+					$accion = $_GET['accion'];
+					if($accion == "sacar"){
+						if(isset($_GET['who'])){
+							$who = $_GET['who'];
+							$nombre = $_GET['nombre'];
+							$nombreEquipo = $_GET['nombreEquipo'];
+							echo '<br><h2 class="hEquipo" id="Sacar">¿Está seguro de sacar del equipo a  <strong class="resaltado">' . $nombre . '</strong> ?</h2>
+							<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=sacar2#vista" method="post">
+							<input type="radio" name="rta" value="si"> Sí
+							<input type="radio" name="rta" value="no" checked> No
+							<br>
+							<br>
+							<label class="flabel">Password</label>
+							<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<br>
+							<br>
+							<input type="text" name="who" value="' . $who .'" hidden>
+							<input type="text" name="nombre" value="' . $nombre .'" hidden>
+							<input class="btnPanel" type="submit">
+							</form>';
+						}
+						else{
+							displayError("Error","Acción incompleta");
+						}
+					}
+					if($accion == "sacar2"){
+						$rta = $_POST['rta'];
+						$nombreEquipo = $_GET['nombreEquipo'];
+						if($rta == "si"){
+							$who = $_POST['who'];
+							$nombre = $_POST['nombre'];
+							$pass = $_POST['pass'];
+							if(sacarJugadorDeEquipo($who,$pass)){
+								displayGreen("","Se quito el jugador $nombre del equipo");
+								$tiempo = 3; # segundos
+								$pagina = "equipos.php?nombreEquipo=" . $nombreEquipo . "#vista"; #URL;
+								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
+							}
+							else{
+								displayError("Error","No se pudo quitar al jugador del equipo.<br> Contraseña errónea.");
+							}
+						}
+						else if($rta == "no"){
+							header("location:equipos.php?nombreEquipo=" . $nombreEquipo . "#vista");
+						}
+					}
+					if($accion == "delEquipo"){
+						$nombreEquipo = $_GET['nombreEquipo'];
+						echo '<br><h2 class="hEquipo" id="Del"><span class="resaltado">¿Está seguro de borrar permanentemente al equipo?</span></h2>
+						<br><span class="resaltado">Ten en cuenta que los jugadores pertenecientes al equipo no se borrarán pero no pertenecerán a ningún equipo.</span>
+						<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=delEquipo2#vista" method="post">
+						<input type="radio" name="rta" value="si"> Sí
+						<input type="radio" name="rta" value="no" checked> No
+						<br>
+						<br>
+						<label class="flabel">Password</label>
+						<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+						<br>
+						<br>
+						<input class="btnPanel" type="submit">
+						</form>';
+					}
+
+					if($accion == "delEquipo2"){
+						$nombreEquipo = $_GET['nombreEquipo'];
+						$rta = $_POST['rta'];
+						if($rta == "si"){
+							$pass = $_POST['pass'];
+							if(borrarEquipo($nombreEquipo,$pass)){
+								displayGreen("","Se borró permanentemente el equipo $nombreEquipo");
+								$tiempo = 3; # segundos
+								$pagina = "equipos.php"; #URL;
+								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
+							}
+							else{
+								displayError("Error","No se pudo borrar al equipo.<br> Contraseña errónea.");
+							}
+						}
+						else if($rta == "no"){
+							header("location:equipos.php?nombreEquipo=" . $nombreEquipo . "#vista");
+						}
+					}
+					if($accion == "modEquipo"){
+						$nombreEquipo = $_GET['nombreEquipo'];
+						$mydb = conectar();
+						$q = "SELECT * FROM equipo WHERE Nombre = '$nombreEquipo'";
+						if($res = $mydb->query($q)){
+							$info = $res->fetch_row();
+							
+							echo '<br><h2 class="hEquipo" id="Mod"> Edición del equipo <span class="resaltado">' . $nombreEquipo . '</span></h2>
+							<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=modEquipo2#vista" method="post">
+							<label class="flabel">Nombre</label>
+							<input type="text" value="' . $info[0] .'" name="nombre" class="text ui-widget-content ui-corner-all" style="width:100%">						
+							<label class="flabel">Categoría</label>
+							<select name="categoria" class="text ui-widget-content ui-corner-all">';
+							if($info[1] == "A"){
+								echo '<option value="A" selected>A</option>';
+							}
+							else{
+								echo '<option value="A">A</option>';
+							}
+							if($info[1] == "B"){
+								echo '<option value="B" selected>B</option>';
+							}
+							else{
+								echo '<option value="B">B</option>';
+							}
+							if($info[1] == "C"){
+								echo '<option value="C" selected>C</option>';
+							}
+							else{
+								echo '<option value="C">C</option>';
+							}
+							if($info[1] == "D"){
+								echo '<option value="D" selected>D</option>';
+							}
+							else{
+								echo '<option value="D">D</option>';
+							}
+							
+							echo '</select><label class="flabel">Mail</label>
+							<input type="email" name="mail" value="' . $info[2] .'" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<table style="width:100%;text-align: center;border-collapse:collapse;">
+							<tr>
+							<td>
+								<label class="flabel">Partidos Ganados</label>
+							</td>
+							<td>
+								<label class="flabel">Partidos Perdidos</label>
+							</td>
+							<td>
+								<label class="flabel">Empates</label>
+							</td>
+							<td>
+							<label class="flabel">Goles a favor</label>
+							</td>
+							<td>
+							<label class="flabel">Goles en contra</label>
+							</td>
+							<td>
+							<label class="flabel">Amarillas</label>
+							</td>
+							<td>
+							<label class="flabel">Expulsiones 5\'</label>
+							</td>
+							<td>
+							<label class="flabel">Expulsiones</label>
+							</td>
+							</tr>
+							
+							<tr>
+							<td>
+							<input type="number" name="pg" value="' . $info[3] .'" min="0" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="pp" min="0" value="' . $info[4] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="emp" min="0" style="width:40px;" value="' . $info[5] .'" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="gf" min="0" value="' . $info[6] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="gc" min="0" value="' . $info[7] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="amarillas" min="0" value="' . $info[8] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="expulsiones1" min="0" value="' . $info[9] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="expulsiones2" min="0" value="' . $info[10] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							</tr>
+							</table>
+							<label class="flabel">Password</label>
+							<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<br>
+							<br>
+							<input class="btnPanel" type="submit">
+							</form>';
+						}
+					}
+					
+					if($accion == "modEquipo2"){
+						$nombreEquipo = $_GET['nombreEquipo'];
+						if(isset($_POST['nombre'])){
+							$nombre = $_POST['nombre'];
+						}
+						else{
+							$nombre = $nombreEquipo;
+						}
+
+						if(isset($_POST['categoria'])){
+							$categoria = $_POST['categoria'];
+						}
+						else{
+							$categoria = "0";
+						}
+						if(isset($_POST['mail'])){
+							$mail = $_POST['mail'];
+						}
+						else{
+							$mail = " ";
+						}
+						if(isset($_POST['pg'])){
+							$pg = $_POST['pg'];
+						}
+						else{
+							$pg = -1;
+						}
+						if(isset($_POST['pp'])){
+							$pp = $_POST['pp'];
+						}
+						else{
+							$pp = -1;
+						}
+						if(isset($_POST['emp'])){
+							$emp = $_POST['emp'];
+						}
+						else{
+							$emp = -1;
+						}
+						if(isset($_POST['gf'])){
+							$gf = $_POST['gf'];
+						}
+						else{
+							$gf = -1;
+						}
+						if(isset($_POST['gc'])){
+							$gc = $_POST['gc'];
+						}
+						else{
+							$gc = -1;
+						}
+						if(isset($_POST['amarillas'])){
+							$amarillas = $_POST['amarillas'];
+						}
+						else{
+							$amarillas = -1;
+						}
+						if(isset($_POST['expulsiones1'])){
+							$expulsiones1 = $_POST['expulsiones1'];
+						}
+						else{
+							$expulsiones1 = -1;
+						}
+						if(isset($_POST['expulsiones2'])){
+							$expulsiones2 = $_POST['expulsiones2'];
+						}
+						else{
+							$expulsiones2 = -1;
+						}
+						if(isset($_POST['pass'])){
+							$pass = $_POST['pass'];
+							if(modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$emp,$gf,$gc,$amarillas,$expulsiones1,$expulsiones2)){
+								displayGreen("","Se modificó correctamente el equipo");
+								$tiempo = 3; # segundos
+								$nombre = trim($nombre);
+								if(($nombre != $nombreEquipo) && (strlen($nombre) > 0)){
+									$pagina = "equipos.php?nombreEquipo=" . $nombre . "#vista"; #URL;
+								}
+								else{
+									$pagina = "equipos.php?nombreEquipo=" . $nombreEquipo . "#vista"; #URL;
+								}
+								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
+							}
+							else{
+								displayError("Error","No se pudo modificar al equipo correctamente.<br> Compruebe introducir la contraseña correcta.<br> Pudo haberse producido un error al tratar de actualizar alguno de los campos.
+								<br><br><a href='equipos.php?busq=2'>Volver</a>");
+							}
+						}
+						else{
+							header("location:equipos.php?nombreEquipo=" . $nombreEquipo . "#vista");
+						}
+					}
+				}
+								
 			?>
+			
+			
+
 			<br>
 			<br>
 			</fieldset>
