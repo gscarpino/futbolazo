@@ -244,7 +244,10 @@
 		<h2 class="hEquipo">Buscar equipos</h2>	
 		
 		<form action="equipos.php?busq=1" method="get">
-				<label class="flabel">Equipo</label>
+				<div >
+				<label class="flabel" style="display: inline;">Equipo</label>
+				<input type="checkbox" name="exacto" value="false" title="búsqueda exacta" class="text ui-widget-content ui-corner-all">
+				</div>
 				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
 				<datalist id="equipos">
 				  <?php 
@@ -255,7 +258,7 @@
 				<br>
 					<input class="btnPanel" type="submit" value="Buscar">
 
-				<input type="text" name="busq" value="1" hidden>
+				<input type="text" name="busq" value="1" hidden="true">
 				
 			</form>
 			<br>
@@ -270,7 +273,21 @@
 
 					if($_GET['busq'] == 1){
 						$nombre = $_GET['equipo'];
-						$q = "SELECT * FROM equipo WHERE Nombre = '$nombre' and Nombre != '[SIN EQUIPO]'";
+						$nombre = strtoupper($nombre);
+						$nombre = strip_tags($nombre);
+						$nombre = trim ($nombre);
+						if(isset($_GET['exacto'])){
+							$exacto = $_GET['exacto'];
+						}
+						else{
+							$exacto = false;
+						}
+						if($exacto){
+							$q = "SELECT * FROM equipo WHERE Nombre = '$nombre' and Nombre != '[SIN EQUIPO]'";
+						}
+						else{
+							$q = "SELECT * FROM equipo WHERE Nombre LIKE '%$nombre%' and Nombre != '[SIN EQUIPO]'";
+						}
 					}
 					else{
 						$q = "SELECT * FROM equipo WHERE Nombre != '[SIN EQUIPO]'";
