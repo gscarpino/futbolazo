@@ -454,4 +454,30 @@ function modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$e
 	}
 }
 
+function borrarJugador($dni,$pass){
+	if(!isset($_SESSION['nombre'])){
+		return false;
+	}
+	else{
+		$nombre = $_SESSION['nombre'];
+		$mydb = conectar();
+		$res = $mydb->query("SELECT * FROM usuarios WHERE Nombre = '$nombre'");
+		if($res->num_rows < 1){
+			return false;
+		}
+		else{
+			$fila = $res->fetch_row();
+			$passDB = $fila[1];
+			$pass = crypt($pass,'$6$rounds=5000$a1b2c3d4e5f6g7h8$');
+			if($pass != $passDB){
+				return false;
+			}
+			else{		
+				$res = $mydb->query("DELETE FROM jugadores WHERE DNI = $dni");
+				return $res;
+			}
+		}
+	}
+}
+
 ?>

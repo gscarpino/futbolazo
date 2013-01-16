@@ -326,8 +326,8 @@
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							unset($fila[0]);
-							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre .'&accion=delEquipo#Del"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
 							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre .'&accion=modEquipo#Mod"><img src="imgs/mod_team.png" title="Modificar equipo"></a>';
+							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre .'&accion=delEquipo#Del"><img src="imgs/del_team.png" title="Borrar equipo"></a>';
 							genFila($fila);
 						}
 						finalizarTabla("3");
@@ -345,7 +345,7 @@
 						while ($fila = $res->fetch_row()){
 							unset($fila[2]);
 							$fila[] = '<a href="equipos.php?nombreEquipo=' . $nombre . '&accion=sacar&nombre=' . $fila[0] . '&who=' . $fila[1] . '#Sacar"><img src="imgs/throw_player.png" title="Remover jugador del equipo"></a>';
-							genFilaLink($fila,"jugadores.php?busq=1&nombre=$fila[0]&criterio=Y&dni=$fila[1]");
+							genFilaLink($fila,"jugadores.php?jug=$fila[1]#vista");
 						}
 						finalizarTabla("3");
 						$res->close();
