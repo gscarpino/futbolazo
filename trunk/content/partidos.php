@@ -185,7 +185,7 @@
 				else{
 					$etapa = $_GET['etapa'];
 					if($etapa == 0){
-						echo '<h1 class="titulo">Datos generales</h1><form action="regPartido.php?etapa=1" method="post">
+						echo '<h1 class="titulo">Datos generales</h1><form action="partidos.php?etapa=1" method="post">
 						<label class="flabel">Equipo 1</label>
 						<input type="text" list="equipos" name="equip1" class="text ui-widget-content ui-corner-all">
 						
@@ -223,7 +223,7 @@
 							$goles2 = $_POST['goles2'];
 							$comentario = $_POST['comentario'];
 							echo '<h1 class="titulo">Goles y faltas</h1><br>';
-							echo '<form action="regPartido.php?etapa=2&equip1=' . $equip1 . '&equip2=' . $equip2 . '&fecha=' . $fecha . '&numero=' . $numero . '&goles1=' . $goles1 . '&goles2=' . $goles2 . '" method="post">';
+							echo '<form action="partidos.php?etapa=2&equip1=' . $equip1 . '&equip2=' . $equip2 . '&fecha=' . $fecha . '&numero=' . $numero . '&goles1=' . $goles1 . '&goles2=' . $goles2 . '" method="post">';
 							echo '<h2 class="hEquipo">' . $equip1 . '</h2>';
 							$mydb = conectar();
 							if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip1'")){
@@ -259,14 +259,10 @@
 							echo '<br><br><input class="fsubmit" type="submit"></form>';
 						}
 						else{
-							header("location:regPartido.php");
+							header("location:partidos.php");
 						}
 					}
-					else if($etapa == 2){
-						echo 'POST:<br>';
-						var_dump($_POST);
-// 						echo '<br>GET:';
-// 						var_dump($_GET);
+					else if($etapa == 2){}
 						
 						$equip1 = $_GET['equip1'];
 						$equip2 = $_GET['equip2'];
@@ -283,10 +279,7 @@
 						}
 						
 					}
-					else{
-						echo 'error';
-					}
-				}
+				
 			?>
 			
 		</div>

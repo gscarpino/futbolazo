@@ -159,36 +159,55 @@ function agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$datos){
 			if($datos[$c] == "on"){
 				$pos = strpos($c,"_");
 				$dni = substr($c,0,$pos);
-				$res = $mydb->query("SELECT Amarillas FROM jugadores WHERE DNI = $dni");
+				$res = $mydb->query("SELECT Equipo,Amarillas FROM jugadores WHERE DNI = $dni");
 				$fila = $res->fetch_row();
-				$valor = $fila[0];
+				$valor = $fila[1];
 				$valor++;
 				$res = $mydb->query("UPDATE jugadores SET Amarillas = $valor WHERE DNI = $dni");
 				$amarillas[] = "$dni";
+				$eq = $fila[0];
+				$res = $mydb->query('SELECT Amarillas FROM equipo WHERE Nombre = "' . $eq . '"');
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query('UPDATE equipo SET Amarillas = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
 			}
 		}
 		if(substr_count($c,"Expulsion1") > 0){
 			if($datos[$c] == "on"){
 				$pos = strpos($c,"_");
 				$dni = substr($c,0,$pos);
-				$res = $mydb->query("SELECT Expulsiones1 FROM jugadores WHERE DNI = $dni");
+				$res = $mydb->query("SELECT Equipo,Expulsiones1 FROM jugadores WHERE DNI = $dni");
 				$fila = $res->fetch_row();
-				$valor = $fila[0];
+				$valor = $fila[1];
 				$valor++;
 				$res = $mydb->query("UPDATE jugadores SET Expulsiones1 = $valor WHERE DNI = $dni");
 				$expulsados1[] = "$dni";
+				$eq = $fila[0];
+				$res = $mydb->query('SELECT Expulsiones1 FROM equipo WHERE Nombre = "' . $eq . '"');
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query('UPDATE equipo SET Expulsiones1 = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
 			}
 		}
 		if(substr_count($c,"Expulsion2") > 0){
 			if($datos[$c] == "on"){
 				$pos = strpos($c,"_");
 				$dni = substr($c,0,$pos);
-				$res = $mydb->query("SELECT Expulsiones2 FROM jugadores WHERE DNI = $dni");
+				$res = $mydb->query("SELECT Equipo,Expulsiones2 FROM jugadores WHERE DNI = $dni");
 				$fila = $res->fetch_row();
-				$valor = $fila[0];
+				$valor = $fila[1];
 				$valor++;
 				$res = $mydb->query("UPDATE jugadores SET Expulsiones2 = $valor WHERE DNI = $dni");
 				$expulsados2[] = "$dni";
+				$eq = $fila[0];
+				$res = $mydb->query('SELECT Expulsiones2 FROM equipo WHERE Nombre = "' . $eq . '"');
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query('UPDATE equipo SET Expulsiones2 = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
+			
 			}
 		}
 		if(substr_count($c,"Goles") > 0){
@@ -204,6 +223,14 @@ function agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$datos){
 			}
 		}
 	}
+	
+
+	$res = $mydb->query('SELECT GolesConvertidos FROM equipo WHERE Nombre = "' . $equip1 . '"');
+	$fila = $res->fetch_row();
+	$valor = $fila[0];
+	$valor = $valor + $goles1;
+	$res = $mydb->query('UPDATE equipo SET GolesConvertidos = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+	
 	
 	$comentario = $datos['comentario'];
 	$gols = implode(",",$goleadores);
@@ -437,7 +464,7 @@ function modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$e
 					
 					if($expulsiones2 != "-1"){
 						$res11 = $mydb->query("UPDATE equipo SET Expulsiones2 = $expulsiones2 WHERE Nombre = '$nombreEquipo'");
-						if(!$res4){
+						if(!$res11){
 							displayError("Expulsiones","No se pudo actualizar la cantidad de expulsiones del equipo.");	
 						}
 					}
@@ -475,6 +502,92 @@ function borrarJugador($dni,$pass){
 			else{		
 				$res = $mydb->query("DELETE FROM jugadores WHERE DNI = $dni");
 				return $res;
+			}
+		}
+	}
+}
+
+function modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$expulsiones1,$expulsiones2){
+	if(!isset($_SESSION['nombre'])){
+		return false;
+	}
+	else{
+		$nombreAdm = $_SESSION['nombre'];
+		$mydb = conectar();
+		$res = $mydb->query("SELECT * FROM usuarios WHERE Nombre = '$nombreAdm'");
+		if($res->num_rows < 1){
+			return false;
+		}
+		else{
+			$fila = $res->fetch_row();
+			$passDB = $fila[1];
+			$pass = crypt($pass,'$6$rounds=5000$a1b2c3d4e5f6g7h8$');
+			if($pass != $passDB){
+				return false;
+			}
+			else{
+				if($res = $mydb->query("SELECT * FROM jugadores WHERE DNI = $dni")){
+					$fila = $res->fetch_row();
+					$NewDNI = trim($NewDNI);
+					$res1 = $res2 = $res3 = $res4 = $res5 = $res6 = $res7 = true;
+					if(($NewDNI != $dni) && (strlen($NewDNI) > 0)){
+						$res1 = $mydb->query('UPDATE jugadores SET DNI=' . $NewDNI . ' WHERE DNI = ' . $dni);
+						$dni = $NewDNI;
+						if(!$res1){
+							displayError("Nuevo DNI/LU","No se pudo actualizar el DNI/LU del jugador.");
+						}
+					}
+						
+					if($nombre != " "){
+						$res2 = $mydb->query('UPDATE jugadores SET Nombre="' . $nombre . '" WHERE DNI = ' . $dni);
+						if(!$res2){
+							displayError("Nuevo nombre","No se pudo actualizar el nombre del jugador.");
+						}
+					}
+						
+					if($equipo != " "){
+						$res3 = $mydb->query('UPDATE jugadores SET Equipo="' . $equipo . '" WHERE DNI = ' . $dni);
+						if(!$res3){
+							displayError("Nuevo equipo","No se pudo actualizar el equipo del jugador.");
+						}
+					}
+	
+						
+					if($goles != "-1"){
+						$res4 = $mydb->query("UPDATE jugadores SET Goles = $goles WHERE DNI = $dni");
+						if(!$res4){
+							displayError("Goles convertidos","No se pudo actualizar la cantidad de goles realizados por el jugador.");
+						}
+					}
+							
+					if($amarillas != "-1"){
+						$res5 = $mydb->query("UPDATE jugadores SET Amarillas = $amarillas WHERE DNI = $dni");
+						if(!$res5){
+							displayError("Tarjetas amarillas","No se pudo actualizar la cantidad de tarjetas amarillas del jugador.");
+						}
+					}
+						
+					if($expulsiones1 != "-1"){
+						$res6 = $mydb->query("UPDATE jugadores SET Expulsiones1 = $expulsiones1 WHERE DNI = $dni");
+						if(!$res6){
+							displayError("Expulsiones 5\'","No se pudo actualizar la cantidad de expulsiones de 5 minutos del jugador.");
+						}
+					}
+						
+					if($expulsiones2 != "-1"){
+						$res7 = $mydb->query("UPDATE jugadores SET Expulsiones2 = $expulsiones2 WHERE DNI = $dni");
+						if(!$res7){
+							displayError("Expulsiones","No se pudo actualizar la cantidad de expulsiones del jugador.");
+						}
+					}
+						
+						
+						
+					return $res1 && $res2 && $res3 && $res4 && $res5 && $res6 && $res7;
+				}
+				else{
+					return false;
+				}
 			}
 		}
 	}

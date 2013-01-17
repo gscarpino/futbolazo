@@ -314,7 +314,7 @@
 					if($accion == "delJug"){
 						$dni = $_GET['jug'];
 						echo '<br><h2 class="hEquipo" id="Del"><span class="resaltado">¿Está seguro de borrar permanentemente al jugador?</span></h2>
-						<form action="jugadores.php?jug=' . $dni . '&accion=delEquipo2#vista" method="post">
+						<form action="jugadores.php?jug=' . $dni . '&accion=delJug2#vista" method="post">
 						<input type="radio" name="rta" value="si"> Sí
 						<input type="radio" name="rta" value="no" checked> No
 						<br>
@@ -327,7 +327,7 @@
 						</form>';
 					}
 
-					if($accion == "delEquipo2"){
+					if($accion == "delJug2"){
 						$dni = $_GET['jug'];
 						$rta = $_POST['rta'];
 						if($rta == "si"){
@@ -347,62 +347,28 @@
 						}
 					}
 					
-					if($accion == "modEquipo"){
-						$nombreEquipo = $_GET['nombreEquipo'];
+					if($accion == "modJug"){
+						$dni = $_GET['jug'];
 						$mydb = conectar();
-						$q = "SELECT * FROM equipo WHERE Nombre = '$nombreEquipo'";
+						$q = "SELECT * FROM jugadores WHERE DNI = $dni";
 						if($res = $mydb->query($q)){
 							$info = $res->fetch_row();
-							
-							echo '<br><h2 class="hEquipo" id="Mod"> Edición del equipo <span class="resaltado">' . $nombreEquipo . '</span></h2>
-							<form action="equipos.php?nombreEquipo=' . $nombreEquipo . '&accion=modEquipo2#vista" method="post">
+							echo '<br><h2 class="hEquipo" id="Mod"> Edición del jugador con DNI/LU <span class="resaltado">' . $dni . '</span></h2>
+							<form action="jugadores.php?jug=' . $dni . '&accion=modJug2#vista" method="post">
 							<label class="flabel">Nombre</label>
 							<input type="text" value="' . $info[0] .'" name="nombre" class="text ui-widget-content ui-corner-all" style="width:100%">						
-							<label class="flabel">Categoría</label>
-							<select name="categoria" class="text ui-widget-content ui-corner-all">';
-							if($info[1] == "A"){
-								echo '<option value="A" selected>A</option>';
-							}
-							else{
-								echo '<option value="A">A</option>';
-							}
-							if($info[1] == "B"){
-								echo '<option value="B" selected>B</option>';
-							}
-							else{
-								echo '<option value="B">B</option>';
-							}
-							if($info[1] == "C"){
-								echo '<option value="C" selected>C</option>';
-							}
-							else{
-								echo '<option value="C">C</option>';
-							}
-							if($info[1] == "D"){
-								echo '<option value="D" selected>D</option>';
-							}
-							else{
-								echo '<option value="D">D</option>';
-							}
+							<label class="flabel">DNI/LU</label>
+							<input type="text" value="' . $info[1] .'" name="NewDNI" class="text ui-widget-content ui-corner-all" style="width:100%">';
 							
-							echo '</select><label class="flabel">Mail</label>
-							<input type="email" name="mail" value="' . $info[2] .'" class="text ui-widget-content ui-corner-all" style="width:100%">
+							echo '<label class="flabel">Equipo</label>
+							<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all" value="' . $info[2] .'">
+							<datalist id="equipos">';
+							listaEquipos();
+							echo '</datalist>
 							<table style="width:100%;text-align: center;border-collapse:collapse;">
 							<tr>
 							<td>
-								<label class="flabel">Partidos Ganados</label>
-							</td>
-							<td>
-								<label class="flabel">Partidos Perdidos</label>
-							</td>
-							<td>
-								<label class="flabel">Empates</label>
-							</td>
-							<td>
-							<label class="flabel">Goles a favor</label>
-							</td>
-							<td>
-							<label class="flabel">Goles en contra</label>
+							<label class="flabel">Goles</label>
 							</td>
 							<td>
 							<label class="flabel">Amarillas</label>
@@ -417,28 +383,16 @@
 							
 							<tr>
 							<td>
-							<input type="number" name="pg" value="' . $info[3] .'" min="0" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<input type="number" name="goles" value="' . $info[3] .'" min="0" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
 							</td>
 							<td>
-							<input type="number" name="pp" min="0" value="' . $info[4] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<input type="number" name="amarillas" min="0" value="' . $info[4] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
 							</td>
 							<td>
-							<input type="number" name="emp" min="0" style="width:40px;" value="' . $info[5] .'" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<input type="number" name="expulsiones1" min="0" style="width:40px;" value="' . $info[5] .'" class="text ui-widget-content ui-corner-all" style="width:100%">
 							</td>
 							<td>
-							<input type="number" name="gf" min="0" value="' . $info[6] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
-							</td>
-							<td>
-							<input type="number" name="gc" min="0" value="' . $info[7] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
-							</td>
-							<td>
-							<input type="number" name="amarillas" min="0" value="' . $info[8] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
-							</td>
-							<td>
-							<input type="number" name="expulsiones1" min="0" value="' . $info[9] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
-							</td>
-							<td>
-							<input type="number" name="expulsiones2" min="0" value="' . $info[10] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<input type="number" name="expulsiones2" min="0" value="' . $info[6] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
 							</td>
 							</tr>
 							</table>
@@ -451,57 +405,35 @@
 						}
 					}
 					
-					if($accion == "modEquipo2"){
-						$nombreEquipo = $_GET['nombreEquipo'];
+					if($accion == "modJug2"){
+						var_dump($_POST);
+						$dni = $_GET['jug'];
 						if(isset($_POST['nombre'])){
 							$nombre = $_POST['nombre'];
 						}
 						else{
-							$nombre = $nombreEquipo;
+							$nombre = " ";
 						}
 
-						if(isset($_POST['categoria'])){
-							$categoria = $_POST['categoria'];
+						if(isset($_POST['NewDNI'])){
+							$NewDNI = $_POST['NewDNI'];
 						}
 						else{
-							$categoria = "0";
+							$NewDNI = $dni;
 						}
-						if(isset($_POST['mail'])){
-							$mail = $_POST['mail'];
-						}
-						else{
-							$mail = " ";
-						}
-						if(isset($_POST['pg'])){
-							$pg = $_POST['pg'];
+						if(isset($_POST['equipo'])){
+							$equipo = $_POST['equipo'];
 						}
 						else{
-							$pg = -1;
+							$equipo = " ";
 						}
-						if(isset($_POST['pp'])){
-							$pp = $_POST['pp'];
-						}
-						else{
-							$pp = -1;
-						}
-						if(isset($_POST['emp'])){
-							$emp = $_POST['emp'];
+						if(isset($_POST['goles'])){
+							$goles = $_POST['goles'];
 						}
 						else{
-							$emp = -1;
+							$goles = -1;
 						}
-						if(isset($_POST['gf'])){
-							$gf = $_POST['gf'];
-						}
-						else{
-							$gf = -1;
-						}
-						if(isset($_POST['gc'])){
-							$gc = $_POST['gc'];
-						}
-						else{
-							$gc = -1;
-						}
+						
 						if(isset($_POST['amarillas'])){
 							$amarillas = $_POST['amarillas'];
 						}
@@ -522,25 +454,25 @@
 						}
 						if(isset($_POST['pass'])){
 							$pass = $_POST['pass'];
-							if(modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$emp,$gf,$gc,$amarillas,$expulsiones1,$expulsiones2)){
-								displayGreen("","Se modificó correctamente el equipo");
+							if(modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$expulsiones1,$expulsiones2)){
+								displayGreen("","Se modificó correctamente el jugador");
 								$tiempo = 3; # segundos
 								$nombre = trim($nombre);
-								if(($nombre != $nombreEquipo) && (strlen($nombre) > 0)){
-									$pagina = "equipos.php?nombreEquipo=" . $nombre . "#vista"; #URL;
+								if(($NewDNI != $dni) && (strlen($NewDNI) > 0)){
+									$pagina = "jugadores.php?jug=" . $NewDNI . "#vista"; #URL;
 								}
 								else{
-									$pagina = "equipos.php?nombreEquipo=" . $nombreEquipo . "#vista"; #URL;
+									$pagina = "jugadores.php?jug=" . $dni . "#vista"; #URL;
 								}
 								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
 							}
 							else{
-								displayError("Error","No se pudo modificar al equipo correctamente.<br> Compruebe introducir la contraseña correcta.<br> Pudo haberse producido un error al tratar de actualizar alguno de los campos.
-								<br><br><a href='equipos.php?busq=2'>Volver</a>");
+								displayError("Error","No se pudo modificar al jugador correctamente.<br> Compruebe introducir la contraseña correcta.<br> Pudo haberse producido un error al tratar de actualizar alguno de los campos.
+								<br><br><a href='jugadores.php?busq=2'>Volver</a>");
 							}
 						}
 						else{
-							header("location:equipos.php?nombreEquipo=" . $nombreEquipo . "#vista");
+							header("location:jugadores.php?jug=" . $dni . "#vista");
 						}
 					}
 				}
