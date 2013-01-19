@@ -1,9 +1,8 @@
-<?php
+<?php 
 	session_start();
 	require 'fun.php';
 	logueado();
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -37,10 +36,8 @@
 		$( "#btnLogOut" )
 		.button();
 
-
 		$( ".btnPanel" )
 		.button();
-
 
 		$( document ).tooltip({
             position: {
@@ -56,7 +53,6 @@
                 }
             }
         });
-			
 		
 		
 		var name = $( "#name" ),
@@ -108,7 +104,7 @@
 					var bValid = true;
 					allFields.removeClass( "ui-state-error" );
 					bValid = bValid && checkLength( name, "Usuario", 3, 16 );
-					bValid = bValid && checkLength( password, "Contraseña", 5, 16 );
+					bValid = bValid && checkLength( password, "ContraseÃ±a", 5, 16 );
 					bValid = bValid && checkRegexp( name, /^[a-z]([0-9a-z_])+$/, "Username may consist of a-z, 0-9, underscores, begin with a letter." );
 					bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
 
@@ -127,9 +123,11 @@
 
 		
 	});
-	
-	
-	
+
+	function actualizarEquip(){
+		document.location.href = 'fixture.php?categoria=' + document.getElementById('categoria').value;
+	}
+
 	
 </script>
 
@@ -142,7 +140,6 @@
 	<div class="titulo">
 		<img src="imgs/titulo.png"><br>
 	</div>
-	
 	<ul id="menu">
 		<?php 
 			if(isset($_SESSION['logged'])){
@@ -154,28 +151,28 @@
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
 			<ul>
-				<li><a href="#">Categoría A</a>
+				<li><a href="#">CategorÃ­a A</a>
 					<ul>
 						<li><a href="posiciones.php?cat=a"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=a"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=a"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=a"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoría B</a>
+				<li><a href="#">CategorÃ­a B</a>
 					<ul>
 						<li><a href="posiciones.php?cat=b"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=b"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=b"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=b"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoría C</a>
+				<li><a href="#">CategorÃ­a C</a>
 					<ul>
 						<li><a href="posiciones.php?cat=c"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=c"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=c"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=c"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoría D</a>
+				<li><a href="#">CategorÃ­a D</a>
 					<ul>
 						<li><a href="posiciones.php?cat=d"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=d"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
@@ -194,28 +191,103 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Panel</a></li>		
+			<li><a href="#tabs-1">Fixture</a></li>		
 		</ul>
 		<div id="tabs-1">
+		
 		<br>
+		<h2 class="hEquipo">Agregar fecha</h2>	
 		<br>
-		<table id="TablePanel" style="text-align: center;vertical-align: middle;">
-		<tr>
-			<td><a href="equipos.php"><img src="imgs/equipos.png" title="Equipos" class="imgPanel"></a></td>
-			<td><a href="jugadores.php"><img src="imgs/jugadores.png" title="Jugadores" class="imgPanel"></a></td>
-			<td><br><a href="usuarios.php"><img src="imgs/admins.png" title="Admins" class="imgPanel"></a></td>
-		</tr>
-		<tr>
-			<td><br><a href="fixture.php"><img src="imgs/fixture.png" title="Fixture" class="imgPanel"></a></td>
-			<td><br><a href="partidos.php"><img src="imgs/partidos.png" title="Partidos" class="imgPanel"></a></td>
-			<td><br><a href="torneos.php"><img src="imgs/torneos.png" title="Torneos" class="imgPanel"></a></td>
-		</tr>
-		<tr>
-			<td><br><a href="noticias.php"><img src="imgs/noticias.png" title="Noticias" class="imgPanel"></a></td>
-			<td><br><a href="usuarios.php"><img src="imgs/tribunal.png" title="Tribunal de Disciplina" class="imgPanel"></a></td>
-			<td><br><a href="fotos.php"><img src="imgs/fotos.png" title="Fotos" class="imgPanel"></a></td>
-		</tr>
-		</table>
+		<form action="fixture.php?accion=agFecha" method="post">
+				<label class="flabel" style="display:inline;">Categoria</label>
+				<select name="categoria" id ="categoria" onchange="actualizarEquip()">
+				<?php
+					if(isset($_GET['categoria'])){
+						$categoria = $_GET['categoria'];
+						if($categoria == "A"){
+							echo '<option value="A" selected>A</option>
+							<option value="B">B</option>
+							<option value="C">C</option>
+							<option value="D">D</option>';
+						}
+						else if($categoria == "B"){
+							echo '<option value="A">A</option>
+							<option value="B" selected>B</option>
+							<option value="C">C</option>
+							<option value="D">D</option>';
+						}
+						else if($categoria == "C"){
+							echo '<option value="A" selected>A</option>
+							<option value="A" >A</option>
+							<option value="B">B</option>
+							<option value="C" selected>C</option>
+							<option value="D">D</option>';
+						}
+						else if($categoria == "D"){
+							echo '<option value="A">A</option>
+							<option value="B">B</option>
+							<option value="C">C</option>
+							<option value="D" selected>D</option>';
+						}
+						else{
+							echo '<option value="A" selected>A</option>
+							<option value="A" >A</option>
+							<option value="B">B</option>
+							<option value="C">C</option>
+							<option value="D">D</option>';
+							$categoria = "A";
+						}
+					}
+					else{
+						echo '<option value="A" selected>A</option>
+						<option value="B">B</option>
+						<option value="C">C</option>
+						<option value="D">D</option>';
+						$categoria = "A";
+					}
+
+				?>
+				</select>
+				<label class="flabel">Equipo 1</label>
+				<select name="equipo1">
+					<?php 
+						listaEquiposSelect($categoria);
+					?>
+				</select>
+				<label class="flabel">Equipo 2</label>
+				<select name="equipo2">
+					<?php 
+						listaEquiposSelect($categoria);
+					?>
+				</select>
+				<label class="flabel">Fecha estimada</label>
+				<input type="date" name="fecha" value="<?php date_default_timezone_set('America/Argentina/Buenos_Aires');echo date('Y-m-d'); ?>">
+				<label class="flabel">Hora estimada</label>
+				<input type="time" name="hora" value="00:00:00" required>
+				<br>
+				<br>
+				<input class="btnPanel" type="submit" value="Buscar">
+				<input type="text" name="busq" value="1" hidden="true">
+				
+			</form>
+			<br>
+			
+				<div style="margin-left: auto;margin-right: auto;text-align: center;display:block;">
+					<a class="btnPanel" href="equipos.php?busq=2">Todos</a>
+				</div>
+			<br><br>
+			<?php 
+				if(isset($_GET['accion'])){
+					$accion = $_GET['accion'];
+					if($accion == "agFecha"){
+						
+					}
+				}
+								
+			?>
+		
+		
+		
 		</div>
 	</div>
 	</div>
