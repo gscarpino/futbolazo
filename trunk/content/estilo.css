@@ -402,3 +402,8 @@ fieldset {
 	border-style: solid;
 	border-width: thin;
 }
+
+.imgPanel{
+	width:80px;
+	height:80px;
+}

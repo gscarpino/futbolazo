@@ -130,10 +130,30 @@ function listaEquipos(){
 	}
 }
 
+function listaEquiposSelect($cat){
+	$equipos = obtenerEquiposDeCat($cat);
+
+	foreach ($equipos as $e){
+		echo '<option value="' . $e . '">' . $e . '</option>';
+	}
+}
+
 function obtenerEquipos(){
 	$mydb = conectar();
-	$res = $mydb->query("SELECT * FROM equipo");
+	$res = $mydb->query('SELECT * FROM equipo WHERE Nombre != "[SIN EQUIPO]"');
 	$equip = new SplQueue();
+	$equip[] = " ";
+	while ($fila = $res->fetch_row()){
+		$equip[] = $fila[0];
+	}
+	return $equip;
+}
+
+function obtenerEquiposDeCat($cat){
+	$mydb = conectar();
+	$res = $mydb->query('SELECT * FROM equipo WHERE Nombre != "[SIN EQUIPO]" AND Categoria = "' . $cat . '"');
+	$equip = new SplQueue();
+	$equip[] = " ";
 	while ($fila = $res->fetch_row()){
 		$equip[] = $fila[0];
 	}
