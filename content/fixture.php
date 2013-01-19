@@ -266,27 +266,58 @@
 				<input type="time" name="hora" value="00:00:00" required>
 				<br>
 				<br>
-				<input class="btnPanel" type="submit" value="Buscar">
-				<input type="text" name="busq" value="1" hidden="true">
+				<input class="btnPanel" type="submit" value="Cargar">
 				
 			</form>
-			<br>
-			
-				<div style="margin-left: auto;margin-right: auto;text-align: center;display:block;">
-					<a class="btnPanel" href="equipos.php?busq=2">Todos</a>
-				</div>
 			<br><br>
 			<?php 
 				if(isset($_GET['accion'])){
 					$accion = $_GET['accion'];
 					if($accion == "agFecha"){
-						
+						$equipo1 = $_POST['equipo1'];
+						$equipo2 = $_POST['equipo2'];
+						if($equipo1 == $equipo2){
+							displayError("Error!","El equipo 1 tiene que ser distinto al equipo 2.");
+						}
+						else{
+							$fecha = $_POST['fecha'];
+							$hora = $_POST['hora'];
+							if(agregarPartido($equipo1,$equipo2,$fecha,$hora)){
+								displayGreen("","Partido agregado con exito");
+								$tiempo = 3; # segundos
+								$pagina = "fixture.php";
+								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
+							}
+							else{
+								displayError("Error!","No se pudo agendar el partido.");
+							}
+						}
 					}
 				}
 								
 			?>
 		
+		<br>
+		<h2 class="hEquipo">Partidos programados</h2>	
+		<br>
 		
+		<?php 
+			$mydb = conectar();
+			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora FROM partido WHERE Estado = "Programado"';
+			if($res = $mydb->query($q)){
+				empezarTabla();
+				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora");
+				genEncabezado($encabezados);
+				while($fila = $res->fetch_row()){
+					$num = $fila[0];
+					unset($fila[0]);
+					genFila($fila);
+				}
+				finalizarTabla("3");
+				$res->close();
+			}
+		
+		?>
 		
 		</div>
 	</div>

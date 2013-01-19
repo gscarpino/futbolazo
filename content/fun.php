@@ -160,8 +160,25 @@ function obtenerEquiposDeCat($cat){
 	return $equip;
 }
 
+function agregarPartido($equipo1,$equipo2,$fecha,$hora){
+	$mydb = conectar();
+	if($res = $mydb->query('SELECT * FROM partido WHERE Fecha = "' . $fecha . '" AND Hora = "' . $hora . '"')){
+		if($res->num_rows > 0){
+			return false;
+		}
+		else{
+			$res = $mydb->query('INSERT INTO partido (Equipo1,Equipo2,Fecha,Hora,Estado) VALUES ("' . $equipo1 . '","' . $equipo2 . '","' . $fecha . '","' . $hora . '","Programado")');
+			return true;
+		}	
+	}
+	else{
+		return false;
+	}
+	
+}
 
-function agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$datos){
+
+function jugarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$datos){
 	$mydb = conectar();
 	$claves = array_keys($datos);
 	
