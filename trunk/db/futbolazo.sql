@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 05-01-2013 a las 06:50:20
+-- Tiempo de generación: 29-01-2013 a las 06:19:45
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -28,7 +28,6 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `categorias` (
   `Categoria` char(1) NOT NULL,
-  `Fixture` text NOT NULL,
   UNIQUE KEY `Categoria` (`Categoria`),
   UNIQUE KEY `Categoria_2` (`Categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -37,11 +36,12 @@ CREATE TABLE IF NOT EXISTS `categorias` (
 -- Volcado de datos para la tabla `categorias`
 --
 
-INSERT INTO `categorias` (`Categoria`, `Fixture`) VALUES
-('A', ''),
-('B', ''),
-('C', ''),
-('D', '');
+INSERT INTO `categorias` (`Categoria`) VALUES
+('0'),
+('A'),
+('B'),
+('C'),
+('D');
 
 -- --------------------------------------------------------
 
@@ -53,12 +53,25 @@ CREATE TABLE IF NOT EXISTS `equipo` (
   `Nombre` varchar(60) NOT NULL,
   `Categoria` char(1) NOT NULL,
   `Mail` text NOT NULL,
-  `Partidos Ganados` int(11) NOT NULL DEFAULT '0',
-  `Partidos Perdidos` int(11) NOT NULL DEFAULT '0',
+  `PartidosGanadosActuales` int(11) NOT NULL DEFAULT '0',
+  `PartidosPerdidosActuales` int(11) NOT NULL DEFAULT '0',
+  `EmpatesActuales` int(11) NOT NULL DEFAULT '0',
+  `GolesConvertidosActuales` int(11) NOT NULL DEFAULT '0',
+  `GolesRecibidosActuales` int(11) NOT NULL DEFAULT '0',
+  `AmarillasActuales` int(11) NOT NULL DEFAULT '0',
+  `Expulsiones1Actuales` int(11) NOT NULL DEFAULT '0',
+  `Expulsiones2Actuales` int(11) NOT NULL DEFAULT '0',
+  `PartidosGanados` int(11) NOT NULL DEFAULT '0',
+  `PartidosPerdidos` int(11) NOT NULL DEFAULT '0',
   `Empates` int(11) NOT NULL DEFAULT '0',
-  `Goles Metidos` int(11) NOT NULL DEFAULT '0',
-  `Goles Recibidos` int(11) NOT NULL DEFAULT '0',
-  `Faltas` int(11) NOT NULL DEFAULT '0',
+  `GolesConvertidos` int(11) NOT NULL DEFAULT '0',
+  `GolesRecibidos` int(11) NOT NULL DEFAULT '0',
+  `Amarillas` int(11) NOT NULL DEFAULT '0',
+  `Expulsiones1` int(11) NOT NULL DEFAULT '0',
+  `Expulsiones2` int(11) NOT NULL DEFAULT '0',
+  `Historial` text NOT NULL,
+  `Creacion` date NOT NULL,
+  `Estado` varchar(10) NOT NULL DEFAULT 'Inactivo',
   UNIQUE KEY `Nombre` (`Nombre`),
   UNIQUE KEY `Nombre_2` (`Nombre`),
   KEY `Categoria` (`Categoria`)
@@ -68,12 +81,36 @@ CREATE TABLE IF NOT EXISTS `equipo` (
 -- Volcado de datos para la tabla `equipo`
 --
 
-INSERT INTO `equipo` (`Nombre`, `Categoria`, `Mail`, `Partidos Ganados`, `Partidos Perdidos`, `Empates`, `Goles Metidos`, `Goles Recibidos`, `Faltas`) VALUES
-('Agachate y reseteala', 'C', 'aga@a.com', 0, 0, 0, 0, 0, 0),
-('Bola de fuego empantanada', 'D', 'gino.scarpino@gmail.com', 0, 0, 0, 0, 0, 0),
-('Chinga tu madre', 'A', 'cdsadas@lalal.com', 0, 0, 0, 0, 0, 0),
-('Kurepí', 'A', 'k@a.com.ar', 0, 0, 0, 0, 0, 0),
-('Paleoequipo', 'D', 'pala@pala.com.ar', 0, 0, 0, 0, 0, 0);
+INSERT INTO `equipo` (`Nombre`, `Categoria`, `Mail`, `PartidosGanadosActuales`, `PartidosPerdidosActuales`, `EmpatesActuales`, `GolesConvertidosActuales`, `GolesRecibidosActuales`, `AmarillasActuales`, `Expulsiones1Actuales`, `Expulsiones2Actuales`, `PartidosGanados`, `PartidosPerdidos`, `Empates`, `GolesConvertidos`, `GolesRecibidos`, `Amarillas`, `Expulsiones1`, `Expulsiones2`, `Historial`, `Creacion`, `Estado`) VALUES
+('Agachate y reseteala', 'C', 'aga@a.com', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0000-00-00', 'Inactivo'),
+('Bola de fuego empantanada', 'D', 'gino.scarpino@gmail.com', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '2010-07-01', 'Inactivo'),
+('Chinga tu madre', 'A', 'cdsadas@lalal.com', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0000-00-00', 'Inactivo'),
+('Kurepí', 'A', 'k@a.com.ar', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0000-00-00', 'Inactivo'),
+('Las Cortaduras de BB King', 'D', 'aga@a.com', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0000-00-00', 'Inactivo'),
+('Los Amigos de Ramachandran', 'D', 'las@amigas.com', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0000-00-00', 'Inactivo'),
+('Paleoequipo', 'D', 'pala@pala.com.ar', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0000-00-00', 'Inactivo'),
+('[SIN EQUIPO]', '0', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '0000-00-00', 'Inactivo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estadopartido`
+--
+
+CREATE TABLE IF NOT EXISTS `estadopartido` (
+  `Estado` varchar(60) NOT NULL,
+  UNIQUE KEY `Estado` (`Estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `estadopartido`
+--
+
+INSERT INTO `estadopartido` (`Estado`) VALUES
+('Cancelado'),
+('Finalizado'),
+('Programado'),
+('Suspendido');
 
 -- --------------------------------------------------------
 
@@ -112,6 +149,10 @@ CREATE TABLE IF NOT EXISTS `jugadores` (
   `Nombre` text NOT NULL,
   `DNI` int(11) NOT NULL,
   `Equipo` varchar(60) NOT NULL,
+  `GolesActuales` int(11) NOT NULL DEFAULT '0',
+  `AmarillasActuales` int(11) NOT NULL DEFAULT '0',
+  `Expulsiones1Actuales` int(11) NOT NULL DEFAULT '0',
+  `Expulsiones2Actuales` int(11) NOT NULL DEFAULT '0',
   `Goles` int(11) NOT NULL DEFAULT '0',
   `Amarillas` int(11) NOT NULL DEFAULT '0',
   `Expulsiones1` int(11) NOT NULL DEFAULT '0',
@@ -125,10 +166,12 @@ CREATE TABLE IF NOT EXISTS `jugadores` (
 -- Volcado de datos para la tabla `jugadores`
 --
 
-INSERT INTO `jugadores` (`Nombre`, `DNI`, `Equipo`, `Goles`, `Amarillas`, `Expulsiones1`, `Expulsiones2`) VALUES
-('Gino Scarpino', 34229571, 'Bola de fuego empantanada', 0, 0, 0, 0),
-('Matias Barbeito', 34229572, 'Bola de fuego empantanada', 0, 0, 0, 0),
-('Bruno Scarpino', 38888888, 'Chinga tu madre', 0, 0, 0, 0);
+INSERT INTO `jugadores` (`Nombre`, `DNI`, `Equipo`, `GolesActuales`, `AmarillasActuales`, `Expulsiones1Actuales`, `Expulsiones2Actuales`, `Goles`, `Amarillas`, `Expulsiones1`, `Expulsiones2`) VALUES
+('Felipe Bonet', 111, '[SIN EQUIPO]', 0, 0, 0, 0, 0, 0, 0, 0),
+('Leando Iannotti', 2322, 'Bola de fuego empantanada', 0, 0, 0, 0, 8, 4, 0, 0),
+('Marcelo Ferranti', 72727, 'Bola de fuego empantanada', 0, 0, 0, 0, 0, 0, 0, 0),
+('Gino Scarpino', 34229571, 'Bola de fuego empantanada', 0, 0, 0, 0, 1, 1, 1, 1),
+('Ezequiel Castellano', 34229572, '[SIN EQUIPO]', 0, 0, 0, 0, 0, 0, 8, 5);
 
 -- --------------------------------------------------------
 
@@ -160,7 +203,7 @@ INSERT INTO `noticias` (`Fecha`, `Texto`, `Autor`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `partido` (
-  `Numero` int(11) NOT NULL,
+  `Numero` int(11) NOT NULL AUTO_INCREMENT,
   `Equipo1` text NOT NULL,
   `Equipo2` text NOT NULL,
   `GolesEq1` int(11) NOT NULL,
@@ -170,9 +213,20 @@ CREATE TABLE IF NOT EXISTS `partido` (
   `Expulsiones1` text NOT NULL,
   `Expulsiones2` text NOT NULL,
   `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
   `Comentario` text NOT NULL,
-  UNIQUE KEY `Fecha` (`Fecha`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `Estado` varchar(60) NOT NULL,
+  UNIQUE KEY `Fecha` (`Fecha`),
+  UNIQUE KEY `Numero` (`Numero`),
+  KEY `Estado` (`Estado`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `partido`
+--
+
+INSERT INTO `partido` (`Numero`, `Equipo1`, `Equipo2`, `GolesEq1`, `GolesEq2`, `Goleadores`, `Amarillas`, `Expulsiones1`, `Expulsiones2`, `Fecha`, `Hora`, `Comentario`, `Estado`) VALUES
+(1, 'Chinga tu madre', 'Kurepí', 0, 0, '', '', '', '', '2013-01-19', '00:00:00', '', 'Programado');
 
 -- --------------------------------------------------------
 
@@ -231,6 +285,12 @@ ALTER TABLE `jugadores`
 --
 ALTER TABLE `noticias`
   ADD CONSTRAINT `noticias_ibfk_1` FOREIGN KEY (`Autor`) REFERENCES `usuarios` (`Nombre`);
+
+--
+-- Filtros para la tabla `partido`
+--
+ALTER TABLE `partido`
+  ADD CONSTRAINT `partido_ibfk_1` FOREIGN KEY (`Estado`) REFERENCES `estadopartido` (`Estado`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

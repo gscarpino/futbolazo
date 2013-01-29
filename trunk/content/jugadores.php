@@ -268,7 +268,7 @@
 						while($fila = $res->fetch_row()){
 							genFilaLink($fila,"jugadores.php?jug=$fila[1]#vista");
 						}
-					    finalizarTabla("2");
+					    finalizarTabla("0","");
 					    $res->close();
 					}
 					else{
@@ -286,23 +286,34 @@
 				
 				
 				if(isset($_GET['jug'])){
-					$dni = $_GET['jug'];
-					echo '<br><h2 class="hEquipo" id="vista">Datos de DNI/LU  <strong class="resaltado">' . $dni  . '</strong></h2><br><br>';
 					$mydb = conectar();
+
+					$dni = $_GET['jug'];
 					$q = "SELECT * FROM jugadores WHERE DNI = $dni";
 					if($res = $mydb->query($q)){
+						echo '<br><h2 class="hEquipo" id="vista">Datos del jugador </h2>';
+						$fila = $res->fetch_row();
+						$nombre = $fila[0];
+						$nombreEquipo = $fila[2];
+						echo '<h3 class="hEquipo">Nombre: <strong class="resaltado">' . $nombre . '</strong></h3>';
+						echo '<h3 class="hEquipo">DNI: <strong class="resaltado">' . $dni . '</strong></h3>';
+						if ($nombreEquipo == "[SIN EQUIPO]"){
+							echo '<h3 class="hEquipo">Equipo: <strong class="resaltado">Ninguno </strong></h3></br>';
+						}
+						else{
+							echo '<h3 class="hEquipo">Equipo: <strong class="resaltado">' . $nombreEquipo . '</strong></h3></br>';
+						}
 						empezarTabla();
-						$encabezados = array("Nombre","Equipo","Goles","Amarillas","Expulsion 5'","Expulsiones","","");
+						$encabezados = array("Goles","Amarillas","Expulsion 5'","Expulsiones","Total Goles","Total Amarillas","Total Expulsion 5'","Total Expulsiones","","");
 						genEncabezado($encabezados);
 						
-						$fila = $res->fetch_row();
+						unset($fila[0]);
 						unset($fila[1]);
-						$nombreEquipo = $fila[2];
-						$fila[2] = '<a href="equipos.php?nombreEquipo=' . $nombreEquipo . '#vista" title="Ver equipo">'. $fila[2]. '</a>';
+						unset($fila[2]);
 						$fila[] = '<a href="jugadores.php?jug=' . $dni .'&accion=modJug#Mod"><img src="imgs/mod_player.png" title="Modificar jugador"></a>';
 						$fila[] = '<a href="jugadores.php?jug=' . $dni .'&accion=delJug#Del"><img src="imgs/del_player.png" title="Borrar jugador"></a>';
 						genFila($fila);
-						finalizarTabla("3");
+						finalizarTabla("10","Los datos pueden no ser correctos.");
 						$res->close();
 					}
 				}
@@ -368,16 +379,28 @@
 							<table style="width:100%;text-align: center;border-collapse:collapse;">
 							<tr>
 							<td>
-							<label class="flabel">Goles</label>
+							<label class="flabel">Goles Actuales</label>
 							</td>
 							<td>
-							<label class="flabel">Amarillas</label>
+							<label class="flabel">Amarillas Actuales</label>
 							</td>
 							<td>
-							<label class="flabel">Expulsiones 5\'</label>
+							<label class="flabel">Expulsiones 5\' Actuales</label>
 							</td>
 							<td>
-							<label class="flabel">Expulsiones</label>
+							<label class="flabel">Expulsiones Actuales</label>
+							</td>
+							<td>
+							<label class="flabel">Goles Totales</label>
+							</td>
+							<td>
+							<label class="flabel">Amarillas Totales</label>
+							</td>
+							<td>
+							<label class="flabel">Expulsiones 5\' Totales</label>
+							</td>
+							<td>
+							<label class="flabel">Expulsiones Totales</label>
 							</td>
 							</tr>
 							
@@ -394,6 +417,18 @@
 							<td>
 							<input type="number" name="expulsiones2" min="0" value="' . $info[6] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
 							</td>
+							<td>
+							<input type="number" name="golesTotal" value="' . $info[7] .'" min="0" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="amarillasTotal" min="0" value="' . $info[8] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="expulsiones1Total" min="0" style="width:40px;" value="' . $info[9] .'" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
+							<td>
+							<input type="number" name="expulsiones2Total" min="0" value="' . $info[10] .'" style="width:40px;" class="text ui-widget-content ui-corner-all" style="width:100%">
+							</td>
 							</tr>
 							</table>
 							<label class="flabel">Password</label>
@@ -406,7 +441,6 @@
 					}
 					
 					if($accion == "modJug2"){
-						var_dump($_POST);
 						$dni = $_GET['jug'];
 						if(isset($_POST['nombre'])){
 							$nombre = $_POST['nombre'];
@@ -452,9 +486,34 @@
 						else{
 							$expulsiones2 = -1;
 						}
+						if(isset($_POST['golesTotal'])){
+							$golesTotal = $_POST['golesTotal'];
+						}
+						else{
+							$golesTotalTotal = -1;
+						}
+						
+						if(isset($_POST['amarillasTotal'])){
+							$amarillasTotal = $_POST['amarillasTotal'];
+						}
+						else{
+							$amarillasTotal = -1;
+						}
+						if(isset($_POST['expulsiones1Total'])){
+							$expulsiones1Total = $_POST['expulsiones1Total'];
+						}
+						else{
+							$expulsiones1Total = -1;
+						}
+						if(isset($_POST['expulsiones2Total'])){
+							$expulsiones2Total = $_POST['expulsiones2Total'];
+						}
+						else{
+							$expulsiones2Total = -1;
+						}
 						if(isset($_POST['pass'])){
 							$pass = $_POST['pass'];
-							if(modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$expulsiones1,$expulsiones2)){
+							if(modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$expulsiones1,$expulsiones2,$golesTotal,$amarillasTotal,$expulsiones1Total,$expulsiones2Total)){
 								displayGreen("","Se modificó correctamente el jugador");
 								$tiempo = 3; # segundos
 								$nombre = trim($nombre);
