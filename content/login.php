@@ -11,7 +11,7 @@ else{
 	</div>
 	<div id="central">
 	<div id="menuAdm">
-		<p class="validateTips">All form fields are required.</p>
+		<p class="validateTips">Todos los campos son requeridos.</p>
 		<form id="formulario" action="loguear.php" method="post">
 		<fieldset>
 			<label for="name">Usuario</label><br>

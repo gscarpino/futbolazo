@@ -175,110 +175,124 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Registrar Partido</a></li>		
+			<li><a href="#tabs-1">Partidos</a></li>		
 		</ul>
 		<div id="tabs-1" style="margin-left:auto;margin-right:auto;">
-			<?php 
-				if(!isset($_GET['etapa'])){
-					displayError("Ingreso incorrecto!","Regrese al panel.");
+		
+		<h2 class="hEquipo">Partidos programados</h2>
+		<br>
+		
+		<?php 
+			$mydb = conectar();
+			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido WHERE Estado = "Programado"';
+			if($res = $mydb->query($q)){
+				empezarTabla();
+				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado","");
+				genEncabezado($encabezados);
+				
+				while($fila = $res->fetch_row()){
+					$num = $fila[0];
+					unset($fila[0]);
+					$fila[] = '<a href="#"><img src="partido_registrar.png" title="Registrar partido"></a>';
+					genFila($fila);
 				}
-				else{
-					$etapa = $_GET['etapa'];
-					if($etapa == 0){
-						echo '<h1 class="titulo">Datos generales</h1><form action="partidos.php?etapa=1" method="post">
-						<label class="flabel">Equipo 1</label>
-						<input type="text" list="equipos" name="equip1" class="text ui-widget-content ui-corner-all">
-						
-						<label class="flabel">Goles Equipo 1</label>
-						<input type="number" name="goles1" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
-						
-						<label class="flabel">Equipo 2</label>
-						<input type="text" list="equipos" name="equip2" class="text ui-widget-content ui-corner-all">
+				finalizarTabla("3");
+				$res->close();
+			}
+		
+		?>
+		
+		
+			<?php 
+			$etapa=-1;
+			if($etapa == 1){
+					echo '<form action="partidos.php?etapa=1" method="post">
+					<label class="flabel">Equipo 1</label>
+					<input type="text" list="equipos" name="equip1" class="text ui-widget-content ui-corner-all">
+					
+					<label class="flabel">Goles Equipo 1</label>
+					<input type="number" name="goles1" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
+					
+					<label class="flabel">Equipo 2</label>
+					<input type="text" list="equipos" name="equip2" class="text ui-widget-content ui-corner-all">
 
-						<label class="flabel">Goles Equipo 2</label>
-						<input type="number" name="goles2" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
-						
-						<label class="flabel">Fecha</label>
-						<input type="date" name="fecha" class="text ui-widget-content ui-corner-all">
-						
-						<label class="flabel">Número de Partido (Opcional)</label>
-						<input type="number" name="numero" class="text ui-widget-content ui-corner-all">
-						
-						<label class="flabel">Comentario (Opcional)</label>
-						<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;"></textarea>
-										
-						
-						';
-						echo '<datalist id="equipos">';
-						listaEquipos();
-						echo '</datalist><br><br><input class="fsubmit" type="submit"></form>';
-					}
-					else if($etapa == 1){
-						if(isset($_POST['equip1']) && isset($_POST['equip2'])){
-							$equip1 = $_POST['equip1'];
-							$equip2 = $_POST['equip2'];
-							$fecha = $_POST['fecha'];
-							$numero = $_POST['numero'];
-							$goles1 = $_POST['goles1'];
-							$goles2 = $_POST['goles2'];
-							$comentario = $_POST['comentario'];
-							echo '<h1 class="titulo">Goles y faltas</h1><br>';
-							echo '<form action="partidos.php?etapa=2&equip1=' . $equip1 . '&equip2=' . $equip2 . '&fecha=' . $fecha . '&numero=' . $numero . '&goles1=' . $goles1 . '&goles2=' . $goles2 . '" method="post">';
-							echo '<h2 class="hEquipo">' . $equip1 . '</h2>';
-							$mydb = conectar();
-							if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip1'")){
-								empezarTabla();
-								$encabezados = array("Nombre","DNI","Goles","Amarilla","Expulsion 5'","Expulsion");
-								genEncabezado($encabezados);
-								while($fila = $res->fetch_row()){
-									$fila[] = '<input type="number" min="0" value="0" name="'. $fila[1] .'_Goles" style="width:40px;">';
-									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Amarilla">';
-									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion1">';
-									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
-									genFila($fila);
-								}
-								finalizarTabla("3");
-								$res->close();
+					<label class="flabel">Goles Equipo 2</label>
+					<input type="number" name="goles2" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
+					
+					<label class="flabel">Fecha</label>
+					<input type="date" name="fecha" class="text ui-widget-content ui-corner-all">
+					
+					<label class="flabel">Número de Partido (Opcional)</label>
+					<input type="number" name="numero" class="text ui-widget-content ui-corner-all">
+					
+					<label class="flabel">Comentario (Opcional)</label>
+					<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;"></textarea>
+									
+					
+					';
+					echo '<datalist id="equipos">';
+					listaEquipos();
+					echo '</datalist><br><br><input class="fsubmit" type="submit"></form>';
+				}
+				else if($etapa == 1){
+					if(isset($_POST['equip1']) && isset($_POST['equip2'])){
+						$equip1 = $_POST['equip1'];
+						$equip2 = $_POST['equip2'];
+						$fecha = $_POST['fecha'];
+						$numero = $_POST['numero'];
+						$goles1 = $_POST['goles1'];
+						$goles2 = $_POST['goles2'];
+						$comentario = $_POST['comentario'];
+						echo '<h1 class="titulo">Goles y faltas</h1><br>';
+						echo '<form action="partidos.php?etapa=2&equip1=' . $equip1 . '&equip2=' . $equip2 . '&fecha=' . $fecha . '&numero=' . $numero . '&goles1=' . $goles1 . '&goles2=' . $goles2 . '" method="post">';
+						echo '<h2 class="hEquipo">' . $equip1 . '</h2>';
+						$mydb = conectar();
+						if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip1'")){
+							empezarTabla();
+							$encabezados = array("Nombre","DNI","Goles","Amarilla","Expulsion 5'","Expulsion");
+							genEncabezado($encabezados);
+							while($fila = $res->fetch_row()){
+								$fila[] = '<input type="number" min="0" value="0" name="'. $fila[1] .'_Goles" style="width:40px;">';
+								$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Amarilla">';
+								$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion1">';
+								$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
+								genFila($fila);
 							}
-							echo '<br><h2 class="hEquipo">' . $equip2 . '</h2>';
-							if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip2'")){
-								empezarTabla();
-								$encabezados = array("Nombre","DNI","Goles","Amarilla","Expulsion 5'","Expulsion");
-								genEncabezado($encabezados);
-								while($fila = $res->fetch_row()){
-									$fila[] = '<input type="number" min="0" value="0" name="'. $fila[1] .'_Goles" style="width:40px;">';
-									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Amarilla">';
-									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion1">';
-									$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
-									genFila($fila);
-								}
-								finalizarTabla("3");
-								$res->close();
+							finalizarTabla("3");
+							$res->close();
+						}
+						echo '<br><h2 class="hEquipo">' . $equip2 . '</h2>';
+						if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip2'")){
+							empezarTabla();
+							$encabezados = array("Nombre","DNI","Goles","Amarilla","Expulsion 5'","Expulsion");
+							genEncabezado($encabezados);
+							while($fila = $res->fetch_row()){
+								$fila[] = '<input type="number" min="0" value="0" name="'. $fila[1] .'_Goles" style="width:40px;">';
+								$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Amarilla">';
+								$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion1">';
+								$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
+								genFila($fila);
 							}
-							echo '<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;visibility:hidden;">' . $comentario . '</textarea>';
-							echo '<br><br><input class="fsubmit" type="submit"></form>';
+							finalizarTabla("3");
+							$res->close();
 						}
-						else{
-							header("location:partidos.php");
-						}
+						echo '<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;visibility:hidden;">' . $comentario . '</textarea>';
+						echo '<br><br><input class="fsubmit" type="submit"></form>';
 					}
-					else if($etapa == 2){}
-						
-						$equip1 = $_GET['equip1'];
-						$equip2 = $_GET['equip2'];
-						$fecha = $_GET['fecha'];
-						$numero = $_GET['numero'];
-						$goles1 = $_GET['goles1'];
-						$goles2 = $_GET['goles2'];	
-						
-						if(agregarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$_POST)){
-							displayGreen("", "Partido registrado correctamente!");
-						}
-						else{
-							displayError("Error!", "No se pudo registrar el partido");
-						}
-						
+					else{
+						header("location:partidos.php");
 					}
+				}
+				else if($etapa == 2){
+					
+					$equip1 = $_GET['equip1'];
+					$equip2 = $_GET['equip2'];
+					$fecha = $_GET['fecha'];
+					$numero = $_GET['numero'];
+					$goles1 = $_GET['goles1'];
+					$goles2 = $_GET['goles2'];	
+					
+				}
 				
 			?>
 			

@@ -25,14 +25,15 @@ function empezarTablaTam($tam){
 	echo '<table class="formatHTML5">';
 }
 
-function finalizarTabla($colspan){
+function finalizarTabla($colspan,$texto){
 	echo '</tbody>';
 	echo '<tfoot>';
-	echo '<tr><td colspan="' . $colspan . '">Los datos pueden llegar a ser incorrectos</td></tr>';
+	echo '<tr><td colspan="' . $colspan . '">' . $texto . '</td></tr>';
 	echo '</tfoot>';
 	echo '</table>';
 	echo '</div>';
 }
+
 
 function genEncabezado($nombres){
 	echo '<thead>';
@@ -100,14 +101,14 @@ function agregarJugador($nombre,$dni,$equipo){
 		return false;
 	}
 	else{
-		$res = $mydb->query("INSERT INTO jugadores VALUES ('$nombre','$dni','$equipo',0,0,0,0)");
+		$res = $mydb->query("INSERT INTO jugadores VALUES ('$nombre','$dni','$equipo',0,0,0,0,0,0,0,0)");
 	}
 	return $res;
 }
 
 
 function displayError($titulo, $texto){
-	echo '<div class="errorMsg"><br>';
+	echo '<div class="errorMsg" id="Msg"><br>';
 	echo '<div class="ui-state-error ui-corner-all"><br><strong>' . $titulo . '</strong>';
 	echo '<p class="perrorMsg"><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>' . $texto . '</p><br>';
 	echo '</div>';
@@ -115,7 +116,7 @@ function displayError($titulo, $texto){
 }
 
 function displayGreen($titulo, $texto){
-	echo '<div class="errorMsg"><br>';
+	echo '<div class="errorMsg" id="Msg"><br>';
 	echo '<div class="ui-state-green ui-corner-all"><br><strong>' . $titulo . '</strong>';
 	echo '<p class="pgreenMsg"><span class="ui-icon ui-icon-check" style="float: left; margin-right: .3em;"></span>' . $texto . '</p><br>';
 	echo '</div>';
@@ -403,7 +404,7 @@ function borrarEquipo($nEquipo,$pass){
 }
 
 
-function modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$emp,$gf,$gc,$amarillas,$expulsiones1,$expulsiones2){
+function modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pgActuales,$ppActuales,$empActuales,$gfActuales,$gcActuales,$amarillasActuales,$expulsiones1Actuales,$expulsiones2Actuales,$pg,$pp,$emp,$gf,$gc,$amarillas,$expulsiones1,$expulsiones2,$fecha,$historial){
 	if(!isset($_SESSION['nombre'])){
 		return false;
 	}
@@ -426,6 +427,7 @@ function modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$e
 					$fila = $res->fetch_row();
 					$nombre = trim($nombre);
 					$res1 = $res2 = $res3 = $res4 = $res5 = $res6 = $res7 = $res8 = $res9 = $res10 = $res11 = true;
+					$res12 = $res13 = $res14 = $res15 = $res16 = $res17 = $res18 = $res19 = $res20 = $res21 = $res1;
 					if(($nombre != $nombreEquipo) && (strlen($nombre) > 0)){
 						$res1 = $mydb->query('UPDATE equipo SET Nombre="' . $nombre . '" WHERE Nombre = "' . $nombreEquipo . '"');
 						$nombreEquipo = $nombre;
@@ -450,65 +452,129 @@ function modificarEquipo($nombreEquipo,$pass,$nombre,$categoria,$mail,$pg,$pp,$e
 
 					
 					
-					if($pg != "-1"){
-						$res4 = $mydb->query("UPDATE equipo SET PartidosGanados = $pg WHERE Nombre = '$nombreEquipo'");
+					if($pgActuales != "-1"){
+						$res4 = $mydb->query("UPDATE equipo SET PartidosGanadosActuales = $pgActuales WHERE Nombre = '$nombreEquipo'");
 						if(!$res4){
 							displayError("Partidos ganados","No se pudo actualizar la cantidad de partidos ganados del equipo.");	
 						}
 					}
 					
-					if($pp != "-1"){
-						$res5 = $mydb->query("UPDATE equipo SET PartidosPerdidos = $pp WHERE Nombre = '$nombreEquipo'");
+					if($ppActuales != "-1"){
+						$res5 = $mydb->query("UPDATE equipo SET PartidosPerdidosActuales = $ppActuales WHERE Nombre = '$nombreEquipo'");
 						if(!$res5){
 							displayError("Partidos perdidos","No se pudo actualizar la cantidad de partidos perdidos del equipo.");	
 						}
 					}
 					
-					if($emp != "-1"){
-						$res6 = $mydb->query("UPDATE equipo SET Empates = $emp WHERE Nombre = '$nombreEquipo'");
+					if($empActuales != "-1"){
+						$res6 = $mydb->query("UPDATE equipo SET EmpatesActuales = $empActuales WHERE Nombre = '$nombreEquipo'");
 						if(!$res6){
 							displayError("Partidos empatados","No se pudo actualizar la cantidad de partidos empatados del equipo.");	
 						}
 					}
 					
-					if($gf != "-1"){
-						$res7 = $mydb->query("UPDATE equipo SET GolesConvertidos = $gf WHERE Nombre = '$nombreEquipo'");
+					if($gfActuales != "-1"){
+						$res7 = $mydb->query("UPDATE equipo SET GolesConvertidosActuales = $gfActuales WHERE Nombre = '$nombreEquipo'");
 						if(!$res7){
 							displayError("Goles a favor","No se pudo actualizar la cantidad de goles a favor del equipo.");	
 						}
 					}
 					
-					if($gc != "-1"){
-						$res8 = $mydb->query("UPDATE equipo SET GolesRecibidos = $gc WHERE Nombre = '$nombreEquipo'");
+					if($gcActuales != "-1"){
+						$res8 = $mydb->query("UPDATE equipo SET GolesRecibidosActuales = $gcActuales WHERE Nombre = '$nombreEquipo'");
 						if(!$res8){
 							displayError("Goles en contra","No se pudo actualizar la cantidad de goles en contra del equipo.");	
 						}
 					}
 					
-					if($amarillas != "-1"){
-						$res9 = $mydb->query("UPDATE equipo SET Amarillas = $amarillas WHERE Nombre = '$nombreEquipo'");
+					if($amarillasActuales != "-1"){
+						$res9 = $mydb->query("UPDATE equipo SET AmarillasActuales = $amarillasActuales WHERE Nombre = '$nombreEquipo'");
 						if(!$res9){
 							displayError("Tarjetas amarillas","No se pudo actualizar la cantidad de tarjetas amarillas del equipo.");	
 						}
 					}
 					
-					if($expulsiones1 != "-1"){
-						$res10 = $mydb->query("UPDATE equipo SET Expulsiones1 = $expulsiones1 WHERE Nombre = '$nombreEquipo'");
+					if($expulsiones1Actuales != "-1"){
+						$res10 = $mydb->query("UPDATE equipo SET Expulsiones1Actuales = $expulsiones1Actuales WHERE Nombre = '$nombreEquipo'");
 						if(!$res10){
 							displayError("Expulsiones 5\'","No se pudo actualizar la cantidad de expulsiones de 5 minutos del equipo.");	
 						}
 					}
 					
-					if($expulsiones2 != "-1"){
-						$res11 = $mydb->query("UPDATE equipo SET Expulsiones2 = $expulsiones2 WHERE Nombre = '$nombreEquipo'");
+					if($expulsiones2Actuales != "-1"){
+						$res11 = $mydb->query("UPDATE equipo SET Expulsiones2Actuales = $expulsiones2Actuales WHERE Nombre = '$nombreEquipo'");
 						if(!$res11){
 							displayError("Expulsiones","No se pudo actualizar la cantidad de expulsiones del equipo.");	
 						}
 					}
 					
+					if($pg != "-1"){
+						$res12 = $mydb->query("UPDATE equipo SET PartidosGanados = $pg WHERE Nombre = '$nombreEquipo'");
+						if(!$res12){
+							displayError("Total de Partidos ganados","No se pudo actualizar la cantidad total de partidos ganados del equipo.");
+						}
+					}
+						
+					if($pp != "-1"){
+						$res13 = $mydb->query("UPDATE equipo SET PartidosPerdidos = $pp WHERE Nombre = '$nombreEquipo'");
+						if(!$res13){
+							displayError("Total de Partidos perdidos","No se pudo actualizar la cantidad total de partidos perdidos del equipo.");
+						}
+					}
+						
+					if($emp != "-1"){
+						$res14 = $mydb->query("UPDATE equipo SET Empates = $emp WHERE Nombre = '$nombreEquipo'");
+						if(!$res14){
+							displayError("Total de Partidos empatados","No se pudo actualizar la cantidad total de partidos empatados del equipo.");
+						}
+					}
+						
+					if($gf != "-1"){
+						$res15 = $mydb->query("UPDATE equipo SET GolesConvertidos = $gf WHERE Nombre = '$nombreEquipo'");
+						if(!$res15){
+							displayError("Total de Goles a favor","No se pudo actualizar la cantidad total de goles a favor del equipo.");
+						}
+					}
+						
+					if($gc != "-1"){
+						$res16 = $mydb->query("UPDATE equipo SET GolesRecibidos = $gc WHERE Nombre = '$nombreEquipo'");
+						if(!$res16){
+							displayError("Total de Goles en contra","No se pudo actualizar la cantidad total de goles en contra del equipo.");
+						}
+					}
+						
+					if($amarillas != "-1"){
+						$res17 = $mydb->query("UPDATE equipo SET Amarillas = $amarillas WHERE Nombre = '$nombreEquipo'");
+						if(!$res17){
+							displayError("Total de Tarjetas amarillas","No se pudo actualizar la cantidad total de tarjetas amarillas del equipo.");
+						}
+					}
+						
+					if($expulsiones1 != "-1"){
+						$res18 = $mydb->query("UPDATE equipo SET Expulsiones1 = $expulsiones1 WHERE Nombre = '$nombreEquipo'");
+						if(!$res18){
+							displayError("Total de Expulsiones 5\'","No se pudo actualizar la cantidad total de expulsiones de 5 minutos del equipo.");
+						}
+					}
+						
+					if($expulsiones2 != "-1"){
+						$res19 = $mydb->query("UPDATE equipo SET Expulsiones2 = $expulsiones2 WHERE Nombre = '$nombreEquipo'");
+						if(!$res19){
+							displayError("Total de Expulsiones","No se pudo actualizar la cantidad total de expulsiones del equipo.");
+						}
+					}
 					
+					$res20 = $mydb->query('UPDATE equipo SET Historial = "' . $historial .'" WHERE Nombre = "' .$nombreEquipo . '"');
+					if(!$res20){
+						displayError("Historial del equipo","No se pudo actualizar el historial del equipo.");
+					}
 					
-					return $res1 && $res2 && $res3 && $res4 && $res5 && $res6 && $res7 && $res8 && $res9 && $res10 && $res11;
+					$res21 = $mydb->query('UPDATE equipo SET Creacion = "' . $fecha .'" WHERE Nombre = "' .$nombreEquipo . '"');
+					if(!$res21){
+						displayError("Fecha del equipo","No se pudo actualizar la fecha en la cual se creó el equipo.");
+					}
+					
+					return $res1 && $res2 && $res3 && $res4 && $res5 && $res6 && $res7 && $res8 && $res9 && $res10 && $res11 && $res12 && $res13 && $res14 && $res15 && $res16 && $res17 && $res18 && $res19 && $res20 && $res21;
 				}
 				else{
 					return false;
@@ -544,7 +610,7 @@ function borrarJugador($dni,$pass){
 	}
 }
 
-function modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$expulsiones1,$expulsiones2){
+function modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$expulsiones1,$expulsiones2,$golesTotal,$amarillasTotal,$expulsiones1Total,$expulsiones2Total){
 	if(!isset($_SESSION['nombre'])){
 		return false;
 	}
@@ -567,6 +633,7 @@ function modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$
 					$fila = $res->fetch_row();
 					$NewDNI = trim($NewDNI);
 					$res1 = $res2 = $res3 = $res4 = $res5 = $res6 = $res7 = true;
+					$res8 = $res9 = $res10 = $res11 = $res1;
 					if(($NewDNI != $dni) && (strlen($NewDNI) > 0)){
 						$res1 = $mydb->query('UPDATE jugadores SET DNI=' . $NewDNI . ' WHERE DNI = ' . $dni);
 						$dni = $NewDNI;
@@ -617,10 +684,38 @@ function modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$
 							displayError("Expulsiones","No se pudo actualizar la cantidad de expulsiones del jugador.");
 						}
 					}
+					
+					if($golesTotal != "-1"){
+						$res8 = $mydb->query("UPDATE jugadores SET Goles = $golesTotal WHERE DNI = $dni");
+						if(!$res8){
+							displayError("Total de goles convertidos","No se pudo actualizar la cantidad total de goles realizados por el jugador.");
+						}
+					}
+						
+					if($amarillasTotal != "-1"){
+						$res9 = $mydb->query("UPDATE jugadores SET Amarillas = $amarillasTotal WHERE DNI = $dni");
+						if(!$res9){
+							displayError("Total de tarjetas amarillas","No se pudo actualizar la cantidad total de tarjetas amarillas del jugador.");
+						}
+					}
+					
+					if($expulsiones1Total != "-1"){
+						$res10 = $mydb->query("UPDATE jugadores SET Expulsiones1 = $expulsiones1Total WHERE DNI = $dni");
+						if(!$res10){
+							displayError("Total de expulsiones 5\'","No se pudo actualizar la cantidad total de expulsiones de 5 minutos del jugador.");
+						}
+					}
+					
+					if($expulsiones2Total != "-1"){
+						$res11 = $mydb->query("UPDATE jugadores SET Expulsiones2 = $expulsiones2Total WHERE DNI = $dni");
+						if(!$res11){
+							displayError("Total de expulsiones","No se pudo actualizar la cantidad total de expulsiones del jugador.");
+						}
+					}
 						
 						
 						
-					return $res1 && $res2 && $res3 && $res4 && $res5 && $res6 && $res7;
+					return $res1 && $res2 && $res3 && $res4 && $res5 && $res6 && $res7&& $res8 && $res9 && $res10 && $res11;
 				}
 				else{
 					return false;
