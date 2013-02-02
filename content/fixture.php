@@ -303,7 +303,7 @@
 		
 		<?php 
 			$mydb = conectar();
-			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido WHERE Estado = "Programado"';
+			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido';
 			if($res = $mydb->query($q)){
 				empezarTabla();
 				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado","","","");
@@ -311,12 +311,24 @@
 				while($fila = $res->fetch_row()){
 					$num = $fila[0];
 					unset($fila[0]);
-					$fila[] = '<a href="#"><img src="partido_suspender.png" title="Suspender partido"></a>';
-					$fila[] = '<a href="#"><img src="partido_cancelar.png" title="Cancelar partido"></a>';
-					$fila[] = '<a href="#"><img src="partido_borrar.png" title="Eliminar partido"></a>';
+					$estadoEquipo = $fila[5];
+					if($estadoEquipo == "Programado"){
+						$fila[] = '<a href="#"><img src="imgs/partido_suspender.png" title="Suspender partido"></a>';
+					}
+					if($estadoEquipo == "Suspendido"){
+						$fila[] = '<a href="#"><img src="imgs/partido_reanudar.png" title="Reanudar partido"></a>';
+					}
+					if($estadoEquipo == "Cancelado"){
+						$fila[] = "";
+						$fila[] = "";
+					}
+					else{
+						$fila[] = '<a href="#"><img src="imgs/partido_cancelar.png" title="Cancelar partido"></a>';
+					}
+					$fila[] = '<a href="#"><img src="imgs/partido_borrar.png" title="Eliminar partido"></a>';
 					genFila($fila);
 				}
-				finalizarTabla("3");
+				finalizarTabla("0","");
 				$res->close();
 			}
 		
