@@ -137,7 +137,7 @@
 	  ele = document.createElement('strong');
 	  ele.className = 'resaltado';
 	  ele.style.fontSize='100%';
-	  ele.innerHTML = 'Jugador '+ num +'<span style="padding-left: 15px;padding-right: 15px;"><img name="div' + num +'" onclick="BorrarCampos(this.name)" src="imgs/minus.png"  width="16" height="16" title="Haga click para eliminar el jugador"></span>';
+	  ele.innerHTML = 'Jugador '+ num +'<span style="padding-left: 5px;padding-right: 15px;"><img name="div' + num +'" onclick="BorrarCampos(this.name)" src="imgs/minus.png"  width="16" height="16" title="Haga click para eliminar el jugador"></span>';
 	  contenedor.appendChild(ele);
 	  
 	  ele = document.createElement('label');
@@ -842,11 +842,11 @@
 				<br>		
 				<br>
 				<div id="fiel">
-					<h2 class="hEquipo" style="font-size: 120%;">Agregar jugadores nuevos al equipo  <span style="padding-left: 10px;" onclick="agregarCampos(this)" ><img src="imgs/plus.png"  width="16" height="16" title="Haga click para agregar un jugador más"></span></h2>
+					<h2 class="hEquipo" style="font-size: 120%;">Agregar jugadores nuevos al equipo  <span onclick="agregarCampos(this)" ><img src="imgs/plus.png"  width="16" height="16" title="Haga click para agregar un jugador más"></span></h2>
 					<br>
 					<br>
 					<div id="div1">
-						<strong class="resaltado" style="font-size: 100%;">Jugador 1<span style="padding-left: 15px;padding-right: 15px;"><img name="div1" onclick="BorrarCampos(this.name)" src="imgs/minus.png" width="16" height="16" title="Haga click para eliminar el jugador"></span></strong>
+						<strong class="resaltado" style="font-size: 100%;">Jugador 1<span style="padding-left: 5px;padding-right: 15px;"><img name="div1" onclick="BorrarCampos(this.name)" src="imgs/minus.png" width="16" height="16" title="Haga click para eliminar el jugador"></span></strong>
 						<label class="flabel">Nombre</label>
 						<input type="text" name="nombre1" class="text ui-widget-content ui-corner-all">
 						<label class="flabel">DNI/LU</label>
