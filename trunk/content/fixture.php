@@ -200,7 +200,7 @@
 		<br>
 		<form action="fixture.php?accion=agFecha" method="post">
 				<label class="flabel" style="display:inline;">Categoria</label>
-				<select name="categoria" id ="categoria" onchange="actualizarEquip()">
+				<select name="categoria" class="text ui-widget-content ui-corner-all" id ="categoria" onchange="actualizarEquip()">
 				<?php
 					if(isset($_GET['categoria'])){
 						$categoria = $_GET['categoria'];
@@ -249,21 +249,24 @@
 				?>
 				</select>
 				<label class="flabel">Equipo 1</label>
-				<select name="equipo1">
+				<select name="equipo1" class="text ui-widget-content ui-corner-all">
 					<?php 
 						listaEquiposSelect($categoria);
 					?>
 				</select>
 				<label class="flabel">Equipo 2</label>
-				<select name="equipo2">
+				<select name="equipo2" class="text ui-widget-content ui-corner-all">
 					<?php 
 						listaEquiposSelect($categoria);
 					?>
 				</select>
 				<label class="flabel">Fecha estimada</label>
-				<input type="date" name="fecha" value="<?php date_default_timezone_set('America/Argentina/Buenos_Aires');echo date('Y-m-d'); ?>">
+				<input type="date" name="fecha" class="text ui-widget-content ui-corner-all" value="<?php date_default_timezone_set('America/Argentina/Buenos_Aires');echo date('Y-m-d'); ?>">
 				<label class="flabel">Hora estimada</label>
-				<input type="time" name="hora" value="00:00:00" required>
+				<input type="time" name="hora" value="00:00:00" required class="text ui-widget-content ui-corner-all">
+				<label class="flabel">Comentario (Opcional)</label>
+				<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="5" style="width:100%;"></textarea>
+				
 				<br>
 				<br>
 				<input class="btnPanel" type="submit" value="Cargar">
@@ -293,12 +296,27 @@
 							}
 						}
 					}
+					if(isset($_GET['num'])){
+						$num = $_GET['num'];
+						if($accion == "suspenderPartido"){
+							suspenderPartido($num);
+						}
+						if($accion == "reanudarPartido"){
+							reanudarPartido($num);
+						}
+						if($accion == "cancelarPartido"){
+							cancelarPartido($num);
+						}
+						if($accion == "borrarPartido"){
+							borrarPartido($num);
+						}
+					}
 				}
 								
 			?>
 		
 		<br>
-		<h2 class="hEquipo">Partidos programados</h2>	
+		<h2 class="hEquipo" id="vista">Partidos programados</h2>	
 		<br>
 		
 		<?php 
@@ -313,19 +331,19 @@
 					unset($fila[0]);
 					$estadoEquipo = $fila[5];
 					if($estadoEquipo == "Programado"){
-						$fila[] = '<a href="#"><img src="imgs/partido_suspender.png" title="Suspender partido"></a>';
+						$fila[] = '<a href="fixture.php?accion=suspenderPartido&num='. $num . '"><img src="imgs/partido_suspender.png" title="Suspender partido"></a>';
 					}
 					if($estadoEquipo == "Suspendido"){
-						$fila[] = '<a href="#"><img src="imgs/partido_reanudar.png" title="Reanudar partido"></a>';
+						$fila[] = '<a href="fixture.php?accion=reanudarPartido&num='. $num . '"><img src="imgs/partido_reanudar.png" title="Reanudar partido"></a>';
 					}
 					if($estadoEquipo == "Cancelado"){
 						$fila[] = "";
 						$fila[] = "";
 					}
 					else{
-						$fila[] = '<a href="#"><img src="imgs/partido_cancelar.png" title="Cancelar partido"></a>';
+						$fila[] = '<a href="fixture.php?accion=cancelarPartido&num='. $num . '"><img src="imgs/partido_cancelar.png" title="Cancelar partido"></a>';
 					}
-					$fila[] = '<a href="#"><img src="imgs/partido_borrar.png" title="Eliminar partido"></a>';
+					$fila[] = '<a href="fixture.php?accion=borrarPartido&num='. $num . '"><img src="imgs/partido_borrar.png" title="Eliminar partido"></a>';
 					genFila($fila);
 				}
 				finalizarTabla("0","");

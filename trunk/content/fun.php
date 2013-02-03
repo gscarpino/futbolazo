@@ -725,4 +725,42 @@ function modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$
 	}
 }
 
+function suspenderPartido($num){
+	$mydb = conectar();
+	$res = $mydb->query("SELECT Numero,Estado FROM partido WHERE Numero = $num");
+	if($res->num_rows > 0){
+		$info = $res->fetch_row();
+		if($info[1] == "Programado"){
+			$mydb->query('UPDATE partido SET Estado = "Suspendido" WHERE Numero = ' . $num);
+		}
+	}
+}
+
+function reanudarPartido($num){
+	$mydb = conectar();
+	$res = $mydb->query("SELECT Numero,Estado FROM partido WHERE Numero = $num");
+	if($res->num_rows > 0){
+		$info = $res->fetch_row();
+		if($info[1] == "Suspendido"){
+			$mydb->query('UPDATE partido SET Estado = "Programado" WHERE Numero = ' . $num);
+		}
+	}
+}
+
+function cancelarPartido($num){
+	$mydb = conectar();
+	$res = $mydb->query("SELECT Numero,Estado FROM partido WHERE Numero = $num");
+	if($res->num_rows > 0){
+		$info = $res->fetch_row();
+		if($info[1] != "Cancelado"){
+			$mydb->query('UPDATE partido SET Estado = "Cancelado" WHERE Numero = ' . $num);
+		}
+	}
+}
+
+function borrarPartido($num){
+	$mydb = conectar();
+	$res = $mydb->query("DELETE FROM partido WHERE Numero = $num");
+}
+
 ?>
