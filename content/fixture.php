@@ -287,9 +287,6 @@
 							$hora = $_POST['hora'];
 							if(agregarPartido($equipo1,$equipo2,$fecha,$hora)){
 								displayGreen("","Partido agregado con exito");
-								$tiempo = 3; # segundos
-								$pagina = "fixture.php";
-								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
 							}
 							else{
 								displayError("Error!","No se pudo agendar el partido.");
@@ -299,13 +296,77 @@
 					if(isset($_GET['num'])){
 						$num = $_GET['num'];
 						if($accion == "suspenderPartido"){
-							suspenderPartido($num);
+							echo '<h2 class="hEquipo" id="Susp">Suspender partido</h2>
+							<form action="fixture.php?accion=suspenderPartido2&num=' . $num . '" method="post">
+							<label class="flabel" style="display:inline;">Seguro que desea suspender el partido?</label>
+							<input type="radio" name="rta" value="si"> Si
+							<input type="radio" name="rta" value="no" checked> No
+							<br>
+							<br>
+							<label class="flabel" style="display:inline;">Comentario (Opcional)</label>
+							<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="5" style="width:100%;"></textarea>
+							<br>
+							<input class="btnPanel" type="submit" value="Suspender">
+							</form>';
 						}
+
+						if($accion == "suspenderPartido2"){
+							if(isset($_POST['rta'])){
+								$rta = $_POST['rta'];
+							}
+							else{
+								$rta = "no";
+							}
+							if(isset($_POST['comentario'])){
+								$comentario = $_POST['comentario'];
+							}
+							else{
+								$comentario = " ";
+							}
+							if(suspenderPartido($num,$rta,$comentario)){
+								displayGreen("","Se suspendio el partido.");
+							}
+							else{
+								displayError("Error","No se pudo suspender el partido!");
+							}
+						}						
 						if($accion == "reanudarPartido"){
 							reanudarPartido($num);
 						}
 						if($accion == "cancelarPartido"){
-							cancelarPartido($num);
+							echo '<h2 class="hEquipo" id="Canc">Cancelar partido</h2>
+							<form action="fixture.php?accion=cancelarPartido2&num=' . $num . '" method="post">
+							<label class="flabel" style="display:inline;">Seguro que desea cancelar el partido?</label>
+							<input type="radio" name="rta" value="si"> Si
+							<input type="radio" name="rta" value="no" checked> No
+							<br>
+							<br>
+							<label class="flabel" style="display:inline;">Comentario (Opcional)</label>
+							<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="5" style="width:100%;"></textarea>
+							<br>
+							<input class="btnPanel" type="submit" value="Cancelar">
+							</form>';
+						}
+						
+						if($accion == "cancelarPartido2"){
+							if(isset($_POST['rta'])){
+								$rta = $_POST['rta'];
+							}
+							else{
+								$rta = "no";
+							}
+							if(isset($_POST['comentario'])){
+								$comentario = $_POST['comentario'];
+							}
+							else{
+								$comentario = " ";
+							}
+							if(cancelarPartido($num,$rta,$comentario)){
+								displayGreen("","Se canceló el partido.");
+							}
+							else{
+								displayError("Error","No se pudo cancelar el partido!");
+							}
 						}
 						if($accion == "borrarPartido"){
 							borrarPartido($num);
@@ -321,17 +382,17 @@
 		
 		<?php 
 			$mydb = conectar();
-			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido';
+			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido ORDER BY Fecha Asc';
 			if($res = $mydb->query($q)){
 				empezarTabla();
-				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado","","","");
+				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado","","","","");
 				genEncabezado($encabezados);
 				while($fila = $res->fetch_row()){
 					$num = $fila[0];
 					unset($fila[0]);
 					$estadoEquipo = $fila[5];
 					if($estadoEquipo == "Programado"){
-						$fila[] = '<a href="fixture.php?accion=suspenderPartido&num='. $num . '"><img src="imgs/partido_suspender.png" title="Suspender partido"></a>';
+						$fila[] = '<a href="fixture.php?accion=suspenderPartido&num='. $num . '#Susp"><img src="imgs/partido_suspender.png" title="Suspender partido"></a>';
 					}
 					if($estadoEquipo == "Suspendido"){
 						$fila[] = '<a href="fixture.php?accion=reanudarPartido&num='. $num . '"><img src="imgs/partido_reanudar.png" title="Reanudar partido"></a>';
@@ -344,10 +405,26 @@
 						$fila[] = '<a href="fixture.php?accion=cancelarPartido&num='. $num . '"><img src="imgs/partido_cancelar.png" title="Cancelar partido"></a>';
 					}
 					$fila[] = '<a href="fixture.php?accion=borrarPartido&num='. $num . '"><img src="imgs/partido_borrar.png" title="Eliminar partido"></a>';
+					$fila[] = '<a href="fixture.php?verPartido='. $num . '&fecha=' . $fila[3] . '&hora=' . $fila[4] . '#vista"><img src="imgs/lupa.png" title="Ver info"></a>';
+					
 					genFila($fila);
 				}
 				finalizarTabla("0","");
 				$res->close();
+			}
+			
+			if(isset($_GET['verPartido'])){
+				$num = $_GET['verPartido'];
+				if(isset($_GET['fecha']) && isset($_GET['hora'])){
+					echo '<br><br><h2 class="hEquipo" id="vista">Info adicional del partido del ' . $_GET['fecha'] . ' a las ' . $_GET['hora'] . '</h2>';
+				}
+				else{
+					echo '<br><br><h2 class="hEquipo" id="vista">Info adicional</h2>';
+				}
+				if($res = $mydb->query("SELECT Comentario FROM partido WHERE Numero = $num")){
+					$info = $res->fetch_row();
+					echo '<br><span class="resaltado2">Comentario: </span><br>' .$info[0];	
+				}
 			}
 		
 		?>

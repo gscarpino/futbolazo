@@ -163,6 +163,11 @@ function obtenerEquiposDeCat($cat){
 
 function agregarPartido($equipo1,$equipo2,$fecha,$hora){
 	$mydb = conectar();
+	$equipo1 = trim($equipo1);
+	$equipo2 = trim($equipo2);
+	if($equipo1 == " " or $equipo2 == " "){
+		return false;
+	}
 	if($res = $mydb->query('SELECT * FROM partido WHERE Fecha = "' . $fecha . '" AND Hora = "' . $hora . '"')){
 		if($res->num_rows > 0){
 			return false;
@@ -179,8 +184,10 @@ function agregarPartido($equipo1,$equipo2,$fecha,$hora){
 }
 
 
-function jugarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$datos){
+function jugarPartido($num,$datos){
 	$mydb = conectar();
+	$res = $mydb->query("SELECT Equipo1,Equipo2,Comentario FROM partido WHERE Numero = $num");
+	$filaFixture = $res->fetch_row();
 	$claves = array_keys($datos);
 	
 	$amarillas[] = array();
@@ -196,67 +203,121 @@ function jugarPartido($equip1,$equip2,$fecha,$numero,$goles1,$goles2,$datos){
 		if(substr_count($c,"Amarilla") > 0){
 			if($datos[$c] == "on"){
 				$pos = strpos($c,"_");
-				$dni = substr($c,0,$pos);
+				//Actuales
+				$dni = substr($c,0,$pos);$res = $mydb->query("SELECT Equipo,AmarillasActuales FROM jugadores WHERE DNI = $dni");
+				$fila = $res->fetch_row();
+				$valor = $fila[1];
+				$valor++;
+				$res = $mydb->query("UPDATE jugadores SET AmarillasActuales = $valor WHERE DNI = $dni");
+				$eq = $fila[0];
+				$res = $mydb->query('SELECT AmarillasActuales FROM equipo WHERE Nombre = "' . $eq . '"');
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query('UPDATE equipo SET AmarillasActuales = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
+				
+				//Total
 				$res = $mydb->query("SELECT Equipo,Amarillas FROM jugadores WHERE DNI = $dni");
 				$fila = $res->fetch_row();
 				$valor = $fila[1];
 				$valor++;
 				$res = $mydb->query("UPDATE jugadores SET Amarillas = $valor WHERE DNI = $dni");
-				$amarillas[] = "$dni";
 				$eq = $fila[0];
 				$res = $mydb->query('SELECT Amarillas FROM equipo WHERE Nombre = "' . $eq . '"');
 				$fila = $res->fetch_row();
 				$valor = $fila[0];
 				$valor++;
 				$res = $mydb->query('UPDATE equipo SET Amarillas = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
+				
+				$amarillas[] = "$dni";
 			}
 		}
 		if(substr_count($c,"Expulsion1") > 0){
-			if($datos[$c] == "on"){
-				$pos = strpos($c,"_");
+			if($datos[$c] == "on"){$pos = strpos($c,"_");
 				$dni = substr($c,0,$pos);
+				//Actuales
+				$res = $mydb->query("SELECT Equipo,Expulsiones1Actuales FROM jugadores WHERE DNI = $dni");
+				$fila = $res->fetch_row();
+				$valor = $fila[1];
+				$valor++;
+				$res = $mydb->query("UPDATE jugadores SET Expulsiones1Actuales = $valor WHERE DNI = $dni");
+				$eq = $fila[0];
+				$res = $mydb->query('SELECT Expulsiones1Actuales FROM equipo WHERE Nombre = "' . $eq . '"');
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query('UPDATE equipo SET Expulsiones1Actuales = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
+			
+				//Totales
 				$res = $mydb->query("SELECT Equipo,Expulsiones1 FROM jugadores WHERE DNI = $dni");
 				$fila = $res->fetch_row();
 				$valor = $fila[1];
 				$valor++;
 				$res = $mydb->query("UPDATE jugadores SET Expulsiones1 = $valor WHERE DNI = $dni");
-				$expulsados1[] = "$dni";
 				$eq = $fila[0];
 				$res = $mydb->query('SELECT Expulsiones1 FROM equipo WHERE Nombre = "' . $eq . '"');
 				$fila = $res->fetch_row();
 				$valor = $fila[0];
 				$valor++;
 				$res = $mydb->query('UPDATE equipo SET Expulsiones1 = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
+				
+				$expulsados1[] = "$dni";
 			}
 		}
 		if(substr_count($c,"Expulsion2") > 0){
 			if($datos[$c] == "on"){
 				$pos = strpos($c,"_");
 				$dni = substr($c,0,$pos);
+				
+				//Actuales
+				$res = $mydb->query("SELECT Equipo,Expulsiones2Actuales FROM jugadores WHERE DNI = $dni");
+				$fila = $res->fetch_row();
+				$valor = $fila[1];
+				$valor++;
+				$res = $mydb->query("UPDATE jugadores SET Expulsiones2Actuales = $valor WHERE DNI = $dni");
+				$eq = $fila[0];
+				$res = $mydb->query('SELECT Expulsiones2Actuales FROM equipo WHERE Nombre = "' . $eq . '"');
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor++;
+				$res = $mydb->query('UPDATE equipo SET Expulsiones2Actuales = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
+			
+				//Totales
 				$res = $mydb->query("SELECT Equipo,Expulsiones2 FROM jugadores WHERE DNI = $dni");
 				$fila = $res->fetch_row();
 				$valor = $fila[1];
 				$valor++;
 				$res = $mydb->query("UPDATE jugadores SET Expulsiones2 = $valor WHERE DNI = $dni");
-				$expulsados2[] = "$dni";
 				$eq = $fila[0];
 				$res = $mydb->query('SELECT Expulsiones2 FROM equipo WHERE Nombre = "' . $eq . '"');
 				$fila = $res->fetch_row();
 				$valor = $fila[0];
 				$valor++;
 				$res = $mydb->query('UPDATE equipo SET Expulsiones2 = ' . $valor . ' WHERE Nombre = "' . $eq . '"');
-			
+				
+				$expulsados2[] = "$dni";
 			}
 		}
 		if(substr_count($c,"Goles") > 0){
 			if(((int)$datos[$c]) > 0){
 				$pos = strpos($c,"_");
 				$dni = substr($c,0,$pos);
+				
+				//Actuales
+				$res = $mydb->query("SELECT GolesActuales FROM jugadores WHERE DNI = $dni");
+				$fila = $res->fetch_row();
+				$valor = $fila[0];
+				$valor = $valor + ((int)$datos[$c]);
+				$res = $mydb->query("UPDATE jugadores SET GolesActuales = $valor WHERE DNI = $dni");
+
+				
+				//Totales
 				$res = $mydb->query("SELECT Goles FROM jugadores WHERE DNI = $dni");
 				$fila = $res->fetch_row();
 				$valor = $fila[0];
 				$valor = $valor + ((int)$datos[$c]);
 				$res = $mydb->query("UPDATE jugadores SET Goles = $valor WHERE DNI = $dni");
+				
 				$goleadores[] = $dni . '(' .((int)$datos[$c]) .')';
 			}
 		}
@@ -725,13 +786,38 @@ function modificarJugador($dni,$pass,$NewDNI,$nombre,$equipo,$goles,$amarillas,$
 	}
 }
 
-function suspenderPartido($num){
-	$mydb = conectar();
-	$res = $mydb->query("SELECT Numero,Estado FROM partido WHERE Numero = $num");
-	if($res->num_rows > 0){
-		$info = $res->fetch_row();
-		if($info[1] == "Programado"){
-			$mydb->query('UPDATE partido SET Estado = "Suspendido" WHERE Numero = ' . $num);
+function suspenderPartido($num,$rta,$comentario){
+	if($rta == "no"){
+		return false;
+	}
+	else{
+		$mydb = conectar();
+		if($res = $mydb->query("SELECT Numero,Estado FROM partido WHERE Numero = $num")){
+			if($res->num_rows > 0){
+				$info = $res->fetch_row();
+				if($info[1] == "Programado"){
+					$mydb->query('UPDATE partido SET Estado = "Suspendido" WHERE Numero = ' . $num);
+					if($comentario != " "){
+						if($res = $mydb->query("SELECT Comentario FROM partido WHERE Numero = $num")){
+							$info = $res->fetch_row();
+							$motivo = $info[0];
+							date_default_timezone_set('America/Argentina/Buenos_Aires');
+							$motivo = $motivo . "<br>" . date('d-m-Y') . " - Partido suspendido: " . $comentario;
+							$mydb->query('UPDATE partido SET Comentario = "' . $motivo . '" WHERE Numero = ' . $num);
+						}
+					}
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
 		}
 	}
 }
@@ -743,17 +829,50 @@ function reanudarPartido($num){
 		$info = $res->fetch_row();
 		if($info[1] == "Suspendido"){
 			$mydb->query('UPDATE partido SET Estado = "Programado" WHERE Numero = ' . $num);
+			date_default_timezone_set('America/Argentina/Buenos_Aires');
+			if($res = $mydb->query("SELECT Comentario FROM partido WHERE Numero = $num")){
+				$info = $res->fetch_row();
+				$motivo = $info[0];
+				$motivo = $motivo . "<br>" . date('d-m-Y') . " - Partido reanudado.";
+				set_time_limit(60);
+				$mydb->query('UPDATE partido SET Comentario = "' . $motivo . '" WHERE Numero = ' . $num);
+			}
 		}
 	}
 }
 
-function cancelarPartido($num){
-	$mydb = conectar();
-	$res = $mydb->query("SELECT Numero,Estado FROM partido WHERE Numero = $num");
-	if($res->num_rows > 0){
-		$info = $res->fetch_row();
-		if($info[1] != "Cancelado"){
-			$mydb->query('UPDATE partido SET Estado = "Cancelado" WHERE Numero = ' . $num);
+function cancelarPartido($num,$rta,$comentario){
+	if($rta == "no"){
+		return false;
+	}
+	else{
+		$mydb = conectar();
+		if($res = $mydb->query("SELECT Numero,Estado FROM partido WHERE Numero = $num")){
+			if($res->num_rows > 0){
+				$info = $res->fetch_row();
+				if($info[1] != "Cancelado"){
+					$mydb->query('UPDATE partido SET Estado = "Cancelado" WHERE Numero = ' . $num);
+					if($comentario != " "){
+						if($res = $mydb->query("SELECT Comentario FROM partido WHERE Numero = $num")){
+							$info = $res->fetch_row();
+							$motivo = $info[0];
+							date_default_timezone_set('America/Argentina/Buenos_Aires');
+							$motivo = $motivo . "<br>" . date('d-m-Y') . " - Partido cancelado: " . $comentario;
+							$mydb->query('UPDATE partido SET Comentario = "' . $motivo . '" WHERE Numero = ' . $num);
+						}
+					}
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
 		}
 	}
 }
