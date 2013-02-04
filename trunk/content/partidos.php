@@ -35,8 +35,23 @@
 
 		$( "#btnLogOut" )
 		.button();
+		$( ".btnPanel" )
+		.button();
 
-			
+		$( document ).tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                using: function( position, feedback ) {
+                    $( this ).css( position );
+                    $( "<div>" )
+                        .addClass( "arrow" )
+                        .addClass( feedback.vertical )
+                        .addClass( feedback.horizontal )
+                        .appendTo( this );
+                }
+            }
+        });
 		
 		
 		var name = $( "#name" ),
@@ -193,60 +208,41 @@
 				while($fila = $res->fetch_row()){
 					$num = $fila[0];
 					unset($fila[0]);
-					$fila[] = '<a href="#"><img src="partido_registrar.png" title="Registrar partido"></a>';
+					$fila[] = '<a href="partidos.php?etapa=1&num=' . $num . '"><img src="imgs/partido_registrar.png" title="Registrar partido"></a>';
 					genFila($fila);
 				}
-				finalizarTabla("3");
+				finalizarTabla("0","");
 				$res->close();
 			}
 		
 		?>
 		
 		
-			<?php 
-			$etapa=-1;
-			if($etapa == 1){
-					echo '<form action="partidos.php?etapa=1" method="post">
-					<label class="flabel">Equipo 1</label>
-					<input type="text" list="equipos" name="equip1" class="text ui-widget-content ui-corner-all">
-					
-					<label class="flabel">Goles Equipo 1</label>
-					<input type="number" name="goles1" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
-					
-					<label class="flabel">Equipo 2</label>
-					<input type="text" list="equipos" name="equip2" class="text ui-widget-content ui-corner-all">
-
-					<label class="flabel">Goles Equipo 2</label>
-					<input type="number" name="goles2" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
-					
-					<label class="flabel">Fecha</label>
-					<input type="date" name="fecha" class="text ui-widget-content ui-corner-all">
-					
-					<label class="flabel">Número de Partido (Opcional)</label>
-					<input type="number" name="numero" class="text ui-widget-content ui-corner-all">
-					
-					<label class="flabel">Comentario (Opcional)</label>
-					<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;"></textarea>
-									
-					
-					';
-					echo '<datalist id="equipos">';
-					listaEquipos();
-					echo '</datalist><br><br><input class="fsubmit" type="submit"></form>';
+				<?php 
+				if(isset($_GET['etapa'])){
+					$etapa = $_GET['etapa'];
 				}
-				else if($etapa == 1){
-					if(isset($_POST['equip1']) && isset($_POST['equip2'])){
-						$equip1 = $_POST['equip1'];
-						$equip2 = $_POST['equip2'];
-						$fecha = $_POST['fecha'];
-						$numero = $_POST['numero'];
-						$goles1 = $_POST['goles1'];
-						$goles2 = $_POST['goles2'];
-						$comentario = $_POST['comentario'];
-						echo '<h1 class="titulo">Goles y faltas</h1><br>';
-						echo '<form action="partidos.php?etapa=2&equip1=' . $equip1 . '&equip2=' . $equip2 . '&fecha=' . $fecha . '&numero=' . $numero . '&goles1=' . $goles1 . '&goles2=' . $goles2 . '" method="post">';
-						echo '<h2 class="hEquipo">' . $equip1 . '</h2>';
+				else{
+					$etapa = -1;
+				}
+				
+				if($etapa == 1){
+					if(isset($_GET['num'])){
+						$num = $_GET['num'];
+						echo '<form action="partidos.php?etapa=2&num=' . $num . '" method="post">';
+						
 						$mydb = conectar();
+						
+						$res = $mydb->query("SELECT Equipo1,Equipo2 FROM partido WHERE Numero = $num");
+						$fila = $res->fetch_row();
+						$equip1 = $fila[0];
+						$equip2 = $fila[1];
+						
+						echo '<br><br><br><br><h1 class="hEquipo">Goles y faltas</h1><br>';
+						echo '<center><h2 class="resaltado2" style="font-size: 140%;">' . $equip1 . '</h2></center>
+						<label class="flabel">Goles Convertidos</label>
+						<input type="number" name="goles1" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
+						<br><br><br>';
 						if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip1'")){
 							empezarTabla();
 							$encabezados = array("Nombre","DNI","Goles","Amarilla","Expulsion 5'","Expulsion");
@@ -258,10 +254,13 @@
 								$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
 								genFila($fila);
 							}
-							finalizarTabla("3");
+							finalizarTabla("0","");
 							$res->close();
 						}
-						echo '<br><h2 class="hEquipo">' . $equip2 . '</h2>';
+						echo '<br><br><center><h2 class="resaltado2" style="font-size: 140%;">' . $equip2 . '</h2></center>
+						<label class="flabel">Goles Convertidos</label>
+						<input type="number" name="goles2" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
+						<br><br><br>';
 						if ($res = $mydb->query("SELECT Nombre,DNI FROM jugadores WHERE Equipo = '$equip2'")){
 							empezarTabla();
 							$encabezados = array("Nombre","DNI","Goles","Amarilla","Expulsion 5'","Expulsion");
@@ -273,24 +272,34 @@
 								$fila[] = '<input type="checkbox" name="'. $fila[1] .'_Expulsion2">';
 								genFila($fila);
 							}
-							finalizarTabla("3");
+							finalizarTabla("0","");
 							$res->close();
 						}
-						echo '<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;visibility:hidden;">' . $comentario . '</textarea>';
-						echo '<br><br><input class="fsubmit" type="submit"></form>';
+						echo '<br><label class="flabel">Comentario (Opcional)</label>
+						<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="4" style="width:100%;"></textarea>
+						';
+						echo '<br><br><input class="btnPanel" type="submit"></form>';
 					}
 					else{
-						header("location:partidos.php");
+						//...
 					}
 				}
 				else if($etapa == 2){
 					
-					$equip1 = $_GET['equip1'];
-					$equip2 = $_GET['equip2'];
-					$fecha = $_GET['fecha'];
-					$numero = $_GET['numero'];
-					$goles1 = $_GET['goles1'];
-					$goles2 = $_GET['goles2'];	
+					if(isset($_GET['num'])){
+						$num = $_GET['num'];
+						set_time_limit(120);
+						if(jugarPartido($num,$_POST)){
+							displayGreen("","Se registró correctamente el partido jugado");
+						}
+						else{
+							displayError("Error","No se pudo registrar el partido.");
+						}
+						set_time_limit(60);
+					}
+					else{
+						header("location:partidos.php?error=1");
+					}
 					
 				}
 				
