@@ -188,7 +188,13 @@ function jugarPartido($num,$datos){
 	$mydb = conectar();
 	$res = $mydb->query("SELECT Equipo1,Equipo2,Comentario FROM partido WHERE Numero = $num");
 	$filaFixture = $res->fetch_row();
+	$equip1 = $filaFixture[0];
+	$equip2 = $filaFixture[1];
+	$comentario = $filaFixture[2];
+	
 	$claves = array_keys($datos);
+	$goles1 = $datos['goles1'];
+	$goles2 = $datos['goles2'];
 	
 	$amarillas[] = array();
 	unset($amarillas[0]);
@@ -323,7 +329,14 @@ function jugarPartido($num,$datos){
 		}
 	}
 	
-
+	//Goles Convertidos
+	//Actuales
+	$res = $mydb->query('SELECT GolesConvertidosActuales FROM equipo WHERE Nombre = "' . $equip1 . '"');
+	$fila = $res->fetch_row();
+	$valor = $fila[0];
+	$valor = $valor + $goles1;
+	$res = $mydb->query('UPDATE equipo SET GolesConvertidosActuales = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+	//Totales
 	$res = $mydb->query('SELECT GolesConvertidos FROM equipo WHERE Nombre = "' . $equip1 . '"');
 	$fila = $res->fetch_row();
 	$valor = $fila[0];
@@ -331,20 +344,149 @@ function jugarPartido($num,$datos){
 	$res = $mydb->query('UPDATE equipo SET GolesConvertidos = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
 	
 	
-	$comentario = $datos['comentario'];
+	//Actuales
+	$res = $mydb->query('SELECT GolesConvertidosActuales FROM equipo WHERE Nombre = "' . $equip2 . '"');
+	$fila = $res->fetch_row();
+	$valor = $fila[0];
+	$valor = $valor + $goles2;
+	$res = $mydb->query('UPDATE equipo SET GolesConvertidosActuales = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+	//Totales
+	$res = $mydb->query('SELECT GolesConvertidos FROM equipo WHERE Nombre = "' . $equip2 . '"');
+	$fila = $res->fetch_row();
+	$valor = $fila[0];
+	$valor = $valor + $goles2;
+	$res = $mydb->query('UPDATE equipo SET GolesConvertidos = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+	
+
+	//Goles Recibidos
+	//Actuales
+	$res = $mydb->query('SELECT GolesRecibidosActuales FROM equipo WHERE Nombre = "' . $equip1 . '"');
+	$fila = $res->fetch_row();
+	$valor = $fila[0];
+	$valor = $valor + $goles2;
+	$res = $mydb->query('UPDATE equipo SET GolesRecibidosActuales = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+	//Totales
+	$res = $mydb->query('SELECT GolesRecibidos FROM equipo WHERE Nombre = "' . $equip1 . '"');
+	$fila = $res->fetch_row();
+	$valor = $fila[0];
+	$valor = $valor + $goles2;
+	$res = $mydb->query('UPDATE equipo SET GolesRecibidos = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+	
+	//Actuales
+	$res = $mydb->query('SELECT GolesRecibidosActuales FROM equipo WHERE Nombre = "' . $equip2 . '"');
+	$fila = $res->fetch_row();
+	$valor = $fila[0];
+	$valor = $valor + $goles1;
+	$res = $mydb->query('UPDATE equipo SET GolesRecibidosActuales = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+	//Totales
+	$res = $mydb->query('SELECT GolesRecibidos FROM equipo WHERE Nombre = "' . $equip2 . '"');
+	$fila = $res->fetch_row();
+	$valor = $fila[0];
+	$valor = $valor + $goles1;
+	$res = $mydb->query('UPDATE equipo SET GolesRecibidos = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+	
+	
+	
+	if(isset($datos['comentario'])){
+		$comentario = $comentario . '<br>Partido jugado: ' . $datos['comentario'];
+	}
+	else{
+		$comentario = $comentario . '<br>Partido jugado.';
+	}
+	
+	if($goles1 > $goles2){
+		//Gano Equipo1
+		//Actuales
+		$res = $mydb->query('SELECT PartidosGanadosActuales FROM equipo WHERE Nombre = "' . $equip1 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET PartidosGanadosActuales = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+		//Totales
+		$res = $mydb->query('SELECT PartidosGanados FROM equipo WHERE Nombre = "' . $equip1 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET PartidosGanados = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+		
+		//Actuales
+		$res = $mydb->query('SELECT PartidosPerdidosActuales FROM equipo WHERE Nombre = "' . $equip2 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET PartidosPerdidosActuales = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+		//Totales
+		$res = $mydb->query('SELECT PartidosPerdidos FROM equipo WHERE Nombre = "' . $equip2 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET PartidosPerdidos = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+		
+	}
+	else if($goles1 < $goles2){
+		//Gano Equipo2
+		//Actuales
+		$res = $mydb->query('SELECT PartidosGanadosActuales FROM equipo WHERE Nombre = "' . $equip2 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET PartidosGanadosActuales = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+		//Totales
+		$res = $mydb->query('SELECT PartidosGanados FROM equipo WHERE Nombre = "' . $equip2 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET PartidosGanados = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+		
+		//Actuales
+		$res = $mydb->query('SELECT PartidosPerdidosActuales FROM equipo WHERE Nombre = "' . $equip1 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET PartidosPerdidosActuales = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+		//Totales
+		$res = $mydb->query('SELECT PartidosPerdidos FROM equipo WHERE Nombre = "' . $equip1 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET PartidosPerdidos = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+	}
+	else{
+		//Empate
+		//Actuales
+		$res = $mydb->query('SELECT EmpatesActuales FROM equipo WHERE Nombre = "' . $equip2 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET EmpatesActuales = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+		//Totales
+		$res = $mydb->query('SELECT Empates FROM equipo WHERE Nombre = "' . $equip2 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET Empates = ' . $valor . ' WHERE Nombre = "' . $equip2 . '"');
+		
+		//Actuales
+		$res = $mydb->query('SELECT EmpatesActuales FROM equipo WHERE Nombre = "' . $equip1 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET EmpatesActuales = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+		//Totales
+		$res = $mydb->query('SELECT Empates FROM equipo WHERE Nombre = "' . $equip1 . '"');
+		$fila = $res->fetch_row();
+		$valor = $fila[0];
+		$valor = $valor + 1;
+		$res = $mydb->query('UPDATE equipo SET Empates = ' . $valor . ' WHERE Nombre = "' . $equip1 . '"');
+	}
+	
 	$gols = implode(",",$goleadores);
 	$amas = implode(",",$amarillas);
 	$exp1 = implode(",",$expulsados1);
 	$exp2 = implode(",",$expulsados2);
-	
-	echo '<br>' . $gols;
-	echo '<br>' . $amas;
-	echo '<br>' . $exp1;
-	echo '<br>' . $exp2;
-	
-	//Error, buscar
-	$res = $mydb->query("INSERT INTO partido VALUES($numero,$equip1,$equip2,$goles1,$goles2,$gols,$amas,$exp1,$exp2,$fecha,$comentario)");
-	return true;
+		
+	$res = $mydb->query("UPDATE partido SET GolesEq1 = $goles1,GolesEq2 = $goles2,Goleadores = '$gols',Amarillas = '$amas',Expulsiones1 = '$exp1',Expulsiones2 = '$exp2',Comentario = '$comentario',Estado='Finalizado' WHERE Numero = $num");
+	return $res;
 }
 
 function agregarUsuario($nombre,$pass,$mail){

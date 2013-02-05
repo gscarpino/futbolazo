@@ -245,7 +245,15 @@ table.formatHTML5 tfoot{
 }
 
 input[type="text"]{
-	width: 100%;
+	width: 33%;
+}
+
+input[type="email"]{
+	width: 33%;
+}
+
+input[type="password"]{
+	width: 33%;
 }
 
 input[type="submit"]{

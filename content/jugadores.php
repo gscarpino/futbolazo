@@ -291,17 +291,17 @@
 					$dni = $_GET['jug'];
 					$q = "SELECT * FROM jugadores WHERE DNI = $dni";
 					if($res = $mydb->query($q)){
-						echo '<br><h2 class="hEquipo" id="vista">Datos del jugador </h2>';
+						echo '<br><h2 class="hEquipo" id="vista">Datos del jugador </h2><br>';
 						$fila = $res->fetch_row();
 						$nombre = $fila[0];
 						$nombreEquipo = $fila[2];
-						echo '<h3 class="hEquipo">Nombre: <strong class="resaltado">' . $nombre . '</strong></h3>';
-						echo '<h3 class="hEquipo">DNI: <strong class="resaltado">' . $dni . '</strong></h3>';
+						echo '<span class="resaltado2">Nombre: </span> <strong class="resaltado" style="color:#2E6E9E;">' . $nombre . '</strong><br><br>';
+						echo '<span class="resaltado2">DNI: </span>' . $dni . '<br><br>';
 						if ($nombreEquipo == "[SIN EQUIPO]"){
-							echo '<h3 class="hEquipo">Equipo: <strong class="resaltado">Ninguno </strong></h3></br>';
+							echo '<span class="resaltado2">Equipo: </span>Ninguno<br><br><br>';
 						}
 						else{
-							echo '<h3 class="hEquipo">Equipo: <strong class="resaltado">' . $nombreEquipo . '</strong></h3></br>';
+							echo '<span class="resaltado2">Equipo: </span>' . $nombreEquipo . '<br><br><br>';
 						}
 						empezarTabla();
 						$encabezados = array("Goles","Amarillas","Expulsion 5'","Expulsiones","Total Goles","Total Amarillas","Total Expulsion 5'","Total Expulsiones","","");
