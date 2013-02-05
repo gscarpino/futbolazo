@@ -151,28 +151,28 @@
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
 			<ul>
-				<li><a href="#">Categoría A</a>
+				<li><a href="#">Categoria A</a>
 					<ul>
 						<li><a href="posiciones.php?cat=a"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=a"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=a"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=a"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoría B</a>
+				<li><a href="#">Categoria B</a>
 					<ul>
 						<li><a href="posiciones.php?cat=b"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=b"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=b"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=b"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoría C</a>
+				<li><a href="#">Categoria C</a>
 					<ul>
 						<li><a href="posiciones.php?cat=c"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=c"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=c"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=c"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoría D</a>
+				<li><a href="#">Categoria D</a>
 					<ul>
 						<li><a href="posiciones.php?cat=d"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=d"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
@@ -377,12 +377,12 @@
 			?>
 		
 		<br>
-		<h2 class="hEquipo" id="vista">Partidos programados</h2>	
+		<h2 class="hEquipo" id="vista">Partidos no finalizados</h2>	
 		<br>
 		
 		<?php 
 			$mydb = conectar();
-			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido ORDER BY Fecha Asc';
+			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido WHERE Estado <> "Finalizado" ORDER BY Fecha Asc';
 			if($res = $mydb->query($q)){
 				empezarTabla();
 				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado","","","","");

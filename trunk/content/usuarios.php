@@ -208,7 +208,7 @@
 					$fila[] = '<a href="usuarios.php?accion=del&who=' . $fila[0] . '#Del"><img src="imgs/basura.png" title="Borrar admin"></a>';
 					echo '<tr><td>' . $fila[0] . '</td><td>' . $fila[2] . '</td><td>' . $fila[3] . '</td><td>' . $fila[4] . '</td></tr>';
 				}
-			    finalizarTabla("2");
+			    finalizarTabla("0","");
 			    $res->close();
 			}
 		?>
@@ -220,9 +220,9 @@
 			<label class="flabel">Nombre</label>
 			<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
 			<label class="flabel">Password</label>
-			<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+			<input type="password" name="pass" class="text ui-widget-content ui-corner-all">
 			<label class="flabel">Mail</label>
-			<input type="email" name="email" class="text ui-widget-content ui-corner-all" style="width:100%">
+			<input type="email" name="email" class="text ui-widget-content ui-corner-all">
 			<br>
 			<br>
 			<input class="btnPanel" type="submit">
@@ -254,11 +254,11 @@
 						<h2 class="hEquipo" id="Mod">Modificar usuario:  <strong class="resaltado">' . $nombre . '</strong></h2>
 						<form action="usuarios.php?accion=mod2&nombre=' . $nombre . '" method="post">
 						<label class="flabel">Anterior password</label>
-						<input type="password" name="passOld" class="text ui-widget-content ui-corner-all" style="width:100%">
+						<input type="password" name="passOld" class="text ui-widget-content ui-corner-all">
 						<label class="flabel">Nueva password</label>
-						<input type="password" name="passNew" class="text ui-widget-content ui-corner-all" style="width:100%" title="Dejar vacío para no modificar">
+						<input type="password" name="passNew" class="text ui-widget-content ui-corner-all" title="Dejar vacío para no modificar">
 						<label class="flabel">Mail</label>
-						<input type="email" name="email" class="text ui-widget-content ui-corner-all" style="width:100%" title="Dejar vacío para no modificar">
+						<input type="email" name="email" class="text ui-widget-content ui-corner-all" title="Dejar vacío para no modificar">
 						<br>
 						<br>
 						<input class="btnPanel" type="submit">
@@ -296,7 +296,7 @@
 						<br>
 						<br>
 						<label class="flabel">Password (Falta implementar distintos grados para administradores)</label>
-						<input type="text" name="passNew" class="text ui-widget-content ui-corner-all" style="width:100%" disabled value="No completar, falta implementar">
+						<input type="text" name="passNew" class="text ui-widget-content ui-corner-all" disabled value="No completar, falta implementar">
 						<br>
 						<br>
 						<input class="btnPanel" type="submit">

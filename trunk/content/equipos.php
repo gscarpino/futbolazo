@@ -837,7 +837,7 @@
 					<option value="D">D</option>
 				</select>
 				<label class="flabel">Mail</label>
-				<input type="email" name="mail" class="text ui-widget-content ui-corner-all">
+				<input type="email" name="mail" class="text ui-widget-content ui-corner-all" style="width:33%;">
 				<br>
 				<br>		
 				<br>

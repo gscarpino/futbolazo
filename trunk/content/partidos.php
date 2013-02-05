@@ -201,17 +201,22 @@
 			$mydb = conectar();
 			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido WHERE Estado = "Programado"';
 			if($res = $mydb->query($q)){
-				empezarTabla();
-				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado","");
-				genEncabezado($encabezados);
-				
-				while($fila = $res->fetch_row()){
-					$num = $fila[0];
-					unset($fila[0]);
-					$fila[] = '<a href="partidos.php?etapa=1&num=' . $num . '"><img src="imgs/partido_registrar.png" title="Registrar partido"></a>';
-					genFila($fila);
+				if($res->num_rows > 0){
+					empezarTabla();
+					$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado","");
+					genEncabezado($encabezados);
+					
+					while($fila = $res->fetch_row()){
+						$num = $fila[0];
+						unset($fila[0]);
+						$fila[] = '<a href="partidos.php?etapa=1&num=' . $num . '#vista"><img src="imgs/partido_registrar.png" title="Registrar partido"></a>';
+						genFila($fila);
+					}
+					finalizarTabla("0","");
 				}
-				finalizarTabla("0","");
+				else{
+					echo '<br><br>No hay partidos programados.';
+				}
 				$res->close();
 			}
 		
@@ -238,7 +243,7 @@
 						$equip1 = $fila[0];
 						$equip2 = $fila[1];
 						
-						echo '<br><br><br><br><h1 class="hEquipo">Goles y faltas</h1><br>';
+						echo '<br><br><br><br><h1 class="hEquipo" id="vista">Goles y faltas</h1><br>';
 						echo '<center><h2 class="resaltado2" style="font-size: 140%;">' . $equip1 . '</h2></center>
 						<label class="flabel">Goles Convertidos</label>
 						<input type="number" name="goles1" min="0" value="0" style="width:40px;" class="text ui-widget-content ui-corner-all">
@@ -291,6 +296,9 @@
 						set_time_limit(120);
 						if(jugarPartido($num,$_POST)){
 							displayGreen("","Se registró correctamente el partido jugado");
+								$tiempo = 2; # segundos
+								$pagina = "partidos.php"; #URL;
+								echo '<meta http-equiv="refresh" content="' . $tiempo . '; url=' . $pagina . '">';
 						}
 						else{
 							displayError("Error","No se pudo registrar el partido.");
