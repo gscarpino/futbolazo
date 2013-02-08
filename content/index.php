@@ -81,6 +81,7 @@
 			title: "Admins",
 			height: 325,
 			width: 275,
+			draggable: false,
 			modal: true,
 			
 			buttons: {

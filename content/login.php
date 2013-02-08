@@ -13,12 +13,10 @@ else{
 	<div id="menuAdm">
 		<p class="validateTips">Todos los campos son requeridos.</p>
 		<form id="formulario" action="loguear.php" method="post">
-		<fieldset>
 			<label for="name">Usuario</label><br>
-			<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"/><br>
+			<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" style="width: 100%;"/><br>
 			<label for="password">Contraseña</label><br>
 			<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" style="width:100%;" />
-		</fieldset>
 		<br>
 		</form>
 	</div>

@@ -423,3 +423,14 @@ fieldset {
 	width:80px;
 	height:80px;
 }
+
+.ui-datepicker-month{
+	font-size: 80%;
+}
+
+.ui-datepicker-year{
+	font-size: 80%;
+}
+.ui-datepicker th{
+	font-size: 80%;
+}
