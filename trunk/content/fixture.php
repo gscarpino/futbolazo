@@ -10,10 +10,12 @@
 <meta charset="ISO-8859-1">
 <title>El Futbolazo - FCEN - UBA</title>
 <link type="text/css" href="css/redmond/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
-<link type="text/css" href="estilo.css" rel="stylesheet" />
+
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
 <script type="text/javascript" src="fun.js"></script>
+
+<link type="text/css" href="estilo.css" rel="stylesheet" />
 <script type="text/javascript">
 
 	$(function(){
@@ -119,17 +121,61 @@
 					
 				}
 			});
+
+
+		
+		    	      var events = [ 
+		    	                    { Title: "Five K for charity", Date: new Date("25/02/2013") }, 
+		    	                    { Title: "Dinner", Date: new Date("23/02/2013") }, 
+		    	                    { Title: "Meeting with manager", Date: new Date("03/01/2013") }
+		    	                ];
+
+		    	                $("#datepicker").datepicker({
+		    			    	      numberOfMonths: 2,
+		    			    	      showButtonPanel: false,
+		    	                    beforeShowDay: function(date) {
+		    	                        var result = [true, '', null];
+		    	                        var matching = $.grep(events, function(event) {
+		    	                            return event.Date.valueOf() === date.valueOf();
+		    	                        });
+		    	                        
+		    	                        if (matching.length) {
+		    	                            result = [true, 'highlight', null];
+		    	                        }
+		    	                        return result;
+		    	                    },
+		    	                    onSelect: function(dateText) {
+		    	                        var date,
+		    	                            selectedDate = new Date(dateText),
+		    	                            i = 0,
+		    	                            event = null;
+		    	                        
+		    	                        while (i < events.length && !event) {
+		    	                            date = events[i].Date;
+
+		    	                            if (selectedDate.valueOf() === date.valueOf()) {
+		    	                                event = events[i];
+		    	                            }
+		    	                            i++;
+		    	                        }
+		    	                        if (event) {
+		    	                            alert(event.Title);
+		    	                        }
+		    	                    }
+		    	                });
+
 		
 
 		
 	});
 
 	function actualizarEquip(){
-		document.location.href = 'fixture.php?categoria=' + document.getElementById('categoria').value;
+		document.location.href = 'fixtureAdm.php?categoria=' + document.getElementById('categoria').value;
 	}
 
 	
 </script>
+
 
 </head>
 
@@ -196,242 +242,20 @@
 		<div id="tabs-1">
 		
 		<br>
-		<h2 class="hEquipo">Agregar fecha</h2>	
+		<h2 class="hEquipo">Partidos programados</h2>	
 		<br>
-		<form action="fixture.php?accion=agFecha" method="post">
-				<label class="flabel" style="display:inline;">Categoria</label>
-				<select name="categoria" class="text ui-widget-content ui-corner-all" id ="categoria" onchange="actualizarEquip()">
-				<?php
-					if(isset($_GET['categoria'])){
-						$categoria = $_GET['categoria'];
-						if($categoria == "A"){
-							echo '<option value="A" selected>A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-							<option value="D">D</option>';
-						}
-						else if($categoria == "B"){
-							echo '<option value="A">A</option>
-							<option value="B" selected>B</option>
-							<option value="C">C</option>
-							<option value="D">D</option>';
-						}
-						else if($categoria == "C"){
-							echo '<option value="A" selected>A</option>
-							<option value="A" >A</option>
-							<option value="B">B</option>
-							<option value="C" selected>C</option>
-							<option value="D">D</option>';
-						}
-						else if($categoria == "D"){
-							echo '<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-							<option value="D" selected>D</option>';
-						}
-						else{
-							echo '<option value="A" selected>A</option>
-							<option value="A" >A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-							<option value="D">D</option>';
-							$categoria = "A";
-						}
-					}
-					else{
-						echo '<option value="A" selected>A</option>
-						<option value="B">B</option>
-						<option value="C">C</option>
-						<option value="D">D</option>';
-						$categoria = "A";
-					}
 
-				?>
-				</select>
-				<label class="flabel">Equipo 1</label>
-				<select name="equipo1" class="text ui-widget-content ui-corner-all">
-					<?php 
-						listaEquiposSelect($categoria);
-					?>
-				</select>
-				<label class="flabel">Equipo 2</label>
-				<select name="equipo2" class="text ui-widget-content ui-corner-all">
-					<?php 
-						listaEquiposSelect($categoria);
-					?>
-				</select>
-				<label class="flabel">Fecha estimada</label>
-				<input type="date" name="fecha" class="text ui-widget-content ui-corner-all" value="<?php date_default_timezone_set('America/Argentina/Buenos_Aires');echo date('Y-m-d'); ?>">
-				<label class="flabel">Hora estimada</label>
-				<input type="time" name="hora" value="00:00:00" required class="text ui-widget-content ui-corner-all">
-				<label class="flabel">Comentario (Opcional)</label>
-				<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="5" style="width:100%;"></textarea>
-				
-				<br>
-				<br>
-				<input class="btnPanel" type="submit" value="Cargar">
-				
-			</form>
-			<br><br>
-			<?php 
-				if(isset($_GET['accion'])){
-					$accion = $_GET['accion'];
-					if($accion == "agFecha"){
-						$equipo1 = $_POST['equipo1'];
-						$equipo2 = $_POST['equipo2'];
-						if($equipo1 == $equipo2){
-							displayError("Error!","El equipo 1 tiene que ser distinto al equipo 2.");
-						}
-						else{
-							$fecha = $_POST['fecha'];
-							$hora = $_POST['hora'];
-							if(agregarPartido($equipo1,$equipo2,$fecha,$hora)){
-								displayGreen("","Partido agregado con exito");
-							}
-							else{
-								displayError("Error!","No se pudo agendar el partido.");
-							}
-						}
-					}
-					if(isset($_GET['num'])){
-						$num = $_GET['num'];
-						if($accion == "suspenderPartido"){
-							echo '<h2 class="hEquipo" id="Susp">Suspender partido</h2>
-							<form action="fixture.php?accion=suspenderPartido2&num=' . $num . '" method="post">
-							<label class="flabel" style="display:inline;">Seguro que desea suspender el partido?</label>
-							<input type="radio" name="rta" value="si"> Si
-							<input type="radio" name="rta" value="no" checked> No
-							<br>
-							<br>
-							<label class="flabel" style="display:inline;">Comentario (Opcional)</label>
-							<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="5" style="width:100%;"></textarea>
-							<br>
-							<input class="btnPanel" type="submit" value="Suspender">
-							</form>';
-						}
+		<br>
 
-						if($accion == "suspenderPartido2"){
-							if(isset($_POST['rta'])){
-								$rta = $_POST['rta'];
-							}
-							else{
-								$rta = "no";
-							}
-							if(isset($_POST['comentario'])){
-								$comentario = $_POST['comentario'];
-							}
-							else{
-								$comentario = " ";
-							}
-							if(suspenderPartido($num,$rta,$comentario)){
-								displayGreen("","Se suspendio el partido.");
-							}
-							else{
-								displayError("Error","No se pudo suspender el partido!");
-							}
-						}						
-						if($accion == "reanudarPartido"){
-							reanudarPartido($num);
-						}
-						if($accion == "cancelarPartido"){
-							echo '<h2 class="hEquipo" id="Canc">Cancelar partido</h2>
-							<form action="fixture.php?accion=cancelarPartido2&num=' . $num . '" method="post">
-							<label class="flabel" style="display:inline;">Seguro que desea cancelar el partido?</label>
-							<input type="radio" name="rta" value="si"> Si
-							<input type="radio" name="rta" value="no" checked> No
-							<br>
-							<br>
-							<label class="flabel" style="display:inline;">Comentario (Opcional)</label>
-							<textarea name="comentario" class="text ui-widget-content ui-corner-all" rows="5" style="width:100%;"></textarea>
-							<br>
-							<input class="btnPanel" type="submit" value="Cancelar">
-							</form>';
-						}
-						
-						if($accion == "cancelarPartido2"){
-							if(isset($_POST['rta'])){
-								$rta = $_POST['rta'];
-							}
-							else{
-								$rta = "no";
-							}
-							if(isset($_POST['comentario'])){
-								$comentario = $_POST['comentario'];
-							}
-							else{
-								$comentario = " ";
-							}
-							if(cancelarPartido($num,$rta,$comentario)){
-								displayGreen("","Se canceló el partido.");
-							}
-							else{
-								displayError("Error","No se pudo cancelar el partido!");
-							}
-						}
-						if($accion == "borrarPartido"){
-							borrarPartido($num);
-						}
-					}
-				}
-								
-			?>
-		
+
+		<center><iframe src="https://www.google.com/calendar/embed?title=El%20Futbolazo&amp;showTabs=0&amp;showCalendars=0&amp;height=600&amp;wkst=2&amp;bgcolor=%23e3e9ff&amp;src=0umbfli6n8knqh6ael929u0jt8%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FArgentina%2FBuenos_Aires" style=" border-width:0 " width="90%" height="600px" frameborder="0" scrolling="no"></iframe>
+		</center>
 		<br>
-		<h2 class="hEquipo" id="vista">Partidos no finalizados</h2>	
 		<br>
-		
-		<?php 
-			$mydb = conectar();
-			$q = 'SELECT Numero,Equipo1,Equipo2,Fecha,Hora,Estado FROM partido WHERE Estado <> "Finalizado" ORDER BY Fecha Asc';
-			if($res = $mydb->query($q)){
-				empezarTabla();
-				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado","","","","");
-				genEncabezado($encabezados);
-				while($fila = $res->fetch_row()){
-					$num = $fila[0];
-					unset($fila[0]);
-					$estadoEquipo = $fila[5];
-					if($estadoEquipo == "Programado"){
-						$fila[] = '<a href="fixture.php?accion=suspenderPartido&num='. $num . '#Susp"><img src="imgs/partido_suspender.png" title="Suspender partido"></a>';
-					}
-					if($estadoEquipo == "Suspendido"){
-						$fila[] = '<a href="fixture.php?accion=reanudarPartido&num='. $num . '"><img src="imgs/partido_reanudar.png" title="Reanudar partido"></a>';
-					}
-					if($estadoEquipo == "Cancelado"){
-						$fila[] = "";
-						$fila[] = "";
-					}
-					else{
-						$fila[] = '<a href="fixture.php?accion=cancelarPartido&num='. $num . '"><img src="imgs/partido_cancelar.png" title="Cancelar partido"></a>';
-					}
-					$fila[] = '<a href="fixture.php?accion=borrarPartido&num='. $num . '"><img src="imgs/partido_borrar.png" title="Eliminar partido"></a>';
-					$fila[] = '<a href="fixture.php?verPartido='. $num . '&fecha=' . $fila[3] . '&hora=' . $fila[4] . '#vista"><img src="imgs/lupa.png" title="Ver info"></a>';
-					
-					genFila($fila);
-				}
-				finalizarTabla("0","");
-				$res->close();
-			}
-			
-			if(isset($_GET['verPartido'])){
-				$num = $_GET['verPartido'];
-				if(isset($_GET['fecha']) && isset($_GET['hora'])){
-					echo '<br><br><h2 class="hEquipo" id="vista">Info adicional del partido del ' . $_GET['fecha'] . ' a las ' . $_GET['hora'] . '</h2>';
-				}
-				else{
-					echo '<br><br><h2 class="hEquipo" id="vista">Info adicional</h2>';
-				}
-				if($res = $mydb->query("SELECT Comentario FROM partido WHERE Numero = $num")){
-					$info = $res->fetch_row();
-					echo '<br><span class="resaltado2">Comentario: </span><br>' .$info[0];	
-				}
-			}
-		
-		?>
 		
 		</div>
-	</div>
-	</div>
+		</div>
+		</div>
 
 </body>
 <?php 
