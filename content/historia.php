@@ -1,7 +1,5 @@
 <?php 
 	session_start();
-	require 'fun.php';
-	logueado();
 ?>
 
 <!DOCTYPE html>
@@ -10,12 +8,10 @@
 <meta charset="ISO-8859-1">
 <title>El Futbolazo - FCEN - UBA</title>
 <link type="text/css" href="css/redmond/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
-
+<link type="text/css" href="estilo.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
 <script type="text/javascript" src="fun.js"></script>
-
-<link type="text/css" href="estilo.css" rel="stylesheet" />
 <script type="text/javascript">
 
 	$(function(){
@@ -38,23 +34,7 @@
 		$( "#btnLogOut" )
 		.button();
 
-		$( ".btnPanel" )
-		.button();
-
-		$( document ).tooltip({
-            position: {
-                my: "center bottom-20",
-                at: "center top",
-                using: function( position, feedback ) {
-                    $( this ).css( position );
-                    $( "<div>" )
-                        .addClass( "arrow" )
-                        .addClass( feedback.vertical )
-                        .addClass( feedback.horizontal )
-                        .appendTo( this );
-                }
-            }
-        });
+			
 		
 		
 		var name = $( "#name" ),
@@ -96,17 +76,20 @@
 		
 		
 		$( "#menuAdm" ).dialog({
+			resizable: false,
 			autoOpen: false,
+			title: "Admins",
 			height: 325,
 			width: 275,
+			draggable: false,
 			modal: true,
-
+			
 			buttons: {
 				"Ingresar": function(){
 					var bValid = true;
 					allFields.removeClass( "ui-state-error" );
 					bValid = bValid && checkLength( name, "Usuario", 3, 16 );
-					bValid = bValid && checkLength( password, "ContraseÃ±a", 5, 16 );
+					bValid = bValid && checkLength( password, "Contraseña", 5, 16 );
 					bValid = bValid && checkRegexp( name, /^[a-z]([0-9a-z_])+$/, "Username may consist of a-z, 0-9, underscores, begin with a letter." );
 					bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
 
@@ -121,61 +104,15 @@
 					
 				}
 			});
-
-
-		
-		    	      var events = [ 
-		    	                    { Title: "Five K for charity", Date: new Date("25/02/2013") }, 
-		    	                    { Title: "Dinner", Date: new Date("23/02/2013") }, 
-		    	                    { Title: "Meeting with manager", Date: new Date("03/01/2013") }
-		    	                ];
-
-		    	                $("#datepicker").datepicker({
-		    			    	      numberOfMonths: 2,
-		    			    	      showButtonPanel: false,
-		    	                    beforeShowDay: function(date) {
-		    	                        var result = [true, '', null];
-		    	                        var matching = $.grep(events, function(event) {
-		    	                            return event.Date.valueOf() === date.valueOf();
-		    	                        });
-		    	                        
-		    	                        if (matching.length) {
-		    	                            result = [true, 'highlight', null];
-		    	                        }
-		    	                        return result;
-		    	                    },
-		    	                    onSelect: function(dateText) {
-		    	                        var date,
-		    	                            selectedDate = new Date(dateText),
-		    	                            i = 0,
-		    	                            event = null;
-		    	                        
-		    	                        while (i < events.length && !event) {
-		    	                            date = events[i].Date;
-
-		    	                            if (selectedDate.valueOf() === date.valueOf()) {
-		    	                                event = events[i];
-		    	                            }
-		    	                            i++;
-		    	                        }
-		    	                        if (event) {
-		    	                            alert(event.Title);
-		    	                        }
-		    	                    }
-		    	                });
-
 		
 
 		
 	});
-
-	function actualizarEquip(){
-		document.location.href = 'fixtureAdm.php?categoria=' + document.getElementById('categoria').value;
-	}
-
+	
+	
+	
 	
 </script>
-
 
 </head>
 
@@ -184,7 +121,7 @@
 		include 'login.php';
 	?>
 	<div class="titulo">
-		<img src="imgs/titulo.png"><br>
+		<img src="imgs/titulo.png">
 	</div>
 	<ul id="menu">
 		<?php 
@@ -197,28 +134,28 @@
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
 			<ul>
-				<li><a href="#">Categoria A</a>
+				<li><a href="#">Categoría A</a>
 					<ul>
 						<li><a href="posiciones.php?cat=a"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=a"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=a"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=a"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria B</a>
+				<li><a href="#">Categoría B</a>
 					<ul>
 						<li><a href="posiciones.php?cat=b"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=b"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=b"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=b"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria C</a>
+				<li><a href="#">Categoría C</a>
 					<ul>
 						<li><a href="posiciones.php?cat=c"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=c"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=c"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=c"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria D</a>
+				<li><a href="#">Categoría D</a>
 					<ul>
 						<li><a href="posiciones.php?cat=d"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=d"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
@@ -237,84 +174,35 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Fixture</a></li>		
+			<li><a href="#tabs-1">Historia</a></li>
 		</ul>
 		<div id="tabs-1">
+			
+			<h2 class="hEquipo">Un poco de historia</h2>
 		
-		<br>
-		<h2 class="hEquipo">Buscar equipo</h2>	
-		<br>
-		<form action="fixture.php?busq=1" method="post">
-				<div >
-				<label class="flabel" style="display: inline;">Equipo</label>
-				<input type="checkbox" name="exacto" value="false" title="búsqueda exacta" class="text ui-widget-content ui-corner-all">
-				</div>
-				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all" required>
-				<datalist id="equipos">
-				  <?php 
-				  	listaEquipos();
-				  ?>
-				</datalist>
-				<br>
-				<br>
-					<input class="btnPanel" type="submit" value="Buscar">
+			<br>"Hurgando en los recuerdos aparecen nombres de equipos que siempre están ahí pero que ya no juegan más. Esos equipos que participaban del torneo cuando tenía una categoría única. No había ascensos ni descensospero una pasión incomparable." (Randazzo,"Mencho" S.; 2002).<br><br> 
 
-				<input type="text" name="busq" value="1" hidden="true">
-				
-			</form>
+			El torneo empezó a jugarse 1983. <br>
+			Yate - Q- Leo fue el primer Equipo en jugar desde 1985 hasta 1996 interumpido. <br>
+			No podemos Olvidar a Jose "Pepe" Galante Quien organizo el 1º torneo de Exactas. <br><br>
+			
+			En el año 1995 se puso en disputa la copa Challenger, copa que denota superioridad, ya que se la adjudica aquel equipo que logra ser Campeón de la categoría "A" en 4 oportunidades. <br><br>
+			
+			La primera se la llevó "Amigovios" en 1996, después de ganar los campeonatos en forma consecutiva. La segunda y Tercera se la llevó "Kurepí" en 2002 imitando al primer campeón. <br>
+			
+			<br><br><h2 class="hEquipo">Equipos con historia en el Futbolazo</h2>
+			 
+			<br>Este cuatrimestre Las Bolas de Riemann cumple 20 años de participación ininterrumpida en este prestigioso torneo.<br><br> 
+			No Gala...Gala cumple 18 años, Chinga tu Madre 17 años, Acido un Gol 13 años , Blues 15 años y La Maquina 15 años ininterrumpidos de participación en el torneo interno. <br><br>
+			
+			<br><br><h2 class="hEquipo">Los equipos que dejaron sus huellas por el Futbolazo</h2>
+			<br>Cotonete, Tril Metil- Alhilo, Yate- Q-Leo, Los Constipados, Mafalda, Cachufletas, La Morsa Kadener, Guevo y Goles, Expermineitors, Comando Antibostero, Colgados del Travesaño, Faltan Todos, Comominimo, Sp3, La vida x el fobal, Diego es inocente, Ponele Betun, La Morgue, Guadaña, El agugerito, Sexo Neutro, media Docena, Thermus acuaticus, Ataud de Corcho, Turbo, Funebreros, Las Mujeres del 1, Palito de la Selva, Alzheimer, Chin Chin Sutte, Las 4 G, Pamela Chu, Insubribles, Paro Indeterminado, Murguistas, Paren de hacerno´ Gole´, Deportivo Ludo, Embolea, 5 de Promedio.<br><br> 
+			A estos equipos queremos felicitarlos y agradecerles todos los momentos compartidos y la buena onda con la que siempre vinieron a jugar. <br>
 		
-		<?php 
-				  	if(isset($_POST['busq'])){
-						if(isset($_POST['equipo'])){
-				  			$nombreEquipo = $_POST['equipo'];
-				  			if($nombreEquipo != "[SIN EQUIPO]"){
-					  			if(isset($_POST['exacto'])){
-					  				$exacto = $_POST['exacto'];
-					  			}
-					  			else{
-					  				$exacto = false;
-					  			}
-					  			if($exacto){
-					  				$q = "SELECT Equipo1,Equipo2,Fecha,Hora,Estado,Comentario FROM partido WHERE Equipo1 = '$nombreEquipo' or Equipo2 = '$nombreEquipo'";
-					  			}
-					  			else{
-					  				$q = "SELECT Equipo1,Equipo2,Fecha,Hora,Estado,Comentario FROM partido WHERE Equipo1 LIKE '%$nombreEquipo%' or Equipo2 LIKE '%$nombreEquipo%'";
-					  			}
-					  			$mydb = conectar();
-					  			if($res = $mydb->query($q)){
-									echo '<br><br>';
-					  				empezarTabla();
-					  				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado"," ");
-					  				genEncabezado($encabezados);
-					  				while ($fila = $res->fetch_row()){
-										$comentario = $fila[5];
-										$fila[5] = '<img src="imgs/info.png" title="' . $comentario . '">';
-					  					genFila($fila);
-					  				}
-					  				finalizarTabla("0","");
-					  				$res->close();
-					  			}
-					  			
-				  			}
-				  		}
-				  	}
-				  ?>
-	
-		
-		<br>
-		<h2 class="hEquipo">Partidos programados</h2>	
-		<br>
-		<br>
-
-		<center><iframe src="https://www.google.com/calendar/embed?title=El%20Futbolazo&amp;showTabs=0&amp;showCalendars=0&amp;height=600&amp;wkst=2&amp;bgcolor=%23e3e9ff&amp;src=0umbfli6n8knqh6ael929u0jt8%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FArgentina%2FBuenos_Aires" style=" border-width:0 " width="90%" height="600px" frameborder="0" scrolling="no"></iframe>
-		</center>
-		<br>
-		<br>
-		
+			
 		</div>
-		</div>
-		</div>
-
+	</div>
+	</div>
 </body>
 <?php 
 	include 'footer.php';

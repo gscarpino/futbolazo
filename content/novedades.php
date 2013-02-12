@@ -1,3 +1,7 @@
+<?php 
+	session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,39 +19,10 @@
 		$("button").button();
 
 		$("#tabs").tabs();
+
 		
 		$("#menu").menu({ position: { my: "left top", at:"right-25 top-20" } });
 			
-
-		function menuAdmin(){
-			$( "#menuAdm" ).show("bounce");
-			$( "#btnAdmin" ).hide("explode");
-			
-		};
-		
-		function checkLength( o, n, min, max ) {
-			if ( o.val().length > max || o.val().length < min ) {
-				o.addClass( "ui-state-error" );
-				updateTips( "Length of " + n + " must be between " +
-					min + " and " + max + "." );
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		function checkRegexp( o, regexp, n ) {
-			if ( !( regexp.test( o.val() ) ) ) {
-				o.addClass( "ui-state-error" );
-				updateTips( n );
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		
-
 		
 		// set effect from select menu value
 		$( "#btnAdmin" )
@@ -55,25 +30,69 @@
 			.click(function() {
 				$( "#menuAdm" ).dialog( "open" );
 			});
+
+		$( "#btnLogOut" )
+		.button();
+
+			
+		
+		
+		var name = $( "#name" ),
+        password = $( "#password" ),
+        allFields = $( [] ).add( name ).add( password ),
+        tips = $( ".validateTips" );
+
+	    function updateTips( t ) {
+	        tips
+	            .text( t )
+	            .addClass( "ui-state-highlight" );
+	        setTimeout(function() {
+	            tips.removeClass( "ui-state-highlight", 15000 );
+	        }, 500 );
+	    }
+	
+	    function checkLength( o, n, min, max ) {
+	        if ( o.val().length > max || o.val().length < min ) {
+	            o.addClass( "ui-state-error" );
+	            updateTips( "Length of " + n + " must be between " +
+	                min + " and " + max + "." );
+	            return false;
+	        } else {
+	            return true;
+	        }
+	    }
+	
+	    function checkRegexp( o, regexp, n ) {
+	        if ( !( regexp.test( o.val() ) ) ) {
+	            o.addClass( "ui-state-error" );
+	            updateTips( n );
+	            return false;
+	        } else {
+	            return true;
+	        }
+	    }
 		
 		
 		
 		
 		$( "#menuAdm" ).dialog({
+			resizable: false,
 			autoOpen: false,
-			height: 300,
-			width: 350,
+			title: "Admins",
+			height: 325,
+			width: 275,
+			draggable: false,
 			modal: true,
-
+			
 			buttons: {
 				"Ingresar": function(){
 					var bValid = true;
-					/*
+					allFields.removeClass( "ui-state-error" );
 					bValid = bValid && checkLength( name, "Usuario", 3, 16 );
 					bValid = bValid && checkLength( password, "Contraseña", 5, 16 );
 					bValid = bValid && checkRegexp( name, /^[a-z]([0-9a-z_])+$/, "Username may consist of a-z, 0-9, underscores, begin with a letter." );
 					bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
-					*/
+
 					if ( bValid ) {
 						$("#formulario").submit();
 						$( this ).dialog( "close" );
@@ -98,25 +117,19 @@
 </head>
 
 <body>
-	<div id="admins">
-	<button id="btnAdmin">admins</button>
-	</div>
-	<div id="menuAdm">
-				<form id="formulario" action="loguear.php" method="post">
-				<fieldset>
-					<label for="name">Usuario</label><br>
-					<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" /><br>
-					<label for="password">Contraseña</label><br>
-					<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
-				</fieldset>
-				</form>
-	</div>
+	<?php 
+		include 'login.php';
+	?>
 	<div class="titulo">
-		<img src="imgs/titulo.png"><br>
+		<img src="imgs/titulo.png">
 	</div>
-	
 	<ul id="menu">
-		<li><a href="index.html"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>
+		<?php 
+			if(isset($_SESSION['logged'])){
+				echo '<li><a href="panel.php"><span class="ui-icon ui-icon-gear"></span>Panel</a></li>';
+			}
+		?>
+		<li><a href="index.php"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>
 		<li><a href="novedades.php"><span class="ui-icon ui-icon-info"></span>Novedades</a></li>
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
@@ -161,17 +174,15 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Novedades</a></li>		
+			<li><a href="#tabs-1">Novedades</a></li>
 		</ul>
 		<div id="tabs-1">
-			Bienvenidos al futbolazo!
+			<br>Aca van los acontecimientos como aviso de que se jugaron tales partidos, se programaron partidos, se suspendieron partidos, decisiones del tribunal de disciplina, etc.
 		</div>
 	</div>
-	
-	<br>
-	<?php 
-		phpinfo();
-	?>
-
+	</div>
 </body>
+<?php 
+	include 'footer.php';
+?>
 </html>

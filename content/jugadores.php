@@ -212,7 +212,7 @@
 				<label class="flabel" style="display: inline;">Buscar</label>
 				<input type="checkbox" name="exacto" value="false" title="búsqueda exacta" class="text ui-widget-content ui-corner-all">
 				</div>
-				<input type="text" name="palabras"  class="text ui-widget-content ui-corner-all">
+				<input type="text" name="palabras"  class="text ui-widget-content ui-corner-all" required>
 				<br>
 				<br>		
 				<input class="btnPanel" type="submit" value="Buscar">
@@ -331,7 +331,7 @@
 						<br>
 						<br>
 						<label class="flabel">Password</label>
-						<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+						<input type="password" name="pass" class="text ui-widget-content ui-corner-all"  required>
 						<br>
 						<br>
 						<input class="btnPanel" type="submit">
@@ -367,12 +367,12 @@
 							echo '<br><h2 class="hEquipo" id="Mod"> Edición del jugador con DNI/LU <span class="resaltado">' . $dni . '</span></h2>
 							<form action="jugadores.php?jug=' . $dni . '&accion=modJug2#vista" method="post">
 							<label class="flabel">Nombre</label>
-							<input type="text" value="' . $info[0] .'" name="nombre" class="text ui-widget-content ui-corner-all" style="width:100%">						
+							<input type="text" value="' . $info[0] .'" name="nombre" class="text ui-widget-content ui-corner-all" required>						
 							<label class="flabel">DNI/LU</label>
-							<input type="text" value="' . $info[1] .'" name="NewDNI" class="text ui-widget-content ui-corner-all" style="width:100%">';
+							<input type="text" value="' . $info[1] .'" name="NewDNI" class="text ui-widget-content ui-corner-all" required>';
 							
 							echo '<label class="flabel">Equipo</label>
-							<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all" value="' . $info[2] .'">
+							<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all" value="' . $info[2] .'"  required>
 							<datalist id="equipos">';
 							listaEquipos();
 							echo '</datalist>
@@ -432,7 +432,7 @@
 							</tr>
 							</table>
 							<label class="flabel">Password</label>
-							<input type="password" name="pass" class="text ui-widget-content ui-corner-all" style="width:100%">
+							<input type="password" name="pass" class="text ui-widget-content ui-corner-all"  required>
 							<br>
 							<br>
 							<input class="btnPanel" type="submit">
@@ -550,11 +550,11 @@
 			<br>
 			<form action="jugadores.php?sent=1" method="post">
 				<label class="flabel">Nombre</label>
-				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all" required>
 				<label class="flabel">DNI/LU</label>
-				<input type="text" name="dni" class="text ui-widget-content ui-corner-all">
+				<input type="text" name="dni" class="text ui-widget-content ui-corner-all" required>
 				<label class="flabel">Equipo</label>
-				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
+				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all" required>
 				<datalist id="equipos">
 				<?php 
 					listaEquipos();

@@ -248,7 +248,7 @@
 				<label class="flabel" style="display: inline;">Equipo</label>
 				<input type="checkbox" name="exacto" value="false" title="búsqueda exacta" class="text ui-widget-content ui-corner-all">
 				</div>
-				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all">
+				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all" required>
 				<datalist id="equipos">
 				  <?php 
 				  	listaEquipos();
@@ -283,18 +283,18 @@
 							$exacto = false;
 						}
 						if($exacto){
-							$q = "SELECT Nombre,Categoria,Mail FROM equipo WHERE Nombre = '$nombre' and Nombre != '[SIN EQUIPO]'";
+							$q = "SELECT Nombre,Categoria,Mail,Estado FROM equipo WHERE Nombre = '$nombre' and Nombre != '[SIN EQUIPO]'";
 						}
 						else{
-							$q = "SELECT Nombre,Categoria,Mail FROM equipo WHERE Nombre LIKE '%$nombre%' and Nombre != '[SIN EQUIPO]'";
+							$q = "SELECT Nombre,Categoria,Mail,Estado FROM equipo WHERE Nombre LIKE '%$nombre%' and Nombre != '[SIN EQUIPO]'";
 						}
 					}
 					else{
-						$q = "SELECT Nombre,Categoria,Mail FROM equipo WHERE Nombre != '[SIN EQUIPO]'";
+						$q = "SELECT Nombre,Categoria,Mail,Estado FROM equipo WHERE Nombre != '[SIN EQUIPO]'";
 					}
 					if($res = $mydb->query($q)){
 						empezarTabla();
-						$encabezados = array("Nombre","Categoría","Mail");
+						$encabezados = array("Nombre","Categoría","Mail","Estado");
 						genEncabezado($encabezados);
 						while ($fila = $res->fetch_row()){
 							genFilaLink($fila,"equipos.php?nombreEquipo=$fila[0]#vista");
@@ -324,7 +324,7 @@
 						$fila = $res->fetch_row();
 						$mailEquipo = $fila[2];
 						$catEquipo = $fila[1];
-						$fechaEquipo = $fila[20];
+						$fechaEquipo = date("d-m-Y",strtotime($fila[20]));
 						$historialEquipo = $fila[19];
 						$estadoEquipo = $fila[21];
 						if ($estadoEquipo == "Inactivo"){
@@ -807,7 +807,12 @@
 				if($_GET['sent'] == 1){
 					$eNombre = $_POST['nombre'];
 					$eCategoria = $_POST['categoria'];
-					$eMail = $_POST['mail'];
+					if(isset($_POST['mail'])){
+						$eMail = $_POST['mail'];
+					}
+					else{
+						$eMail = " ";
+					}
 					if(agregarEquipo($eNombre,$eCategoria,$eMail)){
 						displayGreen("","Se agregó correctamente el equipo");
 					}
@@ -823,26 +828,26 @@
 				}
 			}
 		?>
-		<h2 class="hEquipo">Agregar equipo</h2>
+		<h2 class="hEquipo" id="ag">Agregar equipo</h2>
 
 		
-			<form action="equipos.php?sent=1" method="post">
+			<form action="equipos.php?sent=1#ag" method="post">
 				<label class="flabel">Nombre</label>
-				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+				<input type="text" name="nombre" class="text ui-widget-content ui-corner-all" required>
 				<label class="flabel">Categoría</label>
 				<select name="categoria" class="text ui-widget-content ui-corner-all">
 					<option value="A" selected>A</option>
-					<option value="B">B</option>
-					<option value="C">C</option>
-					<option value="D">D</option>
+					<option value="B" >B</option>
+					<option value="C" >C</option>
+					<option value="D" >D</option>
 				</select>
 				<label class="flabel">Mail</label>
-				<input type="email" name="mail" class="text ui-widget-content ui-corner-all" style="width:33%;">
+				<input type="email" name="mail" class="text ui-widget-content ui-corner-all">
 				<br>
 				<br>		
 				<br>
 				<div id="fiel">
-					<h2 class="hEquipo" style="font-size: 120%;">Agregar jugadores nuevos al equipo  <span onclick="agregarCampos(this)" ><img src="imgs/plus.png"  width="16" height="16" title="Haga click para agregar un jugador más"></span></h2>
+					<h2 class="hEquipo" style="font-size: 120%;">Agregar jugadores nuevos al equipo (Falta implementar) <span onclick="agregarCampos(this)" ><img src="imgs/plus.png"  width="16" height="16" title="Haga click para agregar un jugador más"></span></h2>
 					<br>
 					<br>
 					<div id="div1">
