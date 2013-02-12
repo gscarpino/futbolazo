@@ -1,4 +1,6 @@
 <?php
+$clientLibraryPath = 'C:\wamp\www\futbolazo\content\library';
+$oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibraryPath);
 
 function conectar(){
 // Test online
@@ -14,6 +16,7 @@ function conectar(){
 	return $mysql;
 	
 }
+
 
 function empezarTabla(){
 	echo '<div id="divContainer">';
@@ -87,9 +90,10 @@ function agregarEquipo($nombre,$cat,$mail){
 		return false;
 	}
 	else{
-		$res = $mydb->query("INSERT INTO equipo VALUES ('$nombre','$cat','$mail',0,0,0,0,0,0,0,0)");
-	return true;
-		
+		date_default_timezone_set('America/Argentina/Buenos_Aires');
+		$fecha = date('Y-m-d');
+		$res = $mydb->query("INSERT INTO equipo VALUES ('$nombre','$cat','$mail',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'','$fecha','Inactivo')");
+		return $res;
 	}
 }
 
@@ -152,7 +156,7 @@ function obtenerEquipos(){
 
 function obtenerEquiposDeCat($cat){
 	$mydb = conectar();
-	$res = $mydb->query('SELECT * FROM equipo WHERE Nombre != "[SIN EQUIPO]" AND Categoria = "' . $cat . '"');
+	$res = $mydb->query('SELECT * FROM equipo WHERE Nombre != "[SIN EQUIPO]" AND Categoria = "' . $cat . '" AND Estado = "Activo"');
 	$equip = new SplQueue();
 	$equip[] = " ";
 	while ($fila = $res->fetch_row()){
@@ -161,7 +165,8 @@ function obtenerEquiposDeCat($cat){
 	return $equip;
 }
 
-function agregarPartido($equipo1,$equipo2,$fecha,$hora){
+function agregarPartido($equipo1,$equipo2,$fecha,$hora,$comentario){
+	
 	$mydb = conectar();
 	$equipo1 = trim($equipo1);
 	$equipo2 = trim($equipo2);
@@ -173,14 +178,23 @@ function agregarPartido($equipo1,$equipo2,$fecha,$hora){
 			return false;
 		}
 		else{
-			$res = $mydb->query('INSERT INTO partido (Equipo1,Equipo2,Fecha,Hora,Estado) VALUES ("' . $equipo1 . '","' . $equipo2 . '","' . $fecha . '","' . $hora . '","Programado")');
-			return true;
+			date_default_timezone_set('America/Argentina/Buenos_Aires');
+			if($comentario == ""){
+				$comentario = "" .date('d-m-Y') . " - Partido programado.";
+					
+			}
+			else{
+				$comentario = "" . date('d-m-Y') . " - Partido programado: " . $comentario;
+			}
+ 			$res = $mydb->query('INSERT INTO partido (Equipo1,Equipo2,Fecha,Hora,Estado,Comentario) VALUES ("' . $equipo1 . '","' . $equipo2 . '","' . $fecha . '","' . $hora . '","Programado","' . $comentario . '")');
+			
 		}	
 	}
 	else{
 		return false;
 	}
-	
+
+	return true;
 }
 
 
@@ -1022,6 +1036,73 @@ function cancelarPartido($num,$rta,$comentario){
 function borrarPartido($num){
 	$mydb = conectar();
 	$res = $mydb->query("DELETE FROM partido WHERE Numero = $num");
+}
+
+function strEquiposDeCat($cat){
+	$mydb = conectar();
+	$q = "SELECT Nombre FROM equipo WHERE Categoria = '$cat' and Estado = 'Activo'";
+	$res = $mydb->query($q);
+	$fila = $res->fetch_row();
+	$equipos = '("' . $fila[0] . '"';
+	while ($fila = $res->fetch_row()){
+		$equipos = $equipos . ',"' . $fila[0] . '"';
+	}
+	$equipos = $equipos . ")";
+	$res->close();
+	return $equipos;
+}
+
+function cmpPorPartidos($a,$b) {
+	if($a[9] > $b[9]){
+		return -1;
+	}
+	else if($a[9] < $b[9]){
+		return 1;
+	}
+	else{
+		//ordenar por diferencia de goles
+		$difA = $a[4] - $a[5];
+		$difB = $b[4] - $b[5];
+		if($difA > $difB){
+			return -1;
+		}
+		else if($difA < $difB){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+}
+
+function cmpPorFaltas($a,$b) {
+	//HACER!!!
+	if($a[9] > $b[9]){
+		return -1;
+	}
+	else if($a[9] < $b[9]){
+		return 1;
+	}
+	else{
+		//ordenar por diferencia de goles
+		$difA = $a[4] - $a[5];
+		$difB = $b[4] - $b[5];
+		if($difA > $difB){
+			return -1;
+		}
+		else if($difA < $difB){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+}
+
+
+function torneoActual(){
+	$fecha = "2013-01-01";
+	return $fecha;
 }
 
 ?>

@@ -206,7 +206,7 @@
 			<td><br><a href="usuarios.php"><img src="imgs/admins.png" title="Admins" class="imgPanel"></a></td>
 		</tr>
 		<tr>
-			<td><br><a href="fixture.php"><img src="imgs/fixture.png" title="Fixture" class="imgPanel"></a></td>
+			<td><br><a href="fixtureAdm.php"><img src="imgs/fixture.png" title="Fixture" class="imgPanel"></a></td>
 			<td><br><a href="partidos.php"><img src="imgs/partidos.png" title="Partidos" class="imgPanel"></a></td>
 			<td><br><a href="torneos.php"><img src="imgs/torneos.png" title="Torneos" class="imgPanel"></a></td>
 		</tr>

@@ -1,7 +1,5 @@
 <?php 
 	session_start();
-	require 'fun.php';
-	logueado();
 ?>
 
 <!DOCTYPE html>
@@ -10,12 +8,10 @@
 <meta charset="ISO-8859-1">
 <title>El Futbolazo - FCEN - UBA</title>
 <link type="text/css" href="css/redmond/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
-
+<link type="text/css" href="estilo.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
 <script type="text/javascript" src="fun.js"></script>
-
-<link type="text/css" href="estilo.css" rel="stylesheet" />
 <script type="text/javascript">
 
 	$(function(){
@@ -38,23 +34,7 @@
 		$( "#btnLogOut" )
 		.button();
 
-		$( ".btnPanel" )
-		.button();
-
-		$( document ).tooltip({
-            position: {
-                my: "center bottom-20",
-                at: "center top",
-                using: function( position, feedback ) {
-                    $( this ).css( position );
-                    $( "<div>" )
-                        .addClass( "arrow" )
-                        .addClass( feedback.vertical )
-                        .addClass( feedback.horizontal )
-                        .appendTo( this );
-                }
-            }
-        });
+			
 		
 		
 		var name = $( "#name" ),
@@ -96,17 +76,20 @@
 		
 		
 		$( "#menuAdm" ).dialog({
+			resizable: false,
 			autoOpen: false,
+			title: "Admins",
 			height: 325,
 			width: 275,
+			draggable: false,
 			modal: true,
-
+			
 			buttons: {
 				"Ingresar": function(){
 					var bValid = true;
 					allFields.removeClass( "ui-state-error" );
 					bValid = bValid && checkLength( name, "Usuario", 3, 16 );
-					bValid = bValid && checkLength( password, "ContraseÃ±a", 5, 16 );
+					bValid = bValid && checkLength( password, "Contraseña", 5, 16 );
 					bValid = bValid && checkRegexp( name, /^[a-z]([0-9a-z_])+$/, "Username may consist of a-z, 0-9, underscores, begin with a letter." );
 					bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
 
@@ -121,61 +104,15 @@
 					
 				}
 			});
-
-
-		
-		    	      var events = [ 
-		    	                    { Title: "Five K for charity", Date: new Date("25/02/2013") }, 
-		    	                    { Title: "Dinner", Date: new Date("23/02/2013") }, 
-		    	                    { Title: "Meeting with manager", Date: new Date("03/01/2013") }
-		    	                ];
-
-		    	                $("#datepicker").datepicker({
-		    			    	      numberOfMonths: 2,
-		    			    	      showButtonPanel: false,
-		    	                    beforeShowDay: function(date) {
-		    	                        var result = [true, '', null];
-		    	                        var matching = $.grep(events, function(event) {
-		    	                            return event.Date.valueOf() === date.valueOf();
-		    	                        });
-		    	                        
-		    	                        if (matching.length) {
-		    	                            result = [true, 'highlight', null];
-		    	                        }
-		    	                        return result;
-		    	                    },
-		    	                    onSelect: function(dateText) {
-		    	                        var date,
-		    	                            selectedDate = new Date(dateText),
-		    	                            i = 0,
-		    	                            event = null;
-		    	                        
-		    	                        while (i < events.length && !event) {
-		    	                            date = events[i].Date;
-
-		    	                            if (selectedDate.valueOf() === date.valueOf()) {
-		    	                                event = events[i];
-		    	                            }
-		    	                            i++;
-		    	                        }
-		    	                        if (event) {
-		    	                            alert(event.Title);
-		    	                        }
-		    	                    }
-		    	                });
-
 		
 
 		
 	});
-
-	function actualizarEquip(){
-		document.location.href = 'fixtureAdm.php?categoria=' + document.getElementById('categoria').value;
-	}
-
+	
+	
+	
 	
 </script>
-
 
 </head>
 
@@ -184,7 +121,7 @@
 		include 'login.php';
 	?>
 	<div class="titulo">
-		<img src="imgs/titulo.png"><br>
+		<img src="imgs/titulo.png">
 	</div>
 	<ul id="menu">
 		<?php 
@@ -197,28 +134,28 @@
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
 			<ul>
-				<li><a href="#">Categoria A</a>
+				<li><a href="#">Categoría A</a>
 					<ul>
 						<li><a href="posiciones.php?cat=a"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=a"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=a"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=a"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria B</a>
+				<li><a href="#">Categoría B</a>
 					<ul>
 						<li><a href="posiciones.php?cat=b"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=b"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=b"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=b"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria C</a>
+				<li><a href="#">Categoría C</a>
 					<ul>
 						<li><a href="posiciones.php?cat=c"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=c"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=c"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=c"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria D</a>
+				<li><a href="#">Categoría D</a>
 					<ul>
 						<li><a href="posiciones.php?cat=d"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=d"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
@@ -237,84 +174,53 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Fixture</a></li>		
+			<li><a href="#tabs-1">Tribunal de disciplina</a></li>
 		</ul>
 		<div id="tabs-1">
-		
-		<br>
-		<h2 class="hEquipo">Buscar equipo</h2>	
-		<br>
-		<form action="fixture.php?busq=1" method="post">
-				<div >
-				<label class="flabel" style="display: inline;">Equipo</label>
-				<input type="checkbox" name="exacto" value="false" title="búsqueda exacta" class="text ui-widget-content ui-corner-all">
-				</div>
-				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all" required>
-				<datalist id="equipos">
-				  <?php 
-				  	listaEquipos();
-				  ?>
-				</datalist>
-				<br>
-				<br>
-					<input class="btnPanel" type="submit" value="Buscar">
+			<h2 class="hEquipo">Apertura 2012</h2>
 
-				<input type="text" name="busq" value="1" hidden="true">
-				
-			</form>
-		
-		<?php 
-				  	if(isset($_POST['busq'])){
-						if(isset($_POST['equipo'])){
-				  			$nombreEquipo = $_POST['equipo'];
-				  			if($nombreEquipo != "[SIN EQUIPO]"){
-					  			if(isset($_POST['exacto'])){
-					  				$exacto = $_POST['exacto'];
-					  			}
-					  			else{
-					  				$exacto = false;
-					  			}
-					  			if($exacto){
-					  				$q = "SELECT Equipo1,Equipo2,Fecha,Hora,Estado,Comentario FROM partido WHERE Equipo1 = '$nombreEquipo' or Equipo2 = '$nombreEquipo'";
-					  			}
-					  			else{
-					  				$q = "SELECT Equipo1,Equipo2,Fecha,Hora,Estado,Comentario FROM partido WHERE Equipo1 LIKE '%$nombreEquipo%' or Equipo2 LIKE '%$nombreEquipo%'";
-					  			}
-					  			$mydb = conectar();
-					  			if($res = $mydb->query($q)){
-									echo '<br><br>';
-					  				empezarTabla();
-					  				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado"," ");
-					  				genEncabezado($encabezados);
-					  				while ($fila = $res->fetch_row()){
-										$comentario = $fila[5];
-										$fila[5] = '<img src="imgs/info.png" title="' . $comentario . '">';
-					  					genFila($fila);
-					  				}
-					  				finalizarTabla("0","");
-					  				$res->close();
-					  			}
-					  			
-				  			}
-				  		}
-				  	}
-				  ?>
-	
-		
-		<br>
-		<h2 class="hEquipo">Partidos programados</h2>	
-		<br>
-		<br>
 
-		<center><iframe src="https://www.google.com/calendar/embed?title=El%20Futbolazo&amp;showTabs=0&amp;showCalendars=0&amp;height=600&amp;wkst=2&amp;bgcolor=%23e3e9ff&amp;src=0umbfli6n8knqh6ael929u0jt8%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FArgentina%2FBuenos_Aires" style=" border-width:0 " width="90%" height="600px" frameborder="0" scrolling="no"></iframe>
-		</center>
-		<br>
-		<br>
-		
-		</div>
-		</div>
-		</div>
+<fieldset><br>
+Buenos Aires Jueves 4 de Octubre de 2012<br><br>
 
+Acta Nº 2:<br>
+Visto los informes de los partidos, el Tribunal de Disciplina resuelve:<br><br>
+
+1) Partido: Los Dueños del Pabellón vs Si Pasa, Bajalo.<br>
+Debido a la acumulación de 3 amonestaciones, suspender por 1 (un) partido a Goya Andrés (Los Dueños del Pabellón).<br><br>
+
+2) Partido: Sin Retorno vs Godeltroskis.<br>
+Debido a la acumulación de 3 amonestaciones, suspender por 1 (un) partido a Juffar Bruno (Sin Retorno).<br><br>
+
+3) Partido: Los Borbotones vs Molotov.<br>
+Debido a la acumulación de 3 amonestaciones, suspender por 1 (un) partido a Rafael Martín (Los Borbotones).<br>
+<br>
+ <br>
+PUBLIQUESE, ARCHIVESE Y HAGASE CONOCER A LOS INTERESADOS
+<br><br>
+Presidente
+<br>
+</fieldset>
+<br>
+<br>
+<fieldset>
+Buenos Aires Martes 3 de Julio de 2012<br>
+<br>
+Acta Nº 1:<br>
+Visto los informes de los partidos, el Tribunal de Disciplina resuelve:<br><br>
+
+1) Partido: Kurepí vs Wurzita.<br>
+Debido a la acumulación de 3 amonestaciones, suspender por 1 (un) partido a Varela Raul (Wurzita).
+<br>
+ <br>
+<br>
+PUBLIQUESE, ARCHIVESE Y HAGASE CONOCER A LOS INTERESADOS
+<br><br>
+Presidente<br>
+</fieldset>
+		</div>
+	</div>
+	</div>
 </body>
 <?php 
 	include 'footer.php';

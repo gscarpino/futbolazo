@@ -1,7 +1,5 @@
 <?php 
 	session_start();
-	require 'fun.php';
-	logueado();
 ?>
 
 <!DOCTYPE html>
@@ -10,12 +8,10 @@
 <meta charset="ISO-8859-1">
 <title>El Futbolazo - FCEN - UBA</title>
 <link type="text/css" href="css/redmond/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
-
+<link type="text/css" href="estilo.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.js"></script>
 <script type="text/javascript" src="fun.js"></script>
-
-<link type="text/css" href="estilo.css" rel="stylesheet" />
 <script type="text/javascript">
 
 	$(function(){
@@ -38,23 +34,7 @@
 		$( "#btnLogOut" )
 		.button();
 
-		$( ".btnPanel" )
-		.button();
-
-		$( document ).tooltip({
-            position: {
-                my: "center bottom-20",
-                at: "center top",
-                using: function( position, feedback ) {
-                    $( this ).css( position );
-                    $( "<div>" )
-                        .addClass( "arrow" )
-                        .addClass( feedback.vertical )
-                        .addClass( feedback.horizontal )
-                        .appendTo( this );
-                }
-            }
-        });
+			
 		
 		
 		var name = $( "#name" ),
@@ -96,17 +76,20 @@
 		
 		
 		$( "#menuAdm" ).dialog({
+			resizable: false,
 			autoOpen: false,
+			title: "Admins",
 			height: 325,
 			width: 275,
+			draggable: false,
 			modal: true,
-
+			
 			buttons: {
 				"Ingresar": function(){
 					var bValid = true;
 					allFields.removeClass( "ui-state-error" );
 					bValid = bValid && checkLength( name, "Usuario", 3, 16 );
-					bValid = bValid && checkLength( password, "ContraseÃ±a", 5, 16 );
+					bValid = bValid && checkLength( password, "Contraseña", 5, 16 );
 					bValid = bValid && checkRegexp( name, /^[a-z]([0-9a-z_])+$/, "Username may consist of a-z, 0-9, underscores, begin with a letter." );
 					bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
 
@@ -121,61 +104,15 @@
 					
 				}
 			});
-
-
-		
-		    	      var events = [ 
-		    	                    { Title: "Five K for charity", Date: new Date("25/02/2013") }, 
-		    	                    { Title: "Dinner", Date: new Date("23/02/2013") }, 
-		    	                    { Title: "Meeting with manager", Date: new Date("03/01/2013") }
-		    	                ];
-
-		    	                $("#datepicker").datepicker({
-		    			    	      numberOfMonths: 2,
-		    			    	      showButtonPanel: false,
-		    	                    beforeShowDay: function(date) {
-		    	                        var result = [true, '', null];
-		    	                        var matching = $.grep(events, function(event) {
-		    	                            return event.Date.valueOf() === date.valueOf();
-		    	                        });
-		    	                        
-		    	                        if (matching.length) {
-		    	                            result = [true, 'highlight', null];
-		    	                        }
-		    	                        return result;
-		    	                    },
-		    	                    onSelect: function(dateText) {
-		    	                        var date,
-		    	                            selectedDate = new Date(dateText),
-		    	                            i = 0,
-		    	                            event = null;
-		    	                        
-		    	                        while (i < events.length && !event) {
-		    	                            date = events[i].Date;
-
-		    	                            if (selectedDate.valueOf() === date.valueOf()) {
-		    	                                event = events[i];
-		    	                            }
-		    	                            i++;
-		    	                        }
-		    	                        if (event) {
-		    	                            alert(event.Title);
-		    	                        }
-		    	                    }
-		    	                });
-
 		
 
 		
 	});
-
-	function actualizarEquip(){
-		document.location.href = 'fixtureAdm.php?categoria=' + document.getElementById('categoria').value;
-	}
-
+	
+	
+	
 	
 </script>
-
 
 </head>
 
@@ -184,7 +121,7 @@
 		include 'login.php';
 	?>
 	<div class="titulo">
-		<img src="imgs/titulo.png"><br>
+		<img src="imgs/titulo.png">
 	</div>
 	<ul id="menu">
 		<?php 
@@ -197,28 +134,28 @@
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
 			<ul>
-				<li><a href="#">Categoria A</a>
+				<li><a href="#">Categoría A</a>
 					<ul>
 						<li><a href="posiciones.php?cat=a"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=a"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=a"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=a"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria B</a>
+				<li><a href="#">Categoría B</a>
 					<ul>
 						<li><a href="posiciones.php?cat=b"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=b"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=b"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=b"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria C</a>
+				<li><a href="#">Categoría C</a>
 					<ul>
 						<li><a href="posiciones.php?cat=c"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=c"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
 						<li><a href="goleadores.php?cat=c"><span class="ui-icon ui-icon-person"></span>Goleadores</a>
 						<li><a href="listanegra.php?cat=c"><span class="ui-icon ui-icon-alert"></span>Lista Negra</a>
 					</ul></li>
-				<li><a href="#">Categoria D</a>
+				<li><a href="#">Categoría D</a>
 					<ul>
 						<li><a href="posiciones.php?cat=d"><span class="ui-icon ui-icon-grip-dotted-vertical"></span>Posiciones</a>
 						<li><a href="resultados.php?cat=d"><span class="ui-icon ui-icon-clipboard"></span>Resultados</a>
@@ -237,84 +174,95 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Fixture</a></li>		
+			<li><a href="#tabs-1">Fotos</a></li>
 		</ul>
 		<div id="tabs-1">
-		
 		<br>
-		<h2 class="hEquipo">Buscar equipo</h2>	
-		<br>
-		<form action="fixture.php?busq=1" method="post">
-				<div >
-				<label class="flabel" style="display: inline;">Equipo</label>
-				<input type="checkbox" name="exacto" value="false" title="búsqueda exacta" class="text ui-widget-content ui-corner-all">
-				</div>
-				<input list="equipos" name="equipo" type="text" class="text ui-widget-content ui-corner-all" required>
-				<datalist id="equipos">
-				  <?php 
-				  	listaEquipos();
-				  ?>
-				</datalist>
-				<br>
-				<br>
-					<input class="btnPanel" type="submit" value="Buscar">
-
-				<input type="text" name="busq" value="1" hidden="true">
+			<center>
+			<table>
+				 <tr>
+				<?php
+				header('Content-type: text/html;');
+				# Galería de imágenes
+				# (CC) Alfonso Saavedra "Son Link"
+				# Bajo GPLv3
+				 
+				$path = 'fotos'; # Directorio donde están las imágenes
+				$limit = 12; # Cuantas imágenes se mostraran por pagina
+				$limit_file = 4; # Imágenes a mostrar por linea en la tabla
+				$n = 0;
+				$desde;
+				$hasta;
+				$list = array();
+				unset($list[0]);
+				# Comprobamos si es un directorio y si lo es nos movemos a el
+				if (is_dir($path)){
+				 $dir = opendir($path);
+				 # Recorremos los ficheros que hay en el directorio y cogemos solamente aquellos cuya extensión
+				 # sea jpg, gif y png y la guardamos en una lista
+				 while (false !== ($file = readdir($dir))) {
+				  if (preg_match("#([a-zA-Z0-9_\-\s]+)\.(gif|GIF|jpg|JPG|png|PNG)#is",$file)){
+				   $list[] = $file;
+				  }
+				 }
+				 # Cerramos el directorio
+				 closedir($dir);
+				 # Ordenamos la lista
+				 if (count($list) > 0){
+				 	sort ($list);
+				 }
+				 # Contamos el total de elementos en la lista
+				 $total = count($list);
+				 $paginas = ceil($total/$limit);
+				 if (!isset($_GET['pg'])){
+				  $desde = 0;
+				  $hasta = $desde + $limit;
+				 }else if((int)$_GET['pg'] > ($paginas-1)){
+				  # Si pg es mayor que el total de paginas se muestra un error
+				  echo "<b>No existe esta pagina en la galería</b>
+				<a href='galeria.php'>Volver a la galería</a>";
+				  die();
+				 }else{
+				  $desde = (int)$_GET['pg'];
+				 }
+				 # Y generamos los enlaces con los thumbnails
+				 for ($i=($desde*$limit);($i!=$total) && ($i<($desde*$limit)+$limit);$i++){
+				  # Comprobamos si existe en la lista una llave con el valor actual de $i para evitar errores
+				  if(array_key_exists($i, $list)){
+				   echo "<td><a href='$path/$list[$i]'><img src='thumb.php?img=$path/$list[$i]' /></a>
+				</td>\n";
+				   $n++;
+				   if ($n == $limit_file){
+				    echo "</tr>\n<tr>\n";
+				    $n = 0;
+				   }
+				  }
+				 }
+				}else{
+				 echo "$path no es un directorio";
+				}
+				?>
+				 </tr>
+				</table>
 				
-			</form>
-		
-		<?php 
-				  	if(isset($_POST['busq'])){
-						if(isset($_POST['equipo'])){
-				  			$nombreEquipo = $_POST['equipo'];
-				  			if($nombreEquipo != "[SIN EQUIPO]"){
-					  			if(isset($_POST['exacto'])){
-					  				$exacto = $_POST['exacto'];
-					  			}
-					  			else{
-					  				$exacto = false;
-					  			}
-					  			if($exacto){
-					  				$q = "SELECT Equipo1,Equipo2,Fecha,Hora,Estado,Comentario FROM partido WHERE Equipo1 = '$nombreEquipo' or Equipo2 = '$nombreEquipo'";
-					  			}
-					  			else{
-					  				$q = "SELECT Equipo1,Equipo2,Fecha,Hora,Estado,Comentario FROM partido WHERE Equipo1 LIKE '%$nombreEquipo%' or Equipo2 LIKE '%$nombreEquipo%'";
-					  			}
-					  			$mydb = conectar();
-					  			if($res = $mydb->query($q)){
-									echo '<br><br>';
-					  				empezarTabla();
-					  				$encabezados = array("Equipo 1","Equipo 2","Fecha","Hora","Estado"," ");
-					  				genEncabezado($encabezados);
-					  				while ($fila = $res->fetch_row()){
-										$comentario = $fila[5];
-										$fila[5] = '<img src="imgs/info.png" title="' . $comentario . '">';
-					  					genFila($fila);
-					  				}
-					  				finalizarTabla("0","");
-					  				$res->close();
-					  			}
-					  			
-				  			}
-				  		}
-				  	}
-				  ?>
-	
-		
-		<br>
-		<h2 class="hEquipo">Partidos programados</h2>	
-		<br>
-		<br>
-
-		<center><iframe src="https://www.google.com/calendar/embed?title=El%20Futbolazo&amp;showTabs=0&amp;showCalendars=0&amp;height=600&amp;wkst=2&amp;bgcolor=%23e3e9ff&amp;src=0umbfli6n8knqh6ael929u0jt8%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FArgentina%2FBuenos_Aires" style=" border-width:0 " width="90%" height="600px" frameborder="0" scrolling="no"></iframe>
-		</center>
-		<br>
-		<br>
-		
+				<br>
+				<p id="paginas">
+				<?php
+				# Generamos un listado de las paginas de la galería
+				for ($p = 0; $p<$paginas; $p++){
+				 $pg = $p+1;
+				 if ($p == $desde){
+				  echo "$pg ";
+				 }else{
+				  echo "<a href ='?pg=$p'>$pg</a> ";
+				 } 
+				}?>
+				</p>
+				<?php echo "<br>Hay un total de $total imagen(es) en $paginas paginas(s)" ?>
+				</center>
 		</div>
-		</div>
-		</div>
-
+	</div>
+	</div>
 </body>
 <?php 
 	include 'footer.php';

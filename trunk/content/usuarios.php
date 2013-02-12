@@ -218,11 +218,11 @@
 		<h2 class="hEquipo">Agregar nuevo</h2>
 		<form action="usuarios.php?accion=ag" method="post">
 			<label class="flabel">Nombre</label>
-			<input type="text" name="nombre" class="text ui-widget-content ui-corner-all">
+			<input type="text" name="nombre" class="text ui-widget-content ui-corner-all" required>
 			<label class="flabel">Password</label>
-			<input type="password" name="pass" class="text ui-widget-content ui-corner-all">
+			<input type="password" name="pass" class="text ui-widget-content ui-corner-all" required>
 			<label class="flabel">Mail</label>
-			<input type="email" name="email" class="text ui-widget-content ui-corner-all">
+			<input type="email" name="email" class="text ui-widget-content ui-corner-all" required>
 			<br>
 			<br>
 			<input class="btnPanel" type="submit">
@@ -254,7 +254,7 @@
 						<h2 class="hEquipo" id="Mod">Modificar usuario:  <strong class="resaltado">' . $nombre . '</strong></h2>
 						<form action="usuarios.php?accion=mod2&nombre=' . $nombre . '" method="post">
 						<label class="flabel">Anterior password</label>
-						<input type="password" name="passOld" class="text ui-widget-content ui-corner-all">
+						<input type="password" name="passOld" class="text ui-widget-content ui-corner-all" required>
 						<label class="flabel">Nueva password</label>
 						<input type="password" name="passNew" class="text ui-widget-content ui-corner-all" title="Dejar vacío para no modificar">
 						<label class="flabel">Mail</label>

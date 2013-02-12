@@ -1,3 +1,8 @@
+<?php 
+	session_start();
+	require_once 'fun.php';
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,39 +20,10 @@
 		$("button").button();
 
 		$("#tabs").tabs();
+
 		
 		$("#menu").menu({ position: { my: "left top", at:"right-25 top-20" } });
 			
-
-		function menuAdmin(){
-			$( "#menuAdm" ).show("bounce");
-			$( "#btnAdmin" ).hide("explode");
-			
-		};
-		
-		function checkLength( o, n, min, max ) {
-			if ( o.val().length > max || o.val().length < min ) {
-				o.addClass( "ui-state-error" );
-				updateTips( "Length of " + n + " must be between " +
-					min + " and " + max + "." );
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		function checkRegexp( o, regexp, n ) {
-			if ( !( regexp.test( o.val() ) ) ) {
-				o.addClass( "ui-state-error" );
-				updateTips( n );
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		
-
 		
 		// set effect from select menu value
 		$( "#btnAdmin" )
@@ -55,25 +31,69 @@
 			.click(function() {
 				$( "#menuAdm" ).dialog( "open" );
 			});
+
+		$( "#btnLogOut" )
+		.button();
+
+			
+		
+		
+		var name = $( "#name" ),
+        password = $( "#password" ),
+        allFields = $( [] ).add( name ).add( password ),
+        tips = $( ".validateTips" );
+
+	    function updateTips( t ) {
+	        tips
+	            .text( t )
+	            .addClass( "ui-state-highlight" );
+	        setTimeout(function() {
+	            tips.removeClass( "ui-state-highlight", 15000 );
+	        }, 500 );
+	    }
+	
+	    function checkLength( o, n, min, max ) {
+	        if ( o.val().length > max || o.val().length < min ) {
+	            o.addClass( "ui-state-error" );
+	            updateTips( "Length of " + n + " must be between " +
+	                min + " and " + max + "." );
+	            return false;
+	        } else {
+	            return true;
+	        }
+	    }
+	
+	    function checkRegexp( o, regexp, n ) {
+	        if ( !( regexp.test( o.val() ) ) ) {
+	            o.addClass( "ui-state-error" );
+	            updateTips( n );
+	            return false;
+	        } else {
+	            return true;
+	        }
+	    }
 		
 		
 		
 		
 		$( "#menuAdm" ).dialog({
+			resizable: false,
 			autoOpen: false,
-			height: 300,
-			width: 350,
+			title: "Admins",
+			height: 325,
+			width: 275,
+			draggable: false,
 			modal: true,
-
+			
 			buttons: {
 				"Ingresar": function(){
 					var bValid = true;
-					/*
+					allFields.removeClass( "ui-state-error" );
 					bValid = bValid && checkLength( name, "Usuario", 3, 16 );
 					bValid = bValid && checkLength( password, "Contraseña", 5, 16 );
 					bValid = bValid && checkRegexp( name, /^[a-z]([0-9a-z_])+$/, "Username may consist of a-z, 0-9, underscores, begin with a letter." );
 					bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
-					*/
+
 					if ( bValid ) {
 						$("#formulario").submit();
 						$( this ).dialog( "close" );
@@ -98,24 +118,19 @@
 </head>
 
 <body>
-	<div id="admins">
-	<button id="btnAdmin">admins</button>
+	<?php 
+		include 'login.php';
+	?>
+	<div class="titulo">
+		<img src="imgs/titulo.png">
 	</div>
-	<div id="central">
-	<div id="menuAdm">
-				<form id="formulario" action="loguear.php" method="post">
-				<fieldset>
-					<label for="name">Usuario</label><br>
-					<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" /><br>
-					<label for="password">Contraseña</label><br>
-					<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
-				</fieldset>
-				</form>
-	</div>
-	<h1 class="titulo"><b>El Futbolazo</b></h1>
-	
 	<ul id="menu">
-		<li><a href="index.html"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>
+		<?php 
+			if(isset($_SESSION['logged'])){
+				echo '<li><a href="panel.php"><span class="ui-icon ui-icon-gear"></span>Panel</a></li>';
+			}
+		?>
+		<li><a href="index.php"><span class="ui-icon ui-icon-home"></span>Inicio</a></li>
 		<li><a href="novedades.php"><span class="ui-icon ui-icon-info"></span>Novedades</a></li>
 		<li><a href="fixture.php"><span class="ui-icon ui-icon-calendar"></span>Fixture</a></li>
 		<li><a href="#"><span class="ui-icon ui-icon-battery-0"></span>Categorias</a>
@@ -151,6 +166,7 @@
 			</ul>
 		</li>
 		<li><a href="tribunal.php"><span class="ui-icon ui-icon-notice"></span>Tribunal de Disciplina</a></li>
+		<li><a href="reglamento.php"><span class="ui-icon ui-icon-note"></span>Reglamento</a></li>
 		<li><a href="fotos.php"><span class="ui-icon ui-icon-image"></span>Fotos</a></li>
 		<li><a href="historia.php"><span class="ui-icon ui-icon-script"></span>Historia</a></li>
 		<li><a href="anteriores.php"><span class="ui-icon ui-icon-folder-open"></span>Torneos anteriores</a></li>
@@ -159,37 +175,52 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Goleadores</a></li>		
+			<li><a href="#tabs-1">Goleadores</a></li>
 		</ul>
-		<div id="tabs-1" align="center">
-			<?php
-				require 'fun.php';
+		<div id="tabs-1">
+			<?php 
+				if(isset($_GET['cat'])){
+					$categoria = $_GET['cat'];
+					$categoria = strtoupper($categoria);
+					echo '<h2 class="hEquipo">Top goleadores Categoría ' . $categoria . '</h2><br><br>';
+					$equipos = strEquiposDeCat($categoria);
+					$q = 'SELECT Nombre,Equipo,GolesActuales FROM jugadores WHERE Equipo IN ' . $equipos . ' ORDER BY GolesActuales Desc LIMIT 10';
+					$mydb = conectar();
+					if($res = $mydb->query($q)){
+						empezarTabla();
+						$encabezados = array("Nombre","Equipo","Goles");
+						genEncabezado($encabezados);
+						while ($fila = $res->fetch_row()){
+							genFila($fila);
+						}
+						finalizarTabla("0","");
+						$res->close();
+					}
+				}
+				else{
+					displayError("Error","No se ha seleccionado alguna categoría");
+				}
 				
-				$cat = $_GET["cat"];
-				
+				echo '<br><br><h2 class="hEquipo">Top goleadores histórico </h2><br><br>';
 				$mydb = conectar();
-				
-				
-				if ($res = $mydb->query("SELECT * FROM goleadores WHERE Categoria = '$cat'")){
-				    /* obtener el array de objetos */
+				$q = "SELECT Nombre,Equipo,Goles FROM jugadores ORDER BY Goles Desc LIMIT 10";
+				if($res = $mydb->query($q)){
 					empezarTabla();
-					$encabezados = array("Categoría","Nombre","Cantidad");
+					$encabezados = array("Nombre","Equipo","Goles");
 					genEncabezado($encabezados);
 					while ($fila = $res->fetch_row()){
 						genFila($fila);
-				    }
-				    finalizarTabla();
-				    /* liberar el conjunto de resultados */
-				    $res->close();
-				}
-				
-				/* cerrar la conexión */
-				$mydb->close();
-
+					}
+					finalizarTabla("0","");
+					$res->close();
+				}	
+			
 			?>
 		</div>
 	</div>
 	</div>
-
 </body>
+<?php 
+	include 'footer.php';
+?>
 </html>
