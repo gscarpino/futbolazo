@@ -175,7 +175,7 @@
 	
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Goleadores</a></li>
+			<li><a href="#tabs-1">Tabla Negra</a></li>
 		</ul>
 		<div id="tabs-1">
 			<?php 
@@ -184,29 +184,52 @@
 					$categoria = strtoupper($categoria);
 					echo '<h2 class="hEquipo">Tabla Negra  Categoría ' . $categoria . '</h2><br><br>';
 					echo '<br><span class="resaltado2">Por equipo</span><br><br><br>';
-					$equipos = strEquiposDeCat($categoria);
-					$q = 'SELECT Nombre,Equipo,GolesActuales FROM jugadores WHERE Equipo IN ' . $equipos . ' ORDER BY GolesActuales Desc LIMIT 10';
+					$q = 'SELECT Nombre,AmarillasActuales,Expulsiones1Actuales,Expulsiones2Actuales FROM equipo WHERE Categoria = "' . $categoria . '" AND Estado = "Activo"';
 					$mydb = conectar();
 					if($res = $mydb->query($q)){
 						empezarTabla();
-						$encabezados = array("Nombre","Equipo","Goles");
+						$encabezados = array("Nombre","Amarillas","Expulsiones 5'","Expulsiones","Puesto");
 						genEncabezado($encabezados);
-						while ($fila = $res->fetch_row()){
-							genFila($fila);
+						$filas = array();
+						unset($filas[0]);
+						$filas = $res->fetch_all();
+						if($res->num_rows > 1){
+							usort($filas,"cmpPorFaltasEq");
+						}
+						if(count($filas) > 0){
+							$p = 1;
+							foreach ($filas as $f){
+								$f[] = $p;
+								$p++;
+								genFila($f);
+							}
 						}
 						finalizarTabla("0","");
 						$res->close();
 					}
 					
 					echo '<br><br><br><span class="resaltado2">Por jugador</span><br><br><br>';
-					$q = 'SELECT Nombre,Equipo,GolesActuales FROM jugadores WHERE Equipo IN ' . $equipos . ' ORDER BY GolesActuales Desc LIMIT 10';
+
+					$equipos = strEquiposDeCat($categoria);
+					$q = 'SELECT Nombre,Equipo,AmarillasActuales,Expulsiones1Actuales,Expulsiones2Actuales FROM jugadores WHERE Equipo IN ' . $equipos;
 					$mydb = conectar();
 					if($res = $mydb->query($q)){
 						empezarTabla();
-						$encabezados = array("Nombre","Equipo","Goles");
+						$encabezados = array("Nombre","Equipo","Amarillas","Expulsiones 5'","Expulsiones","Puesto");
 						genEncabezado($encabezados);
-						while ($fila = $res->fetch_row()){
-							genFila($fila);
+						$filas = array();
+						unset($filas[0]);
+						$filas = $res->fetch_all();
+						if($res->num_rows > 1){
+							usort($filas,"cmpPorFaltasJug");
+						}
+						if(count($filas) > 0){
+							$p = 1;
+							foreach ($filas as $f){
+								$f[] = $p;
+								$p++;
+								genFila($f);
+							}
 						}
 						finalizarTabla("0","");
 						$res->close();

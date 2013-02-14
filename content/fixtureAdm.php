@@ -448,20 +448,20 @@
 					unset($fila[0]);
 					$estadoEquipo = $fila[5];
 					if($estadoEquipo == "Programado"){
-						$fila[] = '<a href="fixtureAdm.php?accion=suspenderPartido&num='. $num . '#Susp"><img src="imgs/partido_suspender.png" title="Suspender partido"></a>';
+						$fila[] = '<a href="fixtureAdm.php?accion=suspenderPartido&num='. $num . '#Susp"><img src="imgs/partido_suspender.png" title="Suspender partido" style="width:24px;height:24px;"></a>';
 					}
 					if($estadoEquipo == "Suspendido"){
-						$fila[] = '<a href="fixtureAdm.php?accion=reanudarPartido&num='. $num . '"><img src="imgs/partido_reanudar.png" title="Reanudar partido"></a>';
+						$fila[] = '<a href="fixtureAdm.php?accion=reanudarPartido&num='. $num . '"><img src="imgs/partido_reanudar.png" title="Reanudar partido" style="width:24px;height:24px;"></a>';
 					}
 					if($estadoEquipo == "Cancelado"){
 						$fila[] = "";
 						$fila[] = "";
 					}
 					else{
-						$fila[] = '<a href="fixtureAdm.php?accion=cancelarPartido&num='. $num . '"><img src="imgs/partido_cancelar.png" title="Cancelar partido"></a>';
+						$fila[] = '<a href="fixtureAdm.php?accion=cancelarPartido&num='. $num . '"><img src="imgs/partido_cancelar.png" title="Cancelar partido" style="width:24px;height:24px;"></a>';
 					}
-					$fila[] = '<a href="fixtureAdm.php?accion=borrarPartido&num='. $num . '"><img src="imgs/partido_borrar.png" title="Eliminar partido"></a>';
-					$fila[] = '<a href="fixtureAdm.php?verPartido='. $num . '&fecha=' . $fila[3] . '&hora=' . $fila[4] . '#vista"><img src="imgs/lupa.png" title="Ver info"></a>';
+					$fila[] = '<a href="fixtureAdm.php?accion=borrarPartido&num='. $num . '"><img src="imgs/partido_borrar.png" title="Eliminar partido" style="width:24px;height:24px;"></a>';
+					$fila[] = '<a href="fixtureAdm.php?verPartido='. $num . '&fecha=' . $fila[3] . '&hora=' . $fila[4] . '#vista"><img src="imgs/lupa.png" title="Ver info" style="width:24px;height:24px;"></a>';
 					
 					genFila($fila);
 				}

@@ -1,7 +1,6 @@
 <?php 
 	session_start();
 	require 'fun.php';
-	logueado();
 ?>
 
 <!DOCTYPE html>
@@ -240,7 +239,10 @@
 			<li><a href="#tabs-1">Fixture</a></li>		
 		</ul>
 		<div id="tabs-1">
+				<br>
 		
+		<h2 class="hEquipo">En desarrollo...</h2>	
+		<br>
 		<br>
 		<h2 class="hEquipo">Buscar equipo</h2>	
 		<br>

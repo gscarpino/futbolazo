@@ -1075,29 +1075,71 @@ function cmpPorPartidos($a,$b) {
 	}
 }
 
-function cmpPorFaltas($a,$b) {
-	//HACER!!!
-	if($a[9] > $b[9]){
+function cmpPorFaltasEq($a,$b) {
+	//Por rojas
+	if($a[3] > $b[3]){
+		
 		return -1;
 	}
-	else if($a[9] < $b[9]){
+	else if($a[3] < $b[3]){
 		return 1;
 	}
 	else{
-		//ordenar por diferencia de goles
-		$difA = $a[4] - $a[5];
-		$difB = $b[4] - $b[5];
-		if($difA > $difB){
+		//Por azules
+		if($a[2] > $b[2]){
 			return -1;
 		}
-		else if($difA < $difB){
+		else if($a[2] < $b[2]){
 			return 1;
 		}
 		else{
-			return 0;
+			//Por amarillas
+			if($a[1] > $b[1]){
+				return -1;
+			}
+			else if($a[1] < $b[1]){
+				return 1;
+			}
+			else{
+				return 0;
+			}
 		}
 	}
 }
+
+
+function cmpPorFaltasJug($a,$b) {
+	//Por rojas
+	if($a[4] > $b[4]){
+
+		return -1;
+	}
+	else if($a[4] < $b[4]){
+		return 1;
+	}
+	else{
+		//Por azules
+		if($a[3] > $b[3]){
+			return -1;
+		}
+		else if($a[3] < $b[3]){
+			return 1;
+		}
+		else{
+			//Por amarillas
+			if($a[2] > $b[2]){
+				return -1;
+			}
+			else if($a[2] < $b[2]){
+				return 1;
+			}
+			else{
+				return 0;
+			}
+		}
+	}
+}
+
 
 
 function torneoActual(){
