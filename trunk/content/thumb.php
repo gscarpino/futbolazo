@@ -6,7 +6,7 @@
 # Indicamos al navegador que lo que se envía es una imagen en formato jpg
 header( "Content-type: image/jpeg" );
 if (!empty($_GET['img'])){
- $new_width  = 225; // Tamaño a definir
+ $new_width  = 185; // Tamaño a definir
   
  $img = $_GET['img'];
  # obtenemos las extensiones de los archivos para llamar a la función correspondiente

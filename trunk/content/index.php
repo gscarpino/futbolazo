@@ -177,7 +177,21 @@
 			<li><a href="#tabs-1">Inicio</a></li>
 		</ul>
 		<div id="tabs-1">
-			Bienvenidos al futbolazo!
+			<br>
+			<br>
+			<h2 class="hEquipo">Bienvenidos al futbolazo!</h2>
+			<br>
+			<br>
+			Torneo interno de fútbol 5 de la Facultad de Ciencias Exactas y Naturales<a href="http://exactas.uba.ar/deportes/display.php?estructura=4&desarrollo=1&id_caja=61&nivel_caja=2&id_sports_pn=42">*</a> de la Universidad de Buenos Aires.
+			<br>
+			<br>
+			<br>
+			Si estás interesado en participar, los requisitos son:
+			<br>
+			<br>
+			1) Ser alumno, docente, graduado o no docente de la Facultad de Ciencias Exactas y Naturales. <br>
+2) No se pueden inscribir mas de 10 jugadores por equipo. <br>
+3) Un mismo jugador no podrá jugar en 2 o más equipos por torneo, independientemente de la categoría del equipo.<br><br>
 		</div>
 	</div>
 	</div>

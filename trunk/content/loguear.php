@@ -17,7 +17,7 @@
 			$_SESSION['nombre'] = $nombre;
 			$_SESSION['logged'] = true;
 // 			$st = session_status();
-			header('location:index.php');
+			header('location:panel.php');
 		}
 		else{
 // 			$st = session_status();

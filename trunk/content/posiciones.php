@@ -201,19 +201,23 @@
 					$q = 'SELECT Nombre,PartidosGanadosActuales,EmpatesActuales,PartidosPerdidosActuales,GolesConvertidosActuales,GolesRecibidosActuales,AmarillasActuales,Expulsiones1Actuales,Expulsiones2Actuales FROM equipo WHERE Categoria = "' . $categoria . '" and Estado = "Activo"';
 					if($res = $mydb->query($q)){
 						empezarTabla();
-						$encabezados = array("Nombre","<span title='Partidos Ganados'>PG</span>","<span title='Partidos Perdidos'>PP</span>","<span title='Partidos Empatados'>E</span>","<span title='Goles a favor'>GF</span>","<span title='Goles en contra'>GC</span>","Amarillas","Expulsiones 5'","Expulsiones","Puntos");
+						$encabezados = array("Nombre","<span title='Partidos Ganados'>PG</span>","<span title='Partidos Perdidos'>PP</span>","<span title='Partidos Empatados'>E</span>","<span title='Goles a favor'>GF</span>","<span title='Goles en contra'>GC</span>","Amarillas","Expulsiones 5'","Expulsiones","Puntos","Puesto");
 						genEncabezado($encabezados);
 						$filas = array();
 						unset($filas[0]);
+						
 						while ($fila = $res->fetch_row()){
-							$fila[] = 3 * (integer) $fila[1] + (integer) $fila[2]; 
+							$fila[] = 3 * (integer) $fila[1] + (integer) $fila[2];
 							$filas[] = $fila;
 						}
 						if($res->num_rows > 1){
-							usort($filas,"cmpFilas");
+							usort($filas,"cmpPorPartidos");
 						}
 						if(count($filas) > 0){
+							$p = 1;
 							foreach ($filas as $f){
+								$f[] = $p;
+								$p++;
 								genFila($f);
 							}
 						}
